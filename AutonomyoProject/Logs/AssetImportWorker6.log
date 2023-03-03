@@ -1,0 +1,299 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.19f1 (c9714fde33b6) revision 13201743'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22000) 64bit Core' Language: 'fr' Physical Memory: 31940 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.19f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker6
+-projectPath
+C:/Users/nicov/Nicolas-Vial-internship-Autonomyo/AutonomyoProject
+-logFile
+Logs/AssetImportWorker6.log
+-srvPort
+64444
+Successfully changed project path to: C:/Users/nicov/Nicolas-Vial-internship-Autonomyo/AutonomyoProject
+C:/Users/nicov/Nicolas-Vial-internship-Autonomyo/AutonomyoProject
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [31248] Host "[IP] 172.27.144.1 [Port] 0 [Flags] 2 [Guid] 3272334707 [EditorId] 3272334707 [Version] 1048832 [Id] WindowsEditor(7,NiwikyLaptop) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [31248] Host "[IP] 172.27.144.1 [Port] 0 [Flags] 2 [Guid] 3272334707 [EditorId] 3272334707 [Version] 1048832 [Id] WindowsEditor(7,NiwikyLaptop) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 149.83 ms, found 17 plugins.
+Preloading 1 native plugins for Editor in 4.20 ms.
+Initialize engine version: 2021.3.19f1 (c9714fde33b6)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/nicov/Nicolas-Vial-internship-Autonomyo/AutonomyoProject/Assets
+[Subsystems] No descriptors matched for  examples in Assets/MeshingFeaturePlugin/UnitySubsystemsManifest.json.
+[Subsystems] No descriptors matched for  inputs in Assets/MeshingFeaturePlugin/UnitySubsystemsManifest.json.
+[Subsystems] No descriptors matched for  displays in Assets/MeshingFeaturePlugin/UnitySubsystemsManifest.json.
+[Subsystems] 1 'meshings' descriptors matched in Assets/MeshingFeaturePlugin/UnitySubsystemsManifest.json
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3060 Laptop GPU (ID=0x2560)
+    Vendor:   NVIDIA
+    VRAM:     6023 MB
+    Driver:   30.0.15.1298
+Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56944
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/AppleTVSupport/UnityEditor.AppleTV.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.19f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.010346 seconds.
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+Native extension for AppleTV target not found
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+Native extension for iOS target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 266 ms
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 111.72 ms, found 17 plugins.
+Preloading 1 native plugins for Editor in 0.06 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.872 seconds
+Domain Reload Profiling:
+	ReloadAssembly (872ms)
+		BeginReloadAssembly (59ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (723ms)
+			LoadAssemblies (59ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (82ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (26ms)
+			SetupLoadedEditorAssemblies (567ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (353ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (112ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (70ms)
+				ProcessInitializeOnLoadMethodAttributes (31ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.013397 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image C:\Users\nicov\Nicolas-Vial-internship-Autonomyo\AutonomyoProject\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image C:\Users\nicov\Nicolas-Vial-internship-Autonomyo\AutonomyoProject\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+OnLevelWasLoaded was found on WitService
+This message has been deprecated and will be removed in a later version of Unity.
+Add a delegate to SceneManager.sceneLoaded instead to get notifications after scene loading has completed
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for AppleTV target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 110.72 ms, found 17 plugins.
+Preloading 1 native plugins for Editor in 0.06 ms.
+Package Manager log level set to [2]
+[XR] OculusXRPlugin: registering subsystems
+[XR] Unable to register display lifecyle provider: [1]
+[XR] Oculus Input lifecycle provider registered.
+[XR] Unable to register input lifecyle provider: [1]
+[XR] OVRP version 1.81.0
+Mono: successfully reloaded assembly
+- Completed reload, in  1.287 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1288ms)
+		BeginReloadAssembly (89ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (1108ms)
+			LoadAssemblies (87ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (254ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (78ms)
+			SetupLoadedEditorAssemblies (628ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (28ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (111ms)
+				BeforeProcessingInitializeOnLoad (114ms)
+				ProcessInitializeOnLoadAttributes (342ms)
+				ProcessInitializeOnLoadMethodAttributes (26ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 1.64 ms, found 17 plugins.
+Preloading 1 native plugins for Editor in 0.12 ms.
+Unloading 6560 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 93 unused Assets / (159.3 KB). Loaded Objects now: 6984.
+Memory consumption went from 311.4 MB to 311.2 MB.
+Total: 4.826100 ms (FindLiveObjects: 0.542500 ms CreateObjectMapping: 0.555200 ms MarkObjects: 3.491300 ms  DeleteObjects: 0.235600 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 341075.483949 seconds.
+  path: Assets/Polytope Studio/Lowpoly Medieval Environments/Sources/Materials/PT_Generic_Tree_Leaves_mat.mat
+  artifactKey: Guid(066ded06e6a8eb240893ea7b8efb66b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Polytope Studio/Lowpoly Medieval Environments/Sources/Materials/PT_Generic_Tree_Leaves_mat.mat using Guid(066ded06e6a8eb240893ea7b8efb66b4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42a37f7ab93b3def60d06ec2498408ea') in 0.187908 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Polytope Studio/Lowpoly Medieval Environments/Sources/Materials/PT_Water_mat.mat
+  artifactKey: Guid(3e36df56c6fa5f64085c14d9d4f6f8d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Polytope Studio/Lowpoly Medieval Environments/Sources/Materials/PT_Water_mat.mat using Guid(3e36df56c6fa5f64085c14d9d4f6f8d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e6e2619540e96faac1cf8c9fbcffc4b4') in 0.426582 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1527.327963 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/QuickGUI/Resources/Prefabs/pf_QuickKeyboard.prefab
+  artifactKey: Guid(f9c70b08533db934ab5f95e92a3ec8b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/QuickGUI/Resources/Prefabs/pf_QuickKeyboard.prefab using Guid(f9c70b08533db934ab5f95e92a3ec8b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0134a00f01fc4988fdd962e9adc58914') in 0.064402 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/com.quickvr.quickovr/Runtime/Resources/Prefabs/pf_QuickOVRHandRight.prefab
+  artifactKey: Guid(106bc5cb2528b3e4b832f6f020263292) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/com.quickvr.quickovr/Runtime/Resources/Prefabs/pf_QuickOVRHandRight.prefab using Guid(106bc5cb2528b3e4b832f6f020263292) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b51d4a634969c7cef21807409ecf5c2') in 0.005251 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseGrey.mat
+  artifactKey: Guid(22cc05a1d49d52944878dd39195048da) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseGrey.mat using Guid(22cc05a1d49d52944878dd39195048da) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2cb377bbecfbd59330894ac3d019f2df') in 0.058759 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDefaultLine.mat
+  artifactKey: Guid(4f1a5e96c18fb1a47810a9ee0fa295b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDefaultLine.mat using Guid(4f1a5e96c18fb1a47810a9ee0fa295b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e4cb015daeae58a87e9c3bf523ee04d') in 0.029247 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/com.quickvr.quickovr/Runtime/Resources/Prefabs/pf_QuickOVRHandLeft.prefab
+  artifactKey: Guid(1dc89f7ee59de5345b225499d68b3516) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/com.quickvr.quickovr/Runtime/Resources/Prefabs/pf_QuickOVRHandLeft.prefab using Guid(1dc89f7ee59de5345b225499d68b3516) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '985bef11bedfc8129702131501a6d240') in 0.003859 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseBlue.mat
+  artifactKey: Guid(bac3c7c856ffb1f48a086d31117ea9d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseBlue.mat using Guid(bac3c7c856ffb1f48a086d31117ea9d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '162c8d4b64742720f1640ec00f889599') in 0.010228 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseRed.mat
+  artifactKey: Guid(dcb4ef59e113cd74691de62d0bbec87f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseRed.mat using Guid(dcb4ef59e113cd74691de62d0bbec87f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a35863eac909947cfe3b02415b9aedd6') in 0.010547 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseWhite.mat
+  artifactKey: Guid(4d862f6d276509d4c85c304113738513) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseWhite.mat using Guid(4d862f6d276509d4c85c304113738513) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1aeea5195cbc8dae2860a82f035c4620') in 0.010680 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseYellow.mat
+  artifactKey: Guid(d212ccb6c56432a4cb923037d105af9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseYellow.mat using Guid(d212ccb6c56432a4cb923037d105af9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bd9c3e0b71cbacd9cd9613d9b0b8138d') in 0.009673 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseGreen.mat
+  artifactKey: Guid(659e8bee2cb7f91449fd32801bfadb65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Media/Materials/QuickDiffuseGreen.mat using Guid(659e8bee2cb7f91449fd32801bfadb65) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bf19c9770c99065708a39a7356b0d6e5') in 0.011287 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.849188 seconds.
+  path: Packages/com.quickvr.quickbase/Runtime/Unity.QuickVR.QuickBase.asmdef
+  artifactKey: Guid(707846450004269438d1a41ff342c945) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Runtime/Unity.QuickVR.QuickBase.asmdef using Guid(707846450004269438d1a41ff342c945) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c71ad12cd75ae892531327f26512a50c') in 0.004341 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Packages/com.quickvr.quickbase/Samples/Unity.QuickVR.QuickBaseSamples.asmdef
+  artifactKey: Guid(706badf7789382d4bbf71936f80cf418) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Samples/Unity.QuickVR.QuickBaseSamples.asmdef using Guid(706badf7789382d4bbf71936f80cf418) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1db703c9153646b7d9f4716da25b0466') in 0.002354 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.348812 seconds.
+  path: Packages/com.quickvr.quickbase/Editor/QuickUnityVREditor.cs
+  artifactKey: Guid(64e0efda0c397664aa680e3ed722be24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Packages/com.quickvr.quickbase/Editor/QuickUnityVREditor.cs using Guid(64e0efda0c397664aa680e3ed722be24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a0ecddb339eaa8dcdde93db3117087ac') in 0.004166 seconds 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2048
     height: 1060.8
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Hierarchy
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 21
+  controlID: 137
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
+  m_Name: InspectorWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -127,7 +127,7 @@ MonoBehaviour:
   - {fileID: 12}
   - {fileID: 17}
   m_Selected: 0
-  m_LastSelected: 1
+  m_LastSelected: 0
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 108
+  controlID: 138
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 109
+  controlID: 139
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -305,7 +305,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: quick head
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -317,22 +317,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 0
     m_Folders:
-    - Packages/com.quickvr.quickbase/Runtime
+    - Assets/SunboxGames/Avatars/Models/Avatars
     m_Globs: []
-    m_OriginalText: quick head
+    m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 72
   m_LastFolders:
-  - Packages/com.quickvr.quickbase/Runtime
+  - Assets/SunboxGames/Avatars/Models/Avatars
   m_LastFoldersGridSize: 72
-  m_LastProjectPath: C:\Users\nicov\AutonomyoProject
+  m_LastProjectPath: C:\Users\nicov\Nicolas-Vial-internship-Autonomyo\AutonomyoProject
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 962.19995}
-    m_SelectedIDs: ba870000
-    m_LastClickedID: 34746
-    m_ExpandedIDs: 00000000728700007487000076870000788700007a8700007c8700007e87000080870000828700008487000086870000888700008a8700008c8700008e87000090870000928700009487000096870000988700009a8700009c8700009e870000a0870000a2870000a4870000a6870000a8870000aa870000ac870000ae870000b0870000b2870000b4870000b6870000b8870000ba870000bc870000be870000c0870000c2870000c4870000c6870000c8870000ca870000cc870000ce870000d0870000d2870000d4870000d6870000d8870000da870000dc87000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 530.19995}
+    m_SelectedIDs: a8bd0100
+    m_LastClickedID: 114088
+    m_ExpandedIDs: 00000000ae8500009ca10000a4a10000a8a10000aea10000bca10000a26d0100ac6d0100ae6d0100aabd0100acbd010000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -360,7 +360,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000728700007487000076870000788700007a8700007c8700007e87000080870000828700008487000086870000888700008a8700008c8700008e87000090870000928700009487000096870000988700009a8700009c8700009e870000a0870000a2870000a4870000a6870000a8870000aa870000ac870000ae870000b0870000b2870000b4870000b6870000b8870000ba870000bc870000be870000c0870000c2870000c4870000c6870000c8870000ca870000cc870000ce870000d0870000d2870000d4870000d6870000d8870000da870000dc870000
+    m_ExpandedIDs: 00000000ae850000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -388,7 +388,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000187c0000787f0000a2800000689e00007e7f0000feb200002cb300001014010028860000928400000a850000b830010090dd0000aa8101003cf601004ef601006ea2fdff48f601000cf60100a4fb0100
+    m_ExpandedInstanceIDs: c6230000187c0000787f0000a2800000689e00007e7f0000feb200002cb300001014010028860000928400000a850000b830010090dd0000aa8101003cf601004ef601006ea2fdff48f601000cf60100a4fb010098bd0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -488,9 +488,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: ac7e0000
       m_LastClickedID: 0
-      m_ExpandedIDs: 2afbffff5e7c0000c67d0000487e00006a7e0000
+      m_ExpandedIDs: 6612feffb612feff221afeff301afeff9a40feff864cfeffa274ffffb887ffff0488ffff1288ffff1688ffff848fffffd48fffff6097ffff6497ffff1cc1ffff6ac1ffff78c1ffff7cc1ffff5ec6ffffb0c6ffff42ceffffecd4ffffd6d6ffffd8d6ffff56d7ffff54d8ffff4adaffff9edaffffdce1ffff28e2ffff36e2ffff3ae2ffffa0e9ffff3eeaffff54ebffff60f1ffffb0f1ffff68f2ffff2afbfffff0aa0000ccc10000c4d4000036f30000b8f500004cf60000ecf6000078170100fa1901000036010082380100fc470100b04801005849010080490100024a0100244a0100564a01005c4a0100aa4a01001c4b0100584b0100884b0100004c010006bb01008ebb0100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -772,9 +772,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.2326423, y: 1.0371797, z: -0.0025170147}
+    m_Target: {x: 0.41032308, y: 1.2440163, z: 0.002211079}
     speed: 2
-    m_Value: {x: 0.2326423, y: 1.0371797, z: -0.0025170147}
+    m_Value: {x: 0.41032308, y: 1.2440163, z: 0.002211079}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -821,20 +821,20 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.1201993, y: 0.6808528, z: -0.112833574, w: 0.713672}
+    m_Target: {x: -0.18984316, y: -0.6699635, z: 0.18202458, w: -0.6944134}
     speed: 2
-    m_Value: {x: 0.12036435, y: 0.67975855, z: -0.11264935, w: 0.71466833}
+    m_Value: {x: -0.18982092, y: -0.669885, z: 0.18200326, w: -0.69433206}
   m_Size:
-    m_Target: 1.0551435
+    m_Target: 0.5072772
     speed: 2
-    m_Value: 1.1048623
+    m_Value: 0.5072772
   m_Ortho:
     m_Target: 0
     speed: 2
     m_Value: 0
   m_CameraSettings:
-    m_Speed: 0.94052994
-    m_SpeedNormalized: 0.46999997
+    m_Speed: 1.06047
+    m_SpeedNormalized: 0.53
     m_SpeedMin: 0.001
     m_SpeedMax: 2
     m_EasingEnabled: 1
@@ -886,7 +886,7 @@ MonoBehaviour:
   m_ShowGizmos: 1
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1568.5, y: 802.5}
+  m_TargetSize: {x: 1254.8, y: 642}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -901,19 +901,19 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -627.4
-    m_HBaseRangeMax: 627.4
-    m_VBaseRangeMin: -321
-    m_VBaseRangeMax: 321
+    m_HBaseRangeMin: -501.92
+    m_HBaseRangeMax: 501.92
+    m_VBaseRangeMin: -256.80002
+    m_VBaseRangeMax: 256.80002
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
-    m_HSlider: 0
-    m_VSlider: 0
+    m_HSlider: 1
+    m_VSlider: 1
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -924,18 +924,18 @@ MonoBehaviour:
       y: 21
       width: 1254.8
       height: 642
-    m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 627.4, y: 321}
+    m_Scale: {x: 1.3330405, y: 1.3330405}
+    m_Translation: {x: 636.4354, y: 352.98224}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -627.4
-      y: -321
-      width: 1254.8
-      height: 642
+      x: -477.43143
+      y: -264.79483
+      width: 941.30676
+      height: 481.60577
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1568.5, y: 828.75}
