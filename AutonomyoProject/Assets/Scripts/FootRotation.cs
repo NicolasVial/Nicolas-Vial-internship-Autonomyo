@@ -40,13 +40,14 @@ public class FootRotation : MonoBehaviour
         angleToModify = baseAngle - actualAngle;
 
         //Debug: When going too far from something "real", it starts to do smth weird.
+        /*
         Debug.Log("base= " + baseAngle);
         Debug.Log("actual= " + actualAngle);
         Debug.Log("angle to modif= " + angleToModify);
         float a = targetFootTransform.eulerAngles.x + angleToModify;
         Debug.Log("oldAngle= " + targetFootTransform.eulerAngles.x);
         Debug.Log("newAngle= " + a);
-
+        */
         targetFootTransform.eulerAngles = new Vector3(targetFootTransform.eulerAngles.x + angleToModify, targetFootTransform.eulerAngles.y, targetFootTransform.eulerAngles.z);
 
        

@@ -25,6 +25,9 @@ public class InputManagerBodyPose : BaseInputManager
     public enum ButtonCodes
     {
         TPose,
+
+        //Right Controller
+        RightPrimaryPress,
     }
 
     #endregion
