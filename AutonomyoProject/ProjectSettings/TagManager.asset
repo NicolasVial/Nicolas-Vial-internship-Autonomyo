@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - DoorSphere
+  - HitObjectBlue
+  - HitObjectRed
   layers:
   - Default
   - TransparentFX
@@ -12,9 +14,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - postprocessing
+  - red
+  - blue
   - 
   - 
   - 
