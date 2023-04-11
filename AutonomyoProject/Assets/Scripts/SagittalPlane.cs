@@ -13,6 +13,7 @@ public class SagittalPlane : MonoBehaviour
 
     // Editor-assigned variables
     [SerializeField] GameObject theClient;
+    [SerializeField] private Vector3 canvasPositionOffset;
 
     [SerializeField] RectTransform leftAbdRT;
     [SerializeField] RectTransform rightAbdRT;
@@ -39,6 +40,14 @@ public class SagittalPlane : MonoBehaviour
     [HideInInspector] float rightKnee;
     [HideInInspector] float leftFoot;
     [HideInInspector] float rightFoot;
+    [HideInInspector] public float l_knee_posx;
+    [HideInInspector] public float l_knee_posz;
+    [HideInInspector] public float r_knee_posx;
+    [HideInInspector] public float r_knee_posz;
+    [HideInInspector] public float l_foot_posx;
+    [HideInInspector] public float l_foot_posz;
+    [HideInInspector] public float r_foot_posx;
+    [HideInInspector] public float r_foot_posz;
 
     // Other variables
     private ClientSide clientSide;
@@ -83,6 +92,7 @@ public class SagittalPlane : MonoBehaviour
             leftKneeAngle = clientSide.GetSyncVar("controller/joints/LeftKnee/angle");
             rightKneeAngle = clientSide.GetSyncVar("controller/joints/RightKnee/angle");
             done = true;
+            transform.localPosition = new Vector3(transform.localPosition.x + canvasPositionOffset.x, transform.localPosition.y + canvasPositionOffset.y, transform.localPosition.z + canvasPositionOffset.z);
         }
 
         //private float l0 = 25.0f/REDUCTION_FACTOR;
@@ -108,6 +118,7 @@ public class SagittalPlane : MonoBehaviour
                 leftKneeAngle = clientSide.GetSyncVar("controller/joints/LeftKnee/angle");
                 rightKneeAngle = clientSide.GetSyncVar("controller/joints/RightKnee/angle");
                 done = true;
+                transform.localPosition = new Vector3(transform.localPosition.x + canvasPositionOffset.x, transform.localPosition.y + canvasPositionOffset.y, transform.localPosition.z + canvasPositionOffset.z);
             }
             else
             {
@@ -128,25 +139,25 @@ public class SagittalPlane : MonoBehaviour
 
                 // hip
                 float l_hip_posx = -l2;
-                float l_hip_posz = l1 * Mathf.Sin(l_abd_angle);
+                float l_hip_posz = l_abd_posz;
                 float r_hip_posx = -l2;
-                float r_hip_posz = l1 * Mathf.Sin(r_abd_angle);
+                float r_hip_posz = r_abd_posz;
 
                 // knee
-                float l_knee_posx = -(l2 + Mathf.Sin(l_hip_angle) * l3);
-                float l_knee_posz = -Mathf.Cos(l_abd_angle) * Mathf.Cos(l_hip_angle) * l3;
-                float r_knee_posx = -(l2 + Mathf.Sin(r_hip_angle) * l3);
-                float r_knee_posz = -Mathf.Cos(r_abd_angle) * Mathf.Cos(r_hip_angle) * l3;
+                l_knee_posx = -(l2 + Mathf.Sin(l_hip_angle) * l3);
+                l_knee_posz = -Mathf.Cos(l_abd_angle) * Mathf.Cos(l_hip_angle) * l3;
+                r_knee_posx = -(l2 + Mathf.Sin(r_hip_angle) * l3);
+                r_knee_posz = -Mathf.Cos(r_abd_angle) * Mathf.Cos(r_hip_angle) * l3;
 
                 // foot
-                float l_foot_posx = -(l2 + Mathf.Sin(l_hip_angle) * l3
+                l_foot_posx = -(l2 + Mathf.Sin(l_hip_angle) * l3
                                     + Mathf.Sin(l_hip_angle - l_knee_angle) * l4);
-                float l_foot_posz = -Mathf.Cos(l_abd_angle)
+                l_foot_posz = -Mathf.Cos(l_abd_angle)
                                     * (Mathf.Cos(l_hip_angle) * l3
                                     + Mathf.Cos(l_hip_angle - l_knee_angle) * l4);
-                float r_foot_posx = -(l2 + Mathf.Sin(r_hip_angle) * l3
+                r_foot_posx = -(l2 + Mathf.Sin(r_hip_angle) * l3
                                     + Mathf.Sin(r_hip_angle - r_knee_angle) * l4);
-                float r_foot_posz = -Mathf.Cos(r_abd_angle)
+                r_foot_posz = -Mathf.Cos(r_abd_angle)
                                     * (Mathf.Cos(r_hip_angle) * l3
                                     + Mathf.Cos(r_hip_angle - r_knee_angle) * l4);
 

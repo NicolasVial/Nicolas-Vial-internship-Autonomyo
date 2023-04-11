@@ -13,6 +13,7 @@ public class FrontalPlane : MonoBehaviour
 
     // Editor-assigned variables
     [SerializeField] GameObject theClient;
+    [SerializeField] private Vector3 canvasPositionOffset;
 
     [SerializeField] RectTransform leftBackRT;
     [SerializeField] RectTransform rightBackRT;
@@ -43,6 +44,14 @@ public class FrontalPlane : MonoBehaviour
     [HideInInspector] float rightKnee;
     [HideInInspector] float leftFoot;
     [HideInInspector] float rightFoot;
+    [HideInInspector] public float l_knee_posy;
+    [HideInInspector] public float l_knee_posz;
+    [HideInInspector] public float r_knee_posy;
+    [HideInInspector] public float r_knee_posz;
+    [HideInInspector] public float l_foot_posy;
+    [HideInInspector] public float l_foot_posz;
+    [HideInInspector] public float r_foot_posy;
+    [HideInInspector] public float r_foot_posz;
 
     // Other variables
     private ClientSide clientSide;
@@ -87,6 +96,7 @@ public class FrontalPlane : MonoBehaviour
             leftKneeAngle = clientSide.GetSyncVar("controller/joints/LeftKnee/angle");
             rightKneeAngle = clientSide.GetSyncVar("controller/joints/RightKnee/angle");
             done = true;
+            transform.localPosition = new Vector3(transform.localPosition.x + canvasPositionOffset.x, transform.localPosition.y + canvasPositionOffset.y, transform.localPosition.z + canvasPositionOffset.z);
         }
 
         l0 = 25.0f / REDUCTION_FACTOR;
@@ -110,6 +120,7 @@ public class FrontalPlane : MonoBehaviour
                 leftKneeAngle = clientSide.GetSyncVar("controller/joints/LeftKnee/angle");
                 rightKneeAngle = clientSide.GetSyncVar("controller/joints/RightKnee/angle");
                 done = true;
+                transform.localPosition = new Vector3(transform.localPosition.x + canvasPositionOffset.x, transform.localPosition.y + canvasPositionOffset.y, transform.localPosition.z + canvasPositionOffset.z);
             }
             else
             {
@@ -140,26 +151,26 @@ public class FrontalPlane : MonoBehaviour
                 float r_hip_posz = r_abd_posz;
 
                 // knee
-                float l_knee_posy = l0 + l1 * Mathf.Cos(l_abd_angle)
+                l_knee_posy = l0 + l1 * Mathf.Cos(l_abd_angle)
                                     + Mathf.Sin(l_abd_angle) * Mathf.Cos(l_hip_angle) * l3;
-                float l_knee_posz = l1 * Mathf.Sin(l_abd_angle)
+                l_knee_posz = l1 * Mathf.Sin(l_abd_angle)
                                     - Mathf.Cos(l_abd_angle) * Mathf.Cos(l_hip_angle) * l3;
-                float r_knee_posy = -l0 - l1 * Mathf.Cos(r_abd_angle)
+                r_knee_posy = -l0 - l1 * Mathf.Cos(r_abd_angle)
                                     - Mathf.Sin(r_abd_angle) * Mathf.Cos(r_hip_angle) * l3;
-                float r_knee_posz = l1 * Mathf.Sin(r_abd_angle)
+                r_knee_posz = l1 * Mathf.Sin(r_abd_angle)
                                     - Mathf.Cos(r_abd_angle) * Mathf.Cos(r_hip_angle) * l3;
 
                 // foot
-                float l_foot_posy = l0 + l1 * Mathf.Cos(l_abd_angle)
+                l_foot_posy = l0 + l1 * Mathf.Cos(l_abd_angle)
                                     + Mathf.Sin(l_abd_angle) * (Mathf.Cos(l_hip_angle) * l3
                                     + Mathf.Cos(l_knee_angle - l_hip_angle) * l4);
-                float l_foot_posz = l1 * Mathf.Sin(l_abd_angle) - Mathf.Cos(l_abd_angle)
+                l_foot_posz = l1 * Mathf.Sin(l_abd_angle) - Mathf.Cos(l_abd_angle)
                                     * (Mathf.Cos(l_hip_angle) * l3
                                     + Mathf.Cos(l_knee_angle - l_hip_angle) * l4);
-                float r_foot_posy = -l0 - l1 * Mathf.Cos(r_abd_angle)
+                r_foot_posy = -l0 - l1 * Mathf.Cos(r_abd_angle)
                                     - Mathf.Sin(r_abd_angle) * (Mathf.Cos(r_hip_angle) * l3
                                     + Mathf.Cos(r_knee_angle - r_hip_angle) * l4);
-                float r_foot_posz = l1 * Mathf.Sin(r_abd_angle) - Mathf.Cos(r_abd_angle)
+                r_foot_posz = l1 * Mathf.Sin(r_abd_angle) - Mathf.Cos(r_abd_angle)
                                     * (Mathf.Cos(r_hip_angle) * l3
                                     + Mathf.Cos(r_knee_angle - r_hip_angle) * l4);
 

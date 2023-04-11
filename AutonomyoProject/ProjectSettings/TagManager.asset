@@ -7,6 +7,14 @@ TagManager:
   - DoorSphere
   - HitObjectBlue
   - HitObjectRed
+  - PoseObject
+  - Goal
+  - BottomRight
+  - Play
+  - BottomLeft
+  - Right
+  - Left
+  - Mirror
   layers:
   - Default
   - TransparentFX

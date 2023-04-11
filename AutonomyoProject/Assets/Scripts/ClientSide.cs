@@ -24,22 +24,22 @@ public class ClientSide : MonoBehaviour
 {
 	// Constant variables
 	public const int SYNCVAR_NAME_COMM_LENGTH = 100; ///< Length of SyncVar names during remote listing.
-	public const int SYNCVAR_UNIT_COMM_LENGTH = 20; ///< Length of SyncVar units during remote listing.
-	public const int SYNCVAR_LIST_ITEM_SIZE = (SYNCVAR_NAME_COMM_LENGTH + SYNCVAR_UNIT_COMM_LENGTH + 1 + 1 + 4); ///< SyncVar description bytes size during remote listing.
-	public const char SYNCVAR_NAME_SEPARATOR = '/'; ///< SyncVar prefix separators.
+  public const int SYNCVAR_UNIT_COMM_LENGTH = 20; ///< Length of SyncVar units during remote listing.
+  public const int SYNCVAR_LIST_ITEM_SIZE = (SYNCVAR_NAME_COMM_LENGTH + SYNCVAR_UNIT_COMM_LENGTH + 1 + 1 + 4); ///< SyncVar description bytes size during remote listing.
+  public const char SYNCVAR_NAME_SEPARATOR = '/'; ///< SyncVar prefix separators.
 	private const int TCP_MAX_TIME_WITHOUT_RX = 10000;
 
 	// Static variables
 	public static ClientSide instance; // global
-									   // Call if with the references instead of creating an instance in other scripts ?
-									   // should do a DontDestroyOnLoad ?
+	// Call if with the references instead of creating an instance in other scripts ?
+	// should do a DontDestroyOnLoad ?
 	public static int dataBufferSize = 16384; //1024; // 4096
-											  // For AndroidTV // For 182 variables : 16384
-											  // For 76 variables : 8192
-											  // For 52 variables : 4096
-											  // For 17 variables : 1024
-											  //private static int LOGFILES_N_DIGITS = 5; ///< Number of digits for the logs filename.
-											  //#define LOGFILES_PREFIX "log_" ///< Prefix for the logs filename.
+	// For AndroidTV // For 182 variables : 16384
+									 // For 76 variables : 8192
+									 // For 52 variables : 4096
+									 // For 17 variables : 1024
+	//private static int LOGFILES_N_DIGITS = 5; ///< Number of digits for the logs filename.
+	//#define LOGFILES_PREFIX "log_" ///< Prefix for the logs filename.
 
 	// Editor-assigned variables
 	public string serverAddr = "192.168.200.8";
@@ -47,14 +47,14 @@ public class ClientSide : MonoBehaviour
 	public int myId = 0;
 	public TCP tcp; // TCP client
 	public TextMeshProUGUI connectText;
+	[SerializeField] GameObject connectionTab;
 	[SerializeField] Button connectButton;
-	[SerializeField] GameObject setupCanvas;
+	[SerializeField] GameObject menu;
 	[SerializeField] TextMeshProUGUI batteryPairedText;
 	// Unable to connect popup
 	[SerializeField] GameObject connectionPopupPanel;
 	[SerializeField] Button connectionSelectedButton;
 	[HideInInspector] public int connectionCounter = 0;
-	[SerializeField] public Text debugText;
 
 	// Public editor-hidden variables
 	[HideInInspector] public bool isConnected = false;
@@ -92,28 +92,32 @@ public class ClientSide : MonoBehaviour
 	{
 		started = true;
 		tcp = new TCP();
-		heartBeatTimer = new System.Timers.Timer();
+		//heartBeatTimer = new System.Timers.Timer();
 
 		connectButton.Select();
-		Debug.Log("connectButton was selected");
+    	Debug.Log("connectButton was selected");
 	}
 
 	private void Update()
 	{
+		if (InputManager.GetButtonDown("ToggleMenu"))
+		{
+			menu.SetActive(!menu.activeSelf);
+		}
+
 		if (updateText)
 		{
 			updateText = false;
-			Debug.Log("isConnecting = " + isConnecting);
-			if (isConnecting)
+			if(isConnecting)
 			{
 				setToConnecting();
 			}
 			else
-			{
-				if (isConnected) // socket isConnected
+    		{
+				if(isConnected) // socket isConnected
 				{
 					Debug.Log("isConnected is true");
-					if (svlIsFull)
+					if(svlIsFull)
 					{
 						Debug.Log("svlIsFull is true");
 						TryStreamedVars();
@@ -146,11 +150,10 @@ public class ClientSide : MonoBehaviour
 		}
 	}
 
-	// Called by ConnectButton 
+	// Called by ConnectButton in MainLine in MainPanel in HomePanel in Canvas
 	public void ConnectFromButton()
-	{
+  {
 		tryAgain = true;
-		instance.isConnecting = true;
 		ConnectToServer();
 	}
 
@@ -162,21 +165,17 @@ public class ClientSide : MonoBehaviour
 		tcp.Connect();
 	}
 
-	private void UpdateDebugText(string info)
-	{
-		debugText.text = info;
-	}
-
-	// Called by TryAgainButton in Popup when conenction failed
+	// Called by TryAgainButton in Popup in Explanation in Canvas
 	public void TryConnectingAgain()
 	{
 		connectionPopupPanel.SetActive(false);
+		connectionTab.SetActive(true);
 		connectButton.Select();
 	}
 
 	public void TryStreamedVars()
 	{
-		if (tcp.socket.Connected)
+		if(tcp.socket.Connected)
 		{
 			tcp.SetStreamedVars(100); // previously 30 // Faire un thread ?
 		}
@@ -189,13 +188,13 @@ public class ClientSide : MonoBehaviour
 	private void SendingThread()
 	{
 		Debug.Log("SendingThread");
-		while (svlWasCreated)
+		while(svlWasCreated)
 		{
 			SyncVar sv = instance.syncVarsList[0];
 			short svIndex = -1;
 
 			svIndex = GetSyncVarIndex("sensors/battery_monitor/battery_level");
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				sv = syncVarsList[svIndex];
 				tcp.GetVarValue(svIndex);
@@ -206,13 +205,13 @@ public class ClientSide : MonoBehaviour
 			for (int i = 1; i <= 8; i++)
 			{
 				svIndex = GetSyncVarIndex("controller/load_cells/L" + i);
-				if (svIndex != -1)
+				if(svIndex != -1)
 				{
 					sv = syncVarsList[svIndex];
 					tcp.GetVarValue(svIndex);
 				}
 				svIndex = GetSyncVarIndex("controller/load_cells/R" + i);
-				if (svIndex != -1)
+				if(svIndex != -1)
 				{
 					sv = syncVarsList[svIndex];
 					tcp.GetVarValue(svIndex);
@@ -223,38 +222,38 @@ public class ClientSide : MonoBehaviour
 
 	public void setToConnecting()
 	{
-		connectText.color = Color.black;
-		connectText.text = "Connecting...";
+		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.black;
+		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connecting...";
 	}
 
 	public void setToConnected()
 	{
-		connectText.color = Color.green;
-		connectText.text = "Connected";
+		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.green;
+		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connected";
 	}
 
 	public void setToDisconnected()
 	{
-		connectText.color = Color.red;
-		connectText.text = "Disconnected";
+		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.red;
+		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Disconnected";
 		// TODO: actually disconnect the socket or network stream.
 		// Send a disconnexion message to the server ?
 		isConnected = false;
-		//isConnecting = false; // If it was forced by the button
+		isConnecting = false; // If it was forced by the button
 		tryAgain = false;
 		svlWasCreated = false;
 		svlIsFull = false;
 		receivedHeartbeat = false;
 		isStreaming = false;
-		if (heartBeatTimer.Enabled)
+		if(heartBeatTimer.Enabled)
 		{
 			Debug.LogWarning("Heartbeat timer disabled");
 			heartBeatTimer.Enabled = false;
 			heartBeatTimer.Close();
 		}
-		if (tcp.socket.Connected)
+		if(tcp.socket.Connected)
 		{
-			if (heartBeatTimer.Enabled)
+			if(heartBeatTimer.Enabled)
 			{
 				Debug.LogWarning("Heartbeat timer disabled");
 				heartBeatTimer.Enabled = false;
@@ -271,13 +270,12 @@ public class ClientSide : MonoBehaviour
 	private IEnumerator SetupExoskeleton()
 	{
 		yield return new WaitForSeconds(3f);
-		//setupCanvas.SetActive(true);
 		float battery_level = 0.7939928F; // For testing purposes
-		if (isStreaming)
+		if(isStreaming)
 			battery_level = GetSyncVar("sensors/battery_monitor/battery_level").FloatVar;
-		float battery_percentage = (float)(Math.Round((double)battery_level * 100, 0));
+		float battery_percentage = (float)(Math.Round((double)battery_level*100, 0));
 		batteryPairedText.text = battery_percentage.ToString() + "%";
-		if (isStreaming)
+		if(isStreaming)
 		{
 			SetIntSyncVar("controller/mode", (int)Modes.MODE_TRANSPARENT);
 			SetStringSyncVar("controller/saving_folder", "withApp"); // Check why it was necessary here, shouldn't be
@@ -306,10 +304,10 @@ public class ClientSide : MonoBehaviour
 
 	public SyncVar GetSyncVar(string name)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			short svIndex = GetSyncVarIndex(name);
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				Debug.Log("GetSyncVar index = " + svIndex);
 				SyncVar sv = instance.syncVarsList[svIndex];
@@ -323,18 +321,17 @@ public class ClientSide : MonoBehaviour
 
 	private short GetSyncVarIndex(string sv_name)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			bool isExist = false;
 			short index = (short)syncVarsList.FindIndex(x => x.Name.Equals(sv_name));
-			if (index != -1)
+			if(index != -1)
 				isExist = true;
-			if (isExist)
-				return index;
-			else
-			{
-				Debug.LogWarning("Element not found in the given list");
-				return -1;
+			if(isExist)
+					return index;
+			else {
+					Debug.LogWarning("Element not found in the given list");
+					return -1;
 			}
 		}
 		return -1;
@@ -352,10 +349,10 @@ public class ClientSide : MonoBehaviour
 
 	public void SetBoolSyncVar(string name, bool b)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			short svIndex = GetSyncVarIndex(name);
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				SyncVar sv = syncVarsList[svIndex];
 				tcp.SendPacket(svIndex, sizeof(bool), b, 0);
@@ -366,10 +363,10 @@ public class ClientSide : MonoBehaviour
 
 	public void SetIntSyncVar(string name, int value)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			short svIndex = GetSyncVarIndex(name);
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				SyncVar sv = syncVarsList[svIndex];
 				tcp.SendPacket(svIndex, sizeof(int), false, value);
@@ -380,10 +377,10 @@ public class ClientSide : MonoBehaviour
 
 	public void SetFloatSyncVar(string name, float value)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			short svIndex = GetSyncVarIndex(name);
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				SyncVar sv = syncVarsList[svIndex];
 				tcp.SendFloatPacket(svIndex, sizeof(float), value);
@@ -394,13 +391,13 @@ public class ClientSide : MonoBehaviour
 
 	public void SetStringSyncVar(string name, string str)
 	{
-		if (svlIsFull)
+		if(svlIsFull)
 		{
 			short svIndex = GetSyncVarIndex(name);
-			if (svIndex != -1)
+			if(svIndex != -1)
 			{
 				SyncVar sv = syncVarsList[svIndex];
-				Debug.Log("Number of bytes of the string = " + str.Length * sizeof(char));
+				Debug.Log("Number of bytes of the string = " + str.Length*sizeof(char));
 				tcp.SendStringPacket(svIndex, (uint)str.Length, str);
 				sv.StringVar = str;
 			}
@@ -424,11 +421,11 @@ public class ClientSide : MonoBehaviour
 
 		public void Connect()
 		{
-			//if (instance.tryAgain)
-			//{
-				//instance.isConnecting = true;
+			if (instance.tryAgain)
+			{
+				instance.isConnecting = true;
 				UpdateText();
-			//}
+			}
 
 			socket = new TcpClient
 			{
@@ -439,36 +436,20 @@ public class ClientSide : MonoBehaviour
 			sendBuffer = new byte[dataBufferSize];
 
 			System.IAsyncResult result = socket.BeginConnect(instance.serverAddr, instance.port, ConnectCallback, socket);
-			bool connectionSuccess = result.AsyncWaitHandle.WaitOne(System.TimeSpan.FromSeconds(1), false);
+			bool connectionSuccess = result.AsyncWaitHandle.WaitOne(System.TimeSpan.FromSeconds(4), false);
 			Debug.Log("connectionSuccess = " + connectionSuccess);
 			Debug.Log("socket ? " + socket.Connected);
 			if (!socket.Connected)
 			{
-				/*
 				if (instance.isConnecting && !instance.isConnected)
 				{
 					Debug.LogError(string.Format("Client unable to connect. Trying again."));
-					instance.Invoke("ConnectToServer", 3);
+					instance.Invoke("ConnectToServer", 6);
 					if (instance.connectionCounter > 3)
 					{
-						//instance.connectionPopupPanel.SetActive(true);
-						//instance.connectionSelectedButton.Select();
-						instance.setToDisconnected();
-					}
-					instance.connectionCounter++;
-					Debug.Log("connectionCounter = " + instance.connectionCounter);
-				}
-				*/
-
-				if (instance.isConnecting && !instance.isConnected)
-				{
-					Debug.LogError(string.Format("Client unable to connect. Trying again."));
-					instance.Invoke("ConnectToServer", 3);
-					if (instance.connectionCounter > 3)
-					{
-						//instance.connectionPopupPanel.SetActive(true);
-						//instance.connectionSelectedButton.Select();
-						instance.isConnecting = false;
+						instance.connectionTab.SetActive(false);
+						instance.connectionPopupPanel.SetActive(true);
+						instance.connectionSelectedButton.Select();
 						instance.setToDisconnected();
 					}
 					instance.connectionCounter++;
@@ -479,7 +460,7 @@ public class ClientSide : MonoBehaviour
 
 		public void GetVarValue(short varIndex)
 		{
-			// Get the variable's data. // Rajouter une sÈcuritÈ read/write dans la fonction
+			// Get the variable's data. // Rajouter une s√©curit√© read/write dans la fonction
 			sendBuffer = new byte[dataBufferSize];
 			sendBuffer[0] = 0x89;
 			byte[] secondHalf = BitConverter.GetBytes(varIndex);
@@ -494,7 +475,7 @@ public class ClientSide : MonoBehaviour
 				j = j + 2;
 			}
 
-			stream = socket.GetStream(); // Rajouter une sÈcuritÈ au cas o˘ le socket ne serait pas ouvert.
+			stream = socket.GetStream(); // Rajouter une s√©curit√© au cas o√π le socket ne serait pas ouvert.
 			stream.BeginWrite(sendBuffer, 0, dataBufferSize, SendCallback, null);
 			Debug.Log("The data of the variable at index " + varIndex + " was asked to the server");
 		}
@@ -508,19 +489,19 @@ public class ClientSide : MonoBehaviour
 			// Get the variable's data.
 			int bufferSize = (int)((varSize + 1) * 2 + 1); // The first + 1 is the index, the second is the prefix
 			sendBuffer = new byte[bufferSize];
-			sendBuffer[0] = 0x8A; // Peut-Ítre que 0x8E ne fonctionne QUE si la fonction est log true !
+			sendBuffer[0] = 0x8A; // Peut-√™tre que 0x8E ne fonctionne QUE si la fonction est log true !
 			sendBuffer[1] = Convert.ToByte(Convert.ToByte(varIndex) >> 4); // Il ne faudra pas oublier de set the local variable as well
-			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon cÙtÈ si elle est logTrue ou pas ?
+			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon c√¥t√© si elle est logTrue ou pas ?
 			if (varSize == 1) // Floating number
 			{
-				sendBuffer[3] = Convert.ToByte(Convert.ToByte(b) >> 4); // Comment vÈrifier l'accËs de la variable avant/pendant la communication ?
+				sendBuffer[3] = Convert.ToByte(Convert.ToByte(b) >> 4); // Comment v√©rifier l'acc√®s de la variable avant/pendant la communication ?
 				sendBuffer[4] = Convert.ToByte(Convert.ToByte(b) & 0xf);
 			}
 			else if (varSize == 4) // Floating number
 			{
 				byte[] secondHalf = BitConverter.GetBytes(value);
 				//if (BitConverter.IsLittleEndian)
-				//Array.Reverse(secondHalf);
+					//Array.Reverse(secondHalf);
 				int count = Buffer.ByteLength(secondHalf); // Ca marche slmt sans le reverse // Verifier plus tard
 				int j = 3;
 				for (int k = 0; k < count; k++)
@@ -540,17 +521,17 @@ public class ClientSide : MonoBehaviour
 			Debug.Log("The data of the variable at index " + varIndex + " was set to the server");
 		}
 
-		public void SendFloatPacket(short varIndex, uint varSize, float value) // Change the name of the function // Franchement mettre varSize ‡ int non ? Regarder pour SyncVar
+		public void SendFloatPacket(short varIndex, uint varSize, float value) // Change the name of the function // Franchement mettre varSize √† int non ? Regarder pour SyncVar
 		{
 			// Get the variable's data.
 			int bufferSize = (int)((varSize + 1) * 2 + 1); // The first + 1 is the index, the second is the prefix
 			sendBuffer = new byte[bufferSize];
-			sendBuffer[0] = 0x8A; // Peut-Ítre que 0x8E ne fonctionne QUE si la fonction est log true !
+			sendBuffer[0] = 0x8A; // Peut-√™tre que 0x8E ne fonctionne QUE si la fonction est log true !
 			sendBuffer[1] = Convert.ToByte(Convert.ToByte(varIndex) >> 4); // Il ne faudra pas oublier de set the local variable as well
-			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon cÙtÈ si elle est logTrue ou pas ?
+			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon c√¥t√© si elle est logTrue ou pas ?
 			byte[] secondHalf = BitConverter.GetBytes(value);
 			//if (BitConverter.IsLittleEndian)
-			//Array.Reverse(secondHalf);
+				//Array.Reverse(secondHalf);
 			int count = Buffer.ByteLength(secondHalf); // Ca marche slmt sans le reverse // Verifier plus tard
 			int j = 3;
 			for (int k = 0; k < count; k++)
@@ -574,18 +555,18 @@ public class ClientSide : MonoBehaviour
 			// Get the variable's data.
 			int bufferSize = (int)((varSize + 3) * 2 + 1); // The first + 1 is the index, the second is the prefix // Now it's + 3 for the index, the count and the "count"
 			sendBuffer = new byte[bufferSize];
-			sendBuffer[0] = 0x8A; // Peut-Ítre que 0x8E ne fonctionne QUE si la fonction est log true !
+			sendBuffer[0] = 0x8A; // Peut-√™tre que 0x8E ne fonctionne QUE si la fonction est log true !
 			sendBuffer[1] = Convert.ToByte(Convert.ToByte(varIndex) >> 4); // Il ne faudra pas oublier de set the local variable as well
-			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon cÙtÈ si elle est logTrue ou pas ?
+			sendBuffer[2] = Convert.ToByte(Convert.ToByte(varIndex) & 0xf); // Comment je peux savoir de mon c√¥t√© si elle est logTrue ou pas ?
 
 			byte[] secondHalf = Encoding.ASCII.GetBytes(str);
 			//if (BitConverter.IsLittleEndian)
 			//Array.Reverse(secondHalf);
 			//int count = Buffer.ByteLength(secondHalf); // Ca marche slmt sans le reverse // Verifier plus tard
-			int count = Encoding.ASCII.GetByteCount(str); // Pas besoin de count, peut Ítre varSize direct
+			int count = Encoding.ASCII.GetByteCount(str); // Pas besoin de count, peut √™tre varSize direct
 			Debug.Log("bufferSize = " + bufferSize);
 			Debug.Log("count = " + count);
-			int test = 7 / 263; // Ca equivaut ‡ 0 en fait ... // C'est pour les textes plus longs
+			int test = 7/263; // Ca equivaut √† 0 en fait ... // C'est pour les textes plus longs
 			Debug.Log("test = " + test);
 			sendBuffer[3] = Convert.ToByte(Convert.ToByte(count) >> 4);
 			sendBuffer[4] = Convert.ToByte(Convert.ToByte(count) & 0xf);
@@ -681,13 +662,13 @@ public class ClientSide : MonoBehaviour
 				instance.clientReceiveThread.Start();
 
 				DateTime timeoutTime = DateTime.Now;
-				while (!instance.receivedHeartbeat && !instance.svlIsFull)
+				while(!instance.receivedHeartbeat && !instance.svlIsFull)
 				{
 					TimeSpan dt = DateTime.Now - timeoutTime;
 					if (dt.Milliseconds == 0)
 					{
-						Debug.LogWarning("dt = " + dt.Seconds * 1000 + " TCP_MAX_TIME_WITHOUT_RX/2 = " + TCP_MAX_TIME_WITHOUT_RX / 2);
-						if (TCP_MAX_TIME_WITHOUT_RX / 2 < dt.Seconds * 1000)
+						Debug.LogWarning("dt = " + dt.Seconds*1000 + " TCP_MAX_TIME_WITHOUT_RX/2 = " + TCP_MAX_TIME_WITHOUT_RX/2);
+						if (TCP_MAX_TIME_WITHOUT_RX / 2 < dt.Seconds*1000)
 						{
 							timeoutTime = DateTime.Now;
 							instance.tcp.Connect();
@@ -755,10 +736,10 @@ public class ClientSide : MonoBehaviour
 		}
 
 		private void DecodingData(byte[] _data, int _byteLength)
-		{
+    {
 			for (int i = 0; i < Buffer.ByteLength(_data); i++)
 			{
-				if (Convert.ToBoolean(_data[i] & (1 << 7))) // C'est le dÈbut d'un message parce que le premier bit est ‡ 1
+				if (Convert.ToBoolean(_data[i] & (1 << 7))) // C'est le d√©but d'un message parce que le premier bit est √† 1
 				{
 					instance.rxCurrentMessageType = (MbToPcMessageType)(_data[i] & ~(1 << 7)); // Remove the MSB
 					instance.rxBytesCount = 0;
@@ -782,10 +763,10 @@ public class ClientSide : MonoBehaviour
 						case MbToPcMessageType.HEARTBEAT:
 							Debug.Log("Received heartbeat");
 							instance.receivedHeartbeat = true;
-							if (instance.lastSentHeartbeatTime != default(DateTime)) // Mettre un compteur pour lancer une dÈconnexion ?
-							{
+							if (instance.lastSentHeartbeatTime != default(DateTime)) // Mettre un compteur pour lancer une d√©connexion ?
+              {
 								TimeSpan duration = DateTime.Now - instance.lastSentHeartbeatTime;
-								// Est-ce que BBB n'envoie pas de heartbeat quand elle envoie des donnÈes ?
+								// Est-ce que BBB n'envoie pas de heartbeat quand elle envoie des donn√©es ?
 							}
 							instance.lastSentHeartbeatTime = DateTime.Now;
 							break;
@@ -795,14 +776,14 @@ public class ClientSide : MonoBehaviour
 						case MbToPcMessageType.DEBUG_TEXT:
 							if (i == 0)
 								Debug.Log("Received Debug Text");
-							if (i == _byteLength - 1)
-							{
+							if (i == _byteLength-1)
+              {
 								Debug.Log("DEBUG_TEXT en decimal = " + String.Join(" ", instance.byteList));
 
 								List<char> charList = new List<char>();
 								for (int k = 0; k < instance.byteList.Count(); k++)
 								{
-									if (instance.byteList[k] != 0)
+									if(instance.byteList[k] != 0)
 									{
 										//Debug.LogWarning("converted byte = " + Convert.ToChar(instance.byteList[k]));
 										charList.Add(Convert.ToChar(instance.byteList[k]));
@@ -818,9 +799,9 @@ public class ClientSide : MonoBehaviour
 						case MbToPcMessageType.VARS_LIST:
 							if (i == 0)
 								Debug.Log("Received the vars_list. Now to decode.");
-							if (instance.byteList.Count() > 0 /*&& instance.byteList[instance.byteList.Count()-1] == '\0'*/)
-							{
-								if (instance.byteList.Count() == 2)
+							if(instance.byteList.Count() > 0 /*&& instance.byteList[instance.byteList.Count()-1] == '\0'*/)
+              {
+								if(instance.byteList.Count() == 2)
 								{
 									instance.nVars = BitConverter.ToUInt16(instance.byteList.ToArray(), 0); // 2 bytes
 									Debug.Log("VARS_LIST nVars = " + instance.nVars);
@@ -829,73 +810,73 @@ public class ClientSide : MonoBehaviour
 									instance.streamedVars = new List<SyncVar>();
 								}
 
-								if (instance.byteList.Count() == (2 + SYNCVAR_LIST_ITEM_SIZE * instance.nVars)) //2 + 126 * 87 = 10964 //5482 //2741
-								{
+								if(instance.byteList.Count() == (2 + SYNCVAR_LIST_ITEM_SIZE * instance.nVars)) //2 + 126 * 87 = 10964 //5482 //2741
+                {
 									instance.byteList.RemoveRange(0, Math.Min(2, instance.byteList.Count));
-									for (int j = 0; j < instance.nVars; j++) // On loop ‡ travers toutes les variables
-									{
-										ushort typeIndex, accessIndex; //uint8_t //l‡ j'ai mis un 16 parce que pas le choix // Je pourrai mettre un byte
-										uint length;
-										SyncVar sv = new SyncVar();
+                  for(int j = 0; j< instance.nVars; j++) // On loop √† travers toutes les variables
+                  {
+                      ushort typeIndex, accessIndex; //uint8_t //l√† j'ai mis un 16 parce que pas le choix // Je pourrai mettre un byte
+                      uint length;
+											SyncVar sv = new SyncVar();
 
-										List<char> charList = new List<char>();
-										string testName = "";
-										for (int k = 0; k < SYNCVAR_NAME_COMM_LENGTH; k++) // On loop de la taille de name
-										{
-											if (instance.byteList[k] != 0)
+											List<char> charList = new List<char>();
+											string testName = "";
+											for (int k = 0; k < SYNCVAR_NAME_COMM_LENGTH; k++) // On loop de la taille de name
 											{
-												//Debug.Log("VARS_LIST converted byte = " + Convert.ToChar(instance.byteList[k]));
-												charList.Add(Convert.ToChar(instance.byteList[k]));
-												testName += Convert.ToString(instance.byteList[k]);
+												if(instance.byteList[k] != 0)
+												{
+													//Debug.Log("VARS_LIST converted byte = " + Convert.ToChar(instance.byteList[k]));
+													charList.Add(Convert.ToChar(instance.byteList[k]));
+													testName += Convert.ToString(instance.byteList[k]);
+												}
+												else
+												{
+													//Debug.Log("VARS_LIST converted byte = NUL");
+												}
 											}
-											else
+											Debug.Log("VARS_LIST name en ASCII = " + String.Join("", charList));
+											sv.Name = String.Join("", charList);
+											instance.byteList.RemoveRange(0, Math.Min(SYNCVAR_NAME_COMM_LENGTH, instance.byteList.Count));
+											Debug.Log("VARS_LIST at index = " + j);
+											//Debug.Log("VARS_LIST data = ");
+											//Debug.Log("VARS_LIST is up to date = ");
+
+											charList = new List<char>();
+											for (int k = 0; k < SYNCVAR_UNIT_COMM_LENGTH; k++) // On loop de la taille de unit
 											{
-												//Debug.Log("VARS_LIST converted byte = NUL");
+												if(instance.byteList[k] != 0)
+												{
+													//Debug.Log("VARS_LIST converted byte = " + Convert.ToChar(instance.byteList[k]));
+													charList.Add(Convert.ToChar(instance.byteList[k]));
+												}
+												else
+												{
+													//Debug.Log("VARS_LIST converted byte = NUL");
+												}
 											}
-										}
-										Debug.Log("VARS_LIST name en ASCII = " + String.Join("", charList));
-										sv.Name = String.Join("", charList);
-										instance.byteList.RemoveRange(0, Math.Min(SYNCVAR_NAME_COMM_LENGTH, instance.byteList.Count));
-										Debug.Log("VARS_LIST at index = " + j);
-										//Debug.Log("VARS_LIST data = ");
-										//Debug.Log("VARS_LIST is up to date = ");
+											Debug.Log("VARS_LIST unit en ASCII = " + String.Join("", charList));
+											sv.Unit = String.Join("", charList);
+											instance.byteList.RemoveRange(0, Math.Min(SYNCVAR_UNIT_COMM_LENGTH, instance.byteList.Count));
+											//Debug.Log("VARS_LIST value = "); // Difference between data and value ? // To get afterwards
 
-										charList = new List<char>();
-										for (int k = 0; k < SYNCVAR_UNIT_COMM_LENGTH; k++) // On loop de la taille de unit
-										{
-											if (instance.byteList[k] != 0)
-											{
-												//Debug.Log("VARS_LIST converted byte = " + Convert.ToChar(instance.byteList[k]));
-												charList.Add(Convert.ToChar(instance.byteList[k]));
-											}
-											else
-											{
-												//Debug.Log("VARS_LIST converted byte = NUL");
-											}
-										}
-										Debug.Log("VARS_LIST unit en ASCII = " + String.Join("", charList));
-										sv.Unit = String.Join("", charList);
-										instance.byteList.RemoveRange(0, Math.Min(SYNCVAR_UNIT_COMM_LENGTH, instance.byteList.Count));
-										//Debug.Log("VARS_LIST value = "); // Difference between data and value ? // To get afterwards
+											typeIndex = instance.byteList[0]; // 1 byte
+											Debug.Log("VARS_LIST typeIndex = " + typeIndex + " => " + (VarType)typeIndex);
+											sv.Type = (VarType)typeIndex;
+											instance.byteList.RemoveRange(0, Math.Min(1, instance.byteList.Count)); // Faire RemoveAt
 
-										typeIndex = instance.byteList[0]; // 1 byte
-										Debug.Log("VARS_LIST typeIndex = " + typeIndex + " => " + (VarType)typeIndex);
-										sv.Type = (VarType)typeIndex;
-										instance.byteList.RemoveRange(0, Math.Min(1, instance.byteList.Count)); // Faire RemoveAt
+											accessIndex = instance.byteList[0]; // 1 byte
+											Debug.Log("VARS_LIST accessIndex = " + accessIndex + " => " + (VarAccess)accessIndex);
+											sv.Access = (VarAccess)accessIndex;
+											instance.byteList.RemoveRange(0, Math.Min(1, instance.byteList.Count));
 
-										accessIndex = instance.byteList[0]; // 1 byte
-										Debug.Log("VARS_LIST accessIndex = " + accessIndex + " => " + (VarAccess)accessIndex);
-										sv.Access = (VarAccess)accessIndex;
-										instance.byteList.RemoveRange(0, Math.Min(1, instance.byteList.Count));
+											length = BitConverter.ToUInt32(instance.byteList.ToArray(), 0); // 4 bytes
+											Debug.Log("VARS_LIST length = " + length);
+											sv.NBytes = length;
+											instance.byteList.RemoveRange(0, Math.Min(4, instance.byteList.Count));
 
-										length = BitConverter.ToUInt32(instance.byteList.ToArray(), 0); // 4 bytes
-										Debug.Log("VARS_LIST length = " + length);
-										sv.NBytes = length;
-										instance.byteList.RemoveRange(0, Math.Min(4, instance.byteList.Count));
-
-										instance.syncVarsList.Add(sv);
-										AddStreamedVars(sv);
-									}
+											instance.syncVarsList.Add(sv);
+											AddStreamedVars(sv);
+                  }
 									Debug.Log("La liste des variables est disponible !");
 									instance.svlIsFull = true;
 									instance.isConnected = true; // Remove ?
@@ -903,7 +884,7 @@ public class ClientSide : MonoBehaviour
 									UpdateText();
 									instance.FinishInit();
 								}
-							}
+              }
 							break;
 
 						case MbToPcMessageType.VAR_VALUE:
@@ -914,7 +895,7 @@ public class ClientSide : MonoBehaviour
 								short varIndex = instance.byteList[0];
 								Debug.Log("VAR_VALUE varIndex = " + varIndex);
 								SyncVar sv = instance.syncVarsList[varIndex];
-								if (varIndex < instance.syncVarsList.Count)
+								if(varIndex < instance.syncVarsList.Count)
 								{
 									Debug.Log("VAR_VALUE count = " + instance.byteList.Count());
 									Debug.Log("VAR_VALUE limit = " + ((_byteLength - 1) / 2));
@@ -936,8 +917,8 @@ public class ClientSide : MonoBehaviour
 								// Read the timestamp.
 								long timestamp_us = BitConverter.ToInt64(instance.byteList.ToArray(), 0); // long au lieu de ulong pour DateTime
 								instance.byteList.RemoveRange(0, Math.Min(8, instance.byteList.Count));
-								timestamp_us = (long)(timestamp_us / 1000); // Je reÁois une variable de 16 digits
-																			//Debug.Log("STREAMING cropped timestamp_us = " + timestamp_us);
+								timestamp_us = (long)(timestamp_us / 1000); // Je re√ßois une variable de 16 digits
+								//Debug.Log("STREAMING cropped timestamp_us = " + timestamp_us);
 								DateTime date;
 								date = DateTimeOffset.FromUnixTimeMilliseconds(timestamp_us).UtcDateTime;
 								////Debug.LogWarning("STREAMING date = " + date);
@@ -953,13 +934,13 @@ public class ClientSide : MonoBehaviour
 									break;
 								}
 
-								double timestamp = ((double)timestamp_us) / 1000000.0; // [s]. // intÈrÍt de cette ligne ?
-																					   // Read all the SyncVar values.
+								double timestamp = ((double)timestamp_us) / 1000000.0; // [s]. // int√©r√™t de cette ligne ?
+								// Read all the SyncVar values.
 								for (int ind = 0; ind < instance.streamedVars.Count(); ind++)
 								{
 									SyncVar tempSv = instance.streamedVars[ind];
 									int varIndex = instance.GetSyncVarIndex(tempSv.Name);
-									if (varIndex == -1)
+									if(varIndex == -1)
 										Debug.Log("ClientSide: There was an issue with the received stream. Index = -1");
 									SyncVar sv = instance.syncVarsList[varIndex];
 									////Debug.LogWarning("STREAMING sv.Name = " + sv.Name);
@@ -975,33 +956,33 @@ public class ClientSide : MonoBehaviour
 					} // end switch
 				} // end else (second half received)
 			} // end for (int i = 0; i < Buffer.ByteLength(_data); i++)
-		} // end DecodingData
+    } // end DecodingData
 
 		public void SetVariable(SyncVar sv)
 		{
-			switch (sv.Type)
-			{ // Faire attention ‡ rajouter s'il y en a d'autres
-				case (VarType.BOOL):
+			switch(sv.Type)
+			{ // Faire attention √† rajouter s'il y en a d'autres
+				case(VarType.BOOL):
 					sv.BoolVar = BitConverter.ToBoolean(instance.byteList.ToArray(), 0);
 					break;
-				case (VarType.INT8):
+				case(VarType.INT8):
 					sv.SByteVar = (sbyte)instance.byteList[0]; // should be 8 but doesn't exist here. Don't make mistakes when setting the value.
-															   //sv.SByteVar = Convert.ToSByte(String.Join(" ", instance.byteList, 0, sv.NBytes));
-					break; // sinon changer par un sbyte, Áa fait 8 bits // Si ca ne marche pas, revenir ‡ int. // Ou plutÙt un byte
-				case (VarType.INT32):
+					//sv.SByteVar = Convert.ToSByte(String.Join(" ", instance.byteList, 0, sv.NBytes));
+					break; // sinon changer par un sbyte, √ßa fait 8 bits // Si ca ne marche pas, revenir √† int. // Ou plut√¥t un byte
+				case(VarType.INT32):
 					sv.IntVar = BitConverter.ToInt32(instance.byteList.ToArray(), 0);
 					break;
-				case (VarType.UINT64):
+				case(VarType.UINT64):
 					sv.ULongVar = BitConverter.ToUInt64(instance.byteList.ToArray(), 0);
 					break;
-				case (VarType.FLOAT32):
+				case(VarType.FLOAT32):
 					sv.FloatVar = BitConverter.ToSingle(instance.byteList.ToArray(), 0); // 4 bytes
 					break;
-				case (VarType.STRING):
+				case(VarType.STRING):
 					List<char> charList = new List<char>();
 					for (int k = 0; k < sv.NBytes; k++) // Looping on the variable's size
 					{
-						if (instance.byteList[k] != 0)
+						if(instance.byteList[k] != 0)
 						{
 							charList.Add(Convert.ToChar(instance.byteList[k]));
 						}
@@ -1014,7 +995,7 @@ public class ClientSide : MonoBehaviour
 		// Variables that are constantly streamed
 		public void AddStreamedVars(SyncVar sv)
 		{
-			// Rajouter une sÈcuritÈ pour empÍcher les gens dÈbiles comme moi de demander des variables qui sont en write ?
+			// Rajouter une s√©curit√© pour emp√™cher les gens d√©biles comme moi de demander des variables qui sont en write ?
 			if (sv.Name == "sensors/battery_monitor/battery_level")
 			{
 				instance.streamedVars.Add(sv);
@@ -1043,12 +1024,12 @@ public class ClientSide : MonoBehaviour
 
 		public void SetStreamedVars(int period)
 		{
-			// Update the checkboxes list if the change was not coming from them.
-			//if(!changedFromGuiList)
-			//    syncVarManager->setStreamedVars(streamedVars);
+	    // Update the checkboxes list if the change was not coming from them.
+	    //if(!changedFromGuiList)
+	    //    syncVarManager->setStreamedVars(streamedVars);
 
-			// Compute the size of a stream packet.
-			int nStreamedVars = instance.streamedVars.Count();
+	    // Compute the size of a stream packet.
+	    int nStreamedVars = instance.streamedVars.Count();
 			instance.streamPacketSize = sizeof(ulong) + sizeof(byte); // 8 + 1; // Timestamp and request number + sizeof(streamingRequest)
 
 			for (int i = 0; i < instance.streamedVars.Count(); i++)

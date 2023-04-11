@@ -27,21 +27,12 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timer > beat)
+        if (GameObject.FindGameObjectsWithTag("PoseObject").Length < 1)
         {
-            Transform spawnPoint = points[Random.Range(0, 2)];
-            if(spawnPoint.localPosition.z > 0)
-            {
-                GameObject hitObject = Instantiate(hitObjects[0], spawnPoint);
-                hitObject.transform.localPosition = Vector3.zero;
-                //hitObject.transform.Rotate(transform.right, Random.Range(0, 4) * 90);
-            }
-            else
-            {
-                GameObject hitObject = Instantiate(hitObjects[1], spawnPoint);
-                hitObject.transform.localPosition = Vector3.zero;
-                //hitObject.transform.Rotate(transform.right, Random.Range(0, 4) * 90);
-            }
+            Transform spawnPoint = points[Random.Range(0, 1)];
+            
+            GameObject hitObject = Instantiate(hitObjects[Random.Range(0, 6)], spawnPoint);
+            hitObject.transform.localPosition = new Vector3(0f, 1f, 0f);
 
             timer -= beat;
         }
