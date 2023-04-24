@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine;
 
 public class Game1Logic : MonoBehaviour
 {
+    [SerializeField] private AvatarToCopyLogic avatarToCopyLogic;
     [SerializeField] private float timeToValidate;
     [SerializeField] private FrontalPlane frontalPlane;
     [SerializeField] private SagittalPlane sagittalPlane;
     [SerializeField] private float marginOfErrorPos;
     [SerializeField] private float marginOfErrorAngles;
     [SerializeField] private CircularProgressBar progressBar;
-    [SerializeField] GameObject theClient;
+    [SerializeField] private GameObject theClient;
     [SerializeField] private GameObject f_l_kneeGO;
     [SerializeField] private GameObject f_r_kneeGO;
     [SerializeField] private GameObject f_l_footGO;
@@ -20,6 +22,8 @@ public class Game1Logic : MonoBehaviour
     [SerializeField] private GameObject s_r_kneeGO;
     [SerializeField] private GameObject s_l_footGO;
     [SerializeField] private GameObject s_r_footGO;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private int maxNbOfSuccesses = 10;
 
     private float validationCounter = 0f;
     private Vector3[] targetPositions = null;
@@ -33,6 +37,20 @@ public class Game1Logic : MonoBehaviour
     private SyncVar rightHipAngle;
     private SyncVar leftKneeAngle;
     private SyncVar rightKneeAngle;
+    private int nbOfSuccesses = 0;
+
+    private string poseName; //name of the pose to imitate
+
+    //transparent blue legs are blinking during explanation
+    private GameObject blinkGO1;
+    private GameObject blinkGO2;
+    private bool blinkUp = true;
+
+    //public variables
+    public bool inGame = false;
+    public bool finished = false;
+    public bool isBlinking = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +61,10 @@ public class Game1Logic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         if (clientSide.isStreaming)
         {
+            //Get the syncVars once
             if (!done)
             {
                 leftAbdAngle = clientSide.GetSyncVar("controller/joints/LeftAbd/angle");
@@ -58,67 +78,87 @@ public class Game1Logic : MonoBehaviour
 
             if (newPose && GameObject.FindGameObjectsWithTag("PoseObject").Length != 0)
             {
+                /*
                 if ((GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetPositions>() != null)
                 {
                     targetPositions = (GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetPositions>().getTargetPositions();
                 }
+                */
                 if ((GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetAngles>() != null)
                 {
                     targetAngles = (GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetAngles>().getTargetAngles();
+                    poseName = (GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetAngles>().poseName;
+
+                    switch (poseName)
+                    {
+                        case "leftKneeUp":
+                            avatarToCopyLogic.leftKneeUp = true;
+                            break;
+                        case "rightKneeUp":
+                            avatarToCopyLogic.rightKneeUp = true;
+                            break;
+                        case "straight":
+                            avatarToCopyLogic.straight = true;
+                            break;
+                        case "leftKneeMiddleUp":
+                            avatarToCopyLogic.leftKneeMiddleUp = true;
+                            break;
+                        case "rightKneeMiddleUp":
+                            avatarToCopyLogic.rightKneeMiddleUp = true;
+                            break;
+                        default:
+                            Debug.Log("poseName received doesn't exist!");
+                            break;
+                    }
                 }
 
                 newPose = false;
             }
 
-            if (targetPositions != null || targetAngles != null)
+            if (GameObject.FindGameObjectsWithTag("TransparentMesh").Length != 0)
             {
-                bool checkAngles = false;
-                bool checkPos = false;
-                bool correctPos = false;
-                bool correctAngles = false;
-                if (targetAngles != null)
-                {
-                    checkAngles = true;
-                    correctAngles = checkPosewithAngles();
-                }
-                if (targetPositions != null)
-                {
-                    checkPos = true;
-                    correctPos = checkPosewithPos();
-                }
+                blinkGO1 = GameObject.FindGameObjectsWithTag("TransparentMesh")[0];
+                blinkGO2 = GameObject.FindGameObjectsWithTag("TransparentMesh")[1];
+            }
 
-                if (checkAngles && checkPos)
+            if (blinkGO1 != null && blinkGO2 != null)
+            {
+                if (isBlinking)
                 {
-                    if (correctAngles || correctPos)
-                    {
-                        validationCounter += Time.deltaTime;
-                        progressBar.m_FillAmount = validationCounter / timeToValidate;
-                    }
-                    else
-                    {
-                        //What is the best? when position is not good reset or continue whenever it's good again??
-                        //validationCounter = 0f;
-                    }
-
+                    blink();
                 }
                 else
                 {
-                    if (checkAngles)
+                    Color color = blinkGO1.GetComponent<SkinnedMeshRenderer>().materials[0].color;
+                    color.a = 0.3921569f;
+                    blinkGO1.GetComponent<SkinnedMeshRenderer>().materials[0].color = color;
+                    blinkGO2.GetComponent<SkinnedMeshRenderer>().materials[0].color = color;
+                }
+
+            }
+
+            if (inGame)
+            {
+                if (targetPositions != null || targetAngles != null)
+                {
+                    bool checkAngles = false;
+                    bool checkPos = false;
+                    bool correctPos = false;
+                    bool correctAngles = false;
+                    if (targetAngles != null)
                     {
-                        if (correctAngles)
-                        {
-                            validationCounter += Time.deltaTime;
-                            progressBar.m_FillAmount = validationCounter / timeToValidate;
-                        }
-                        else
-                        {
-                            //What is the best? when position is not good reset or continue whenever it's good again??
-                            //validationCounter = 0f;
-                        }
+                        checkAngles = true;
+                        correctAngles = checkPosewithAngles();
                     }
-                    if (checkPos)
+                    if (targetPositions != null)
                     {
-                        if (correctPos)
+                        checkPos = true;
+                        correctPos = checkPosewithPos();
+                    }
+
+                    if (checkAngles && checkPos)
+                    {
+                        if (correctAngles || correctPos)
                         {
                             validationCounter += Time.deltaTime;
                             progressBar.m_FillAmount = validationCounter / timeToValidate;
@@ -127,19 +167,61 @@ public class Game1Logic : MonoBehaviour
                         {
                             //What is the best? when position is not good reset or continue whenever it's good again??
                             //validationCounter = 0f;
+                        }
+
+                    }
+                    else
+                    {
+                        if (checkAngles)
+                        {
+                            if (correctAngles)
+                            {
+                                validationCounter += Time.deltaTime;
+                                progressBar.m_FillAmount = validationCounter / timeToValidate;
+                            }
+                            else
+                            {
+                                //What is the best? when position is not good reset or continue whenever it's good again??
+                                //validationCounter = 0f;
+                            }
+                        }
+                        if (checkPos)
+                        {
+                            if (correctPos)
+                            {
+                                validationCounter += Time.deltaTime;
+                                progressBar.m_FillAmount = validationCounter / timeToValidate;
+                            }
+                            else
+                            {
+                                //What is the best? when position is not good reset or continue whenever it's good again??
+                                //validationCounter = 0f;
+                            }
                         }
                     }
                 }
-            }
 
-            //actions to do when pose is validated
-            if (validationCounter >= timeToValidate)
-            {
-                validationCounter = 0;
-                Destroy(GameObject.FindGameObjectsWithTag("PoseObject")[0]);
-                targetPositions = null;
-                newPose = true;
-            }
+                //actions to do when pose is validated
+                if (validationCounter >= timeToValidate)
+                {
+                    validationCounter = 0;
+                    Destroy(GameObject.FindGameObjectsWithTag("PoseObject")[0]);
+                    targetPositions = null;
+                    newPose = true;
+                    progressBar.m_FillAmount = 0f;
+                    nbOfSuccesses += 1;
+                }
+
+                //update the score in real time
+                scoreText.SetText(nbOfSuccesses + "/" + maxNbOfSuccesses);
+
+                if (nbOfSuccesses == maxNbOfSuccesses)
+                {
+                    inGame = false;
+                    finished = true;
+                    nbOfSuccesses = 0;
+                }
+            } 
         }
     }
 
@@ -165,6 +247,7 @@ public class Game1Logic : MonoBehaviour
         Vector3 s_l_actualFootPos = new Vector3(sagittalPlane.l_foot_posx, sagittalPlane.l_foot_posz, 0f);
         Vector3 s_r_actualFootPos = new Vector3(sagittalPlane.r_foot_posx, sagittalPlane.r_foot_posz, 0f);
 
+        //check all the positions
         bool check_f_l_kneePos = checkSpecificPose(f_l_targetKneePos.x, f_l_targetKneePos.y, f_l_actualKneePos.x, f_l_actualKneePos.y, f_l_kneeGO, true);
         bool check_f_r_kneePos = checkSpecificPose(f_r_targetKneePos.x, f_r_targetKneePos.y, f_r_actualKneePos.x, f_r_actualKneePos.y, f_r_kneeGO, false);
         bool check_f_l_footPos = checkSpecificPose(f_l_targetFootPos.x, f_l_targetFootPos.y, f_l_actualFootPos.x, f_l_actualFootPos.y, f_l_footGO, true);
@@ -194,6 +277,7 @@ public class Game1Logic : MonoBehaviour
         float l_targetKneeAngle = targetAngles[4];
         float r_targetKneeAngle = targetAngles[5];
 
+        //check all the angles
         bool check_l_abdAngle = checkSpecificAngle(l_targetAbdAngle, leftAbdAngle.FloatVar);
         bool check_r_abdAngle = checkSpecificAngle(r_targetAbdAngle, rightAbdAngle.FloatVar);
         bool check_l_hipAngle = checkSpecificAngle(l_targetHipAngle, leftHipAngle.FloatVar);
@@ -244,5 +328,29 @@ public class Game1Logic : MonoBehaviour
             return false;
         }
 
+    }
+
+    private void blink()
+    {
+        Color color = blinkGO1.GetComponent<SkinnedMeshRenderer>().materials[0].color;
+        if (blinkUp)
+        {
+            color.a += 0.02f;
+        }
+        else
+        {
+            color.a -= 0.02f;
+        }
+        blinkGO1.GetComponent<SkinnedMeshRenderer>().materials[0].color = color;
+        blinkGO2.GetComponent<SkinnedMeshRenderer>().materials[0].color = color;
+
+        if (color.a >= 1f)
+        {
+            blinkUp = false;
+        }
+        if (color.a <= 0f)
+        {
+            blinkUp = true;
+        }
     }
 }

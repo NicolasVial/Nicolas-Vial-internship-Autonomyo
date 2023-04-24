@@ -12,10 +12,12 @@ public class Spawner : MonoBehaviour
     private Transform[] points; //spawner locations
 
     [SerializeField]
-    private float beat; //beat of the music
+    private float timeAfterSpawn; //spawner locations
 
-    private float timer = 0; //timer to know when to spawn a new cube depending on the beat
 
+    private bool goBackStraight = true; //used to know if we should go back to straight position
+    private bool done = false; // used to know if we are done adding a new pose
+    private GameObject GOToActivate; //The gameObject of the pose helpers  (blue pose on avatar)
 
 
     // Start is called before the first frame update
@@ -27,15 +29,42 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.FindGameObjectsWithTag("PoseObject").Length < 1)
+        //Always add a new pose when the old one is finished
+        if (GameObject.FindGameObjectsWithTag("PoseObject").Length < 1 && !done)
         {
-            Transform spawnPoint = points[Random.Range(0, 1)];
-            
-            GameObject hitObject = Instantiate(hitObjects[Random.Range(0, 6)], spawnPoint);
-            hitObject.transform.localPosition = new Vector3(0f, 1f, 0f);
-
-            timer -= beat;
+            SpawnNewPose();
+            done = true;
         }
-        timer += Time.deltaTime;
+    }
+
+    //Spawns a new pose to imitate
+    private void SpawnNewPose()
+    {
+        Transform spawnPoint = points[Random.Range(0, 1)];
+
+        if (goBackStraight)
+        {
+            GameObject hitObject = Instantiate(hitObjects[0], spawnPoint);
+            hitObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+            goBackStraight = false;
+        }
+        else
+        {
+            GameObject hitObject = Instantiate(hitObjects[Random.Range(1, 5)], spawnPoint);
+            hitObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+            goBackStraight = true;
+        }
+
+        GOToActivate = GameObject.FindGameObjectsWithTag("Helpers")[0];
+        GOToActivate.SetActive(false);
+        done = false;
+
+        Invoke(nameof(SpawnAfter), timeAfterSpawn);
+    }
+
+    //Activates the pose helpers after timeAfterSpawn seconds
+    private void SpawnAfter()
+    {
+        GOToActivate.SetActive(true);
     }
 }

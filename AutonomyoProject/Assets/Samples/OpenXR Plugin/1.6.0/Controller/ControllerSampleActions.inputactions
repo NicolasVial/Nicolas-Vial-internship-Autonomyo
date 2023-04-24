@@ -973,6 +973,28 @@
                 },
                 {
                     "name": "",
+                    "id": "90199ee8-ed80-4185-86bf-66b226ec90eb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "180be2f8-cc1e-4228-b0ef-8cfe63a35b52",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fc05f8fe-0a9a-49ec-84a5-01ccef667093",
                     "path": "<XRController>/pointerPosition",
                     "interactions": "",

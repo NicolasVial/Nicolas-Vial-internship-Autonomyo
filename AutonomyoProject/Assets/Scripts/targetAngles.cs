@@ -12,6 +12,7 @@ public class targetAngles : MonoBehaviour
     [SerializeField] private float r_targetHipAngle;
     [SerializeField] private float l_targetKneeAngle;
     [SerializeField] private float r_targetKneeAngle;
+    [SerializeField] public string poseName;
 
     public float[] getTargetAngles()
     {

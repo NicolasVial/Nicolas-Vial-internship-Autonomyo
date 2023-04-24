@@ -30,6 +30,9 @@ public class LowerLimbsMovements : MonoBehaviour
     [SerializeField] private Transform hipTransform;
     [SerializeField] private float footOnGroundThreshold;
     [SerializeField] private GameObject feetOnGroundColorGO;
+    [SerializeField] private GameObject balanceSphere;
+    [SerializeField] private GameObject[] leftCells;
+    [SerializeField] private GameObject[] rightCells;
 
     //initial Positions of the avatar
     [SerializeField] private Vector3 hipInitPos;
@@ -63,6 +66,9 @@ public class LowerLimbsMovements : MonoBehaviour
     private bool leftFootOnGround;
     private bool rightFootOnGround;
     private bool lastFootOnGroundIsLeft = false;
+    private Vector3 lastLeftPos = new Vector3(0f, 0f, 0f);
+    private Vector3 lastRightPos = new Vector3(0f, 0f, 0f);
+    private bool isMirror = true;
 
     // robot segments length
     private float l0;
@@ -119,9 +125,11 @@ public class LowerLimbsMovements : MonoBehaviour
         {
             lFootInitPos = new Vector3(leftFootTransform.localPosition.x, leftFootTransform.localPosition.y, leftFootTransform.localPosition.z);
             rFootInitPos = new Vector3(rightFootTransform.localPosition.x, rightFootTransform.localPosition.y, rightFootTransform.localPosition.z);
+            lastLeftPos = new Vector3(leftFootTransform.localPosition.x, leftFootTransform.localPosition.y, leftFootTransform.localPosition.z);
+            lastRightPos = new Vector3(rightFootTransform.localPosition.x, rightFootTransform.localPosition.y, rightFootTransform.localPosition.z);
             hipInitPos = new Vector3(hipTransform.localPosition.x, hipTransform.localPosition.y, hipTransform.localPosition.z);
         }
-
+        
         /*
         if (InputManager.GetButtonDown("reducfactordown"))
         {
@@ -192,15 +200,27 @@ public class LowerLimbsMovements : MonoBehaviour
                 r_knee_angle = rightKneeAngle.FloatVar / 360.0f * 2 * Mathf.PI;
 
                 //get the force applicated on the soles
-                left_force_total = 0f;
-                right_force_total = 0f;
+                left_force_total = 0.0000001f;
+                right_force_total = 0.0000001f;
+                float centerOfMassX = 0f;
+                float centerOfMassZ = 0f;
+
                 for (int i = 0; i < 8; i++)
                 {
                     float value = UpdateCells(i, 'L');
                     left_force_total += value;
+                    centerOfMassX += value * leftCells[i].transform.position.x;
+                    centerOfMassZ += value * leftCells[i].transform.position.z;
                     value = UpdateCells(i, 'R');
                     right_force_total += value;
+                    centerOfMassX += value * rightCells[i].transform.position.x;
+                    centerOfMassZ += value * rightCells[i].transform.position.z;
                 }
+                centerOfMassX /= (left_force_total + right_force_total);
+                centerOfMassZ /= (left_force_total + right_force_total);
+                balanceSphere.transform.position = new Vector3(centerOfMassX, balanceSphere.transform.position.y, centerOfMassZ);
+                balanceSphere.transform.localPosition = new Vector3(-balanceSphere.transform.localPosition.x * 2f, balanceSphere.transform.localPosition.y * 2.45f, balanceSphere.transform.localPosition.z);
+
 
                 // segment in the back
                 float l_back_posy = l0;
@@ -283,16 +303,19 @@ public class LowerLimbsMovements : MonoBehaviour
                     Vector3 footPosDiff = new Vector3(0f, 0f, 0f);
                     if (lastFootOnGroundIsLeft)
                     {
-                        footPosDiff = new Vector3(lFootInitPos.x - (-l_foot_posy), lFootInitPos.y - (l_foot_posz + heightOffset), lFootInitPos.z - (-l_foot_posx + forwardOffset));
+                        footPosDiff = new Vector3(lFootInitPos.x - lastLeftPos.x - 0.032f, lFootInitPos.y - lastLeftPos.y, lFootInitPos.z - lastLeftPos.z);
                     }
                     else
                     {
-                        footPosDiff = new Vector3(rFootInitPos.x - (-r_foot_posy), rFootInitPos.y - (r_foot_posz + heightOffset), rFootInitPos.z - (-r_foot_posx + forwardOffset));
+                        footPosDiff = new Vector3(rFootInitPos.x - lastRightPos.x + 0.032f, rFootInitPos.y - lastRightPos.y, rFootInitPos.z - lastRightPos.z);
                     }
-                    hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.2f));
+                    hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.4f));
 
-                    leftFootTransform.localPosition = new Vector3(-l_foot_posy, lFootInitPos.y, -l_foot_posx + forwardOffset);
-                    rightFootTransform.localPosition = new Vector3(-r_foot_posy, rFootInitPos.y, -r_foot_posx + forwardOffset);
+                    leftFootTransform.localPosition = new Vector3(leftFootTransform.localPosition.x, lFootInitPos.y, leftFootTransform.localPosition.z);
+                    rightFootTransform.localPosition = new Vector3(rightFootTransform.localPosition.x, rFootInitPos.y, rightFootTransform.localPosition.z);
+
+                    lastLeftPos = new Vector3(-l_foot_posy, l_foot_posz + heightOffset, -l_foot_posx + forwardOffset);
+                    lastRightPos = new Vector3(-r_foot_posy, r_foot_posz + heightOffset, -r_foot_posx + forwardOffset);
                 }
                 else
                 {
@@ -300,23 +323,33 @@ public class LowerLimbsMovements : MonoBehaviour
      
                     if (leftFootOnGround)
                     {
-                        Vector3 footPosDiff = new Vector3(lFootInitPos.x - (-l_foot_posy), lFootInitPos.y - (l_foot_posz + heightOffset), lFootInitPos.z - (-l_foot_posx + forwardOffset));
-                        hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.1f));
+                        Vector3 footPosDiff = new Vector3(lFootInitPos.x - lastLeftPos.x - 0.025f, lFootInitPos.y - lastLeftPos.y, lFootInitPos.z - lastLeftPos.z);
+                        hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.4f));
 
-                        leftFootTransform.localPosition = new Vector3(-l_foot_posy, lFootInitPos.y, -l_foot_posx + forwardOffset);
+                        leftFootTransform.localPosition = new Vector3(leftFootTransform.localPosition.x, lFootInitPos.y, leftFootTransform.localPosition.z);
                         rightFootTransform.localPosition = new Vector3(-r_foot_posy, r_foot_posz + heightOffset, -r_foot_posx + forwardOffset);
                         lastFootOnGroundIsLeft = true;
+                        lastRightPos = new Vector3(-r_foot_posy, r_foot_posz + heightOffset, -r_foot_posx + forwardOffset);
+                        lastLeftPos = new Vector3(-l_foot_posy, l_foot_posz + heightOffset, -l_foot_posx + forwardOffset);
                     }
                     if (rightFootOnGround)
                     {
-                        Vector3 footPosDiff = new Vector3(rFootInitPos.x - (-r_foot_posy), rFootInitPos.y - (r_foot_posz + heightOffset), rFootInitPos.z - (-r_foot_posx + forwardOffset));
-                        hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.1f));
+                        Vector3 footPosDiff = new Vector3(rFootInitPos.x - lastRightPos.x + 0.025f, rFootInitPos.y - lastRightPos.y, rFootInitPos.z - lastRightPos.z);
+                        hipTransform.localPosition = new Vector3(hipInitPos.x + footPosDiff.x, hipInitPos.y + footPosDiff.y, hipInitPos.z + (footPosDiff.z * 0.4f));
 
-                        rightFootTransform.localPosition = new Vector3(-r_foot_posy, rFootInitPos.y, -r_foot_posx + forwardOffset);
+                        rightFootTransform.localPosition = new Vector3(rightFootTransform.localPosition.x, rFootInitPos.y, rightFootTransform.localPosition.z);
                         leftFootTransform.localPosition = new Vector3(-l_foot_posy, l_foot_posz + heightOffset, -l_foot_posx + forwardOffset);
                         lastFootOnGroundIsLeft = false;
+                        lastLeftPos = new Vector3(-l_foot_posy, l_foot_posz + heightOffset, -l_foot_posx + forwardOffset);
+                        lastRightPos = new Vector3(-r_foot_posy, r_foot_posz + heightOffset, -r_foot_posx + forwardOffset);
                     }
                     
+                }
+
+                //we can do this check since the player is not supposed to jump -> the initial hip position is the heighest position possible.
+                if(hipTransform.localPosition.y > hipInitPos.y)
+                {
+                    hipTransform.localPosition = new Vector3(hipTransform.localPosition.x, hipInitPos.y, hipTransform.localPosition.z);
                 }
                 
             }
