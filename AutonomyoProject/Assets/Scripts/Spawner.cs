@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 26.04.2023
+  Summary: The following script contains the logic of the spawner of the positions to imitate in the Dance Game.
+           Whenever a position is cleared b the player, a new one is spawned.
+*/
+
 public class Spawner : MonoBehaviour
 {
-
-    [SerializeField]
-    private GameObject[] hitObjects; //objects to be hit prefabs
+    [SerializeField] private GameObject straightPose;
+    [SerializeField] private GameObject[] mirroredPoses; //poses to imitate mirrored
+    [SerializeField] private GameObject[] notMirroredPoses; //poses to imitate not mirrored
 
     [SerializeField]
     private Transform[] points; //spawner locations
@@ -16,9 +24,9 @@ public class Spawner : MonoBehaviour
 
 
     private bool goBackStraight = true; //used to know if we should go back to straight position
-    private bool done = false; // used to know if we are done adding a new pose
-    private GameObject GOToActivate; //The gameObject of the pose helpers  (blue pose on avatar)
+    private GameObject GOToActivate; //The gameObject of the pose helpers  (blue pose on avatar
 
+    public bool isMirror = true;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +38,9 @@ public class Spawner : MonoBehaviour
     void Update()
     {
         //Always add a new pose when the old one is finished
-        if (GameObject.FindGameObjectsWithTag("PoseObject").Length < 1 && !done)
+        if (GameObject.FindGameObjectsWithTag("PoseObject").Length < 1)
         {
             SpawnNewPose();
-            done = true;
         }
     }
 
@@ -44,20 +51,28 @@ public class Spawner : MonoBehaviour
 
         if (goBackStraight)
         {
-            GameObject hitObject = Instantiate(hitObjects[0], spawnPoint);
-            hitObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+            GameObject GO = Instantiate(straightPose, spawnPoint);
+            GO.transform.localPosition = new Vector3(0f, 0f, 0f);
             goBackStraight = false;
         }
         else
         {
-            GameObject hitObject = Instantiate(hitObjects[Random.Range(1, 5)], spawnPoint);
-            hitObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+            if (isMirror)
+            {
+                GameObject GO = Instantiate(mirroredPoses[Random.Range(1, 5)], spawnPoint);
+                GO.transform.localPosition = new Vector3(0f, 0f, 0f);
+            }
+            else
+            {
+                GameObject GO = Instantiate(notMirroredPoses[Random.Range(1, 5)], spawnPoint);
+                GO.transform.localPosition = new Vector3(0f, 0f, 0f);
+            }
+            
             goBackStraight = true;
         }
 
         GOToActivate = GameObject.FindGameObjectsWithTag("Helpers")[0];
         GOToActivate.SetActive(false);
-        done = false;
 
         Invoke(nameof(SpawnAfter), timeAfterSpawn);
     }

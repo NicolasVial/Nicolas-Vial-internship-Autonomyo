@@ -5,6 +5,14 @@ using TMPro;
 using UnityEngine.UI;
 using QuickVR;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 26.04.2023
+  Summary: The following script moves the lower limbs (hips, knees, foot) of the player's avatar accordingly with the
+           data received by the exoskeleton.
+*/
+
 public class LowerLimbsMovements : MonoBehaviour
 {
     // for debugging
@@ -221,7 +229,7 @@ public class LowerLimbsMovements : MonoBehaviour
                 balanceSphere.transform.position = new Vector3(centerOfMassX, balanceSphere.transform.position.y, centerOfMassZ);
                 balanceSphere.transform.localPosition = new Vector3(-balanceSphere.transform.localPosition.x * 2f, balanceSphere.transform.localPosition.y * 2.45f, balanceSphere.transform.localPosition.z);
 
-
+                //Compute the lower limbs relative positions using the angles given by the exoskeleton
                 // segment in the back
                 float l_back_posy = l0;
                 float l_back_posz = 0.0f;
@@ -368,13 +376,11 @@ public class LowerLimbsMovements : MonoBehaviour
             SyncVar sv;
             int bit = 1 << i;
             int aC = activatedCells.IntVar;
-            if (letter == 'L' && ((aC & bit) == aC)) // vérifier si c'est plutôt ça ou l'autre ligne
+            if (letter == 'L' && ((aC & bit) == aC))
             {
                 sv = svLeft[i];
                 if (sv != null)
                 {
-                    //Debug.Log("SoleCells sv.Name = " + sv.Name);
-                    //Debug.Log("SoleCells sv.FloatVar = " + sv.FloatVar);
                     value = sv.FloatVar;
                 }
             }
@@ -383,14 +389,11 @@ public class LowerLimbsMovements : MonoBehaviour
                 sv = svRight[i];
                 if (sv != null)
                 {
-                    //Debug.Log("SoleCells sv.Name = " + sv.Name);
-                    //Debug.Log("SoleCells sv.FloatVar = " + sv.FloatVar);
                     value = sv.FloatVar;
                 }
             }
             else
             {
-                //Debug.LogWarning("SoleCells : cell was apparently deactivated");
                 value = 0;
             }
         }
@@ -406,7 +409,6 @@ public class LowerLimbsMovements : MonoBehaviour
             Debug.Log("SoleCells value was infinity.");
         }
 
-        // Temporary fix because of unreliable soles
         if (value > SATURATION_THRESHOLD)
         {
             value = 0;

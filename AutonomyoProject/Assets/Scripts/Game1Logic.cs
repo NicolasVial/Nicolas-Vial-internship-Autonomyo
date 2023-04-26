@@ -2,7 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 using UnityEngine;
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 26.04.2023
+  Summary: The following script contains the logic of the Dance Game. The validation of the movements, the trigger 
+           of the movements of the avatar to copy as well as all the game gestion are done here.
+*/
 
 public class Game1Logic : MonoBehaviour
 {
@@ -23,7 +32,11 @@ public class Game1Logic : MonoBehaviour
     [SerializeField] private GameObject s_l_footGO;
     [SerializeField] private GameObject s_r_footGO;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI avrTimeText;
     [SerializeField] private int maxNbOfSuccesses = 10;
+    [SerializeField] private SoundManager soundManager;
+    [SerializeField] private Spawner spawner;
+    [SerializeField] private WindowGraph graph;
 
     private float validationCounter = 0f;
     private Vector3[] targetPositions = null;
@@ -45,6 +58,11 @@ public class Game1Logic : MonoBehaviour
     private GameObject blinkGO1;
     private GameObject blinkGO2;
     private bool blinkUp = true;
+
+    // timer variables
+    private float startTime;
+    private float totalTime;
+    private List<float> poseTimes = new List<float>();
 
     //public variables
     public bool inGame = false;
@@ -112,6 +130,11 @@ public class Game1Logic : MonoBehaviour
                     }
                 }
 
+                if (poseName != "straight")
+                {
+                    Invoke(nameof(setStartTime), 2.5f);
+                }
+
                 newPose = false;
             }
 
@@ -145,6 +168,7 @@ public class Game1Logic : MonoBehaviour
                     bool checkPos = false;
                     bool correctPos = false;
                     bool correctAngles = false;
+                    
                     if (targetAngles != null)
                     {
                         checkAngles = true;
@@ -155,7 +179,7 @@ public class Game1Logic : MonoBehaviour
                         checkPos = true;
                         correctPos = checkPosewithPos();
                     }
-
+                    
                     if (checkAngles && checkPos)
                     {
                         if (correctAngles || correctPos)
@@ -205,11 +229,26 @@ public class Game1Logic : MonoBehaviour
                 if (validationCounter >= timeToValidate)
                 {
                     validationCounter = 0;
-                    Destroy(GameObject.FindGameObjectsWithTag("PoseObject")[0]);
                     targetPositions = null;
                     newPose = true;
                     progressBar.m_FillAmount = 0f;
-                    nbOfSuccesses += 1;
+
+                    if (poseName != "straight")
+                    {
+                        nbOfSuccesses += 1;
+                        soundManager.playSuccessSound();
+                        if (Time.time >= startTime)
+                        {
+                            totalTime += Time.time - startTime;
+                            poseTimes.Add(Time.time - startTime);
+                        }
+                        else
+                        {
+                            totalTime += 0f;
+                            poseTimes.Add(0f);
+                        }                      
+                    }
+                    Destroy(GameObject.FindGameObjectsWithTag("PoseObject")[0]);
                 }
 
                 //update the score in real time
@@ -217,9 +256,14 @@ public class Game1Logic : MonoBehaviour
 
                 if (nbOfSuccesses == maxNbOfSuccesses)
                 {
+                    avrTimeText.SetText(poseTimes.Average().ToString("0.0") + " secondes");
                     inGame = false;
                     finished = true;
                     nbOfSuccesses = 0;
+                    graph.showGraph(poseTimes);
+                    poseTimes.Clear();
+                    totalTime = 0f;
+                    startTime = 0f;
                 }
             } 
         }
@@ -352,5 +396,10 @@ public class Game1Logic : MonoBehaviour
         {
             blinkUp = true;
         }
+    }
+
+    private void setStartTime()
+    {
+        startTime = Time.time;
     }
 }

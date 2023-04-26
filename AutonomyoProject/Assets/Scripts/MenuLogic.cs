@@ -6,8 +6,22 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using TMPro;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 26.04.2023
+  Summary: The following script contains the logic of the menu. All the buttons logic and all the transitions are handled here.
+*/
+
 public class MenuLogic : MonoBehaviour
 {
+
+    //Spawner
+    [SerializeField] private Spawner spawner;
+
+    //Sound manager
+    [SerializeField] private SoundManager soundManager;
+
     //Skybox materials
     [SerializeField] private Material danceGameSkyMat;
     [SerializeField] private Material menuSkyMat;
@@ -22,6 +36,7 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject danceGameLandscape;
     [SerializeField] private GameObject menuLandscape;
 
+    //Tabs of the menu
     [SerializeField] private GameObject connexionTab;
     [SerializeField] private GameObject controllerTab;
     [SerializeField] private GameObject welcomeTab;
@@ -31,6 +46,9 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject danceGameFinishedTab;
     [SerializeField] private GameObject danceGameInGameTab;
     [SerializeField] private GameObject calibrationTab;
+    [SerializeField] private GameObject danceGameStatsTab;
+
+    //start Buttons
     [SerializeField] private Button firstButton;
     [SerializeField] private Button connectionButton;
 
@@ -50,17 +68,18 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private Button gamesButton;
 
     //dance game variables
-    [SerializeField] private Button danceGameRestartButton;
+    [SerializeField] private Button danceGameDoneStatsButton;
     [SerializeField] private Button danceGameStartButton;
     [SerializeField] private Button danceGameBackToMenuButton;
+    [SerializeField] private Button danceGameSeeStatsButton;
     [SerializeField] private Game1Logic game1Logic;
     [SerializeField] private GameObject danceGameGO;
     [SerializeField] private GameObject mirrorAvatar;
     [SerializeField] private GameObject avatarToCopy;
     private bool isMirror = true;
 
-    private GameObject actualLandscape;
-    private GameObject actualTab;
+    private GameObject actualLandscape; //keep in memory which landscape is active
+    private GameObject actualTab; //keep in memory which tab is active
 
     public bool isConnected = false;
 
@@ -86,19 +105,9 @@ public class MenuLogic : MonoBehaviour
 
         if (game1Logic.finished)
         {
-            game1Logic.finished = false;
             SetGameFinishedTab();
         }
     }
-
-    /*
-    public void PressFreeButton()
-    {
-        actualLandscape.SetActive(false);
-        actualLandscape = freeMoutains;
-        actualLandscape.SetActive(true);
-    }
-    */
 
     public void PressGamesButton()
     {
@@ -195,6 +204,8 @@ public class MenuLogic : MonoBehaviour
         curvedMenuGO.transform.localEulerAngles = curvedMenuDanceGamePosGO.transform.localEulerAngles;
         RenderSettings.skybox = danceGameSkyMat;
         game1Logic.isBlinking = true;
+        soundManager.stopActualMusic();
+        soundManager.playGame1Music();
     }
 
     public void PressBackToMenuButton()
@@ -210,6 +221,8 @@ public class MenuLogic : MonoBehaviour
         curvedMenuGO.transform.localPosition = curvedMenuInitPosGO.transform.localPosition;
         curvedMenuGO.transform.localEulerAngles = curvedMenuInitPosGO.transform.localEulerAngles;
         RenderSettings.skybox = menuSkyMat;
+        soundManager.stopActualMusic();
+        soundManager.playHomeMusic();
     }
 
     public void PressPlayDanceGameButton()
@@ -227,23 +240,34 @@ public class MenuLogic : MonoBehaviour
     {
         if (isMirror)
         {
-            avatarToCopy.transform.localScale = new Vector3(1f, 1f, 1f);
             mirrorAvatar.transform.localScale = new Vector3(1f, 1f, 1f);
             isMirror = false;
+            spawner.isMirror = false;
         }
         else
         {
-            avatarToCopy.transform.localScale = new Vector3(-1f, 1f, 1f);
             mirrorAvatar.transform.localScale = new Vector3(-1f, 1f, 1f);
             isMirror = true;
+            spawner.isMirror = true;
         }    
     }
 
     public void SetGameFinishedTab()
     {
+        game1Logic.finished = false;
         actualTab.SetActive(false);
         actualTab = danceGameFinishedTab;
         actualTab.SetActive(true);
-        danceGameRestartButton.Select();
+        soundManager.playCheeringSound();
+        danceGameSeeStatsButton.Select();
+    }
+
+    public void PressDanceGameSeeStatsButton()
+    {
+        actualTab.SetActive(false);
+        actualTab = danceGameStatsTab;
+        actualTab.SetActive(true);
+        danceGameDoneStatsButton.Select();
+        game1Logic.isBlinking = false;
     }
 }

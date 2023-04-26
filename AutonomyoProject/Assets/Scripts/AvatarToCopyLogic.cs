@@ -3,8 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using QuickVR;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 26.04.2023
+  Summary: The following script contains the logic of the avatar doing the movements the player has to imitate in the Dance Game.
+           All the movements of this avatar are done here. A movement is triggered by a boolean designating a specific movement.
+*/
+
+
 public class AvatarToCopyLogic : MonoBehaviour
 {
+    //Spawner
+    [SerializeField] private Spawner spawner;
+
     [SerializeField] private GameObject headGO;
     [SerializeField] private GameObject hipGO;
     [SerializeField] private GameObject l_handGO;
@@ -87,25 +99,53 @@ public class AvatarToCopyLogic : MonoBehaviour
 
         if (rightKneeUp)
         {
-            goToPose(rightKneeUpPose, rightKneeUpAngles);
+            if (spawner.isMirror)
+            {
+                goToPose(rightKneeUpPose, rightKneeUpAngles);
+            }
+            else
+            {
+                goToPose(leftKneeUpPose, leftKneeUpAngles);
+            }
             rightKneeUp = false;
         }
 
         if (leftKneeUp)
         {
-            goToPose(leftKneeUpPose, leftKneeUpAngles);
+            if (spawner.isMirror)
+            {
+                goToPose(leftKneeUpPose, leftKneeUpAngles);
+            }
+            else
+            {
+                goToPose(rightKneeUpPose, rightKneeUpAngles);
+            }
             leftKneeUp = false;
         }
 
         if (rightKneeMiddleUp)
         {
-            goToPose(rightMiddleKneeUpPose, rightMiddleKneeUpAngles);
+            if (spawner.isMirror)
+            {
+                goToPose(rightMiddleKneeUpPose, rightMiddleKneeUpAngles);
+            }
+            else
+            {
+                goToPose(leftMiddleKneeUpPose, leftMiddleKneeUpAngles);
+            }
             rightKneeMiddleUp = false;
         }
 
         if (leftKneeMiddleUp)
         {
-            goToPose(leftMiddleKneeUpPose, leftMiddleKneeUpAngles);
+            if (spawner.isMirror)
+            {
+                goToPose(leftMiddleKneeUpPose, leftMiddleKneeUpAngles);
+            }
+            else
+            {
+                goToPose(rightMiddleKneeUpPose, rightMiddleKneeUpAngles);
+            }
             leftKneeMiddleUp = false;
         }
 
