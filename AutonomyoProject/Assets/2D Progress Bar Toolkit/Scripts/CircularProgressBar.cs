@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CircularProgressBar : MonoBehaviour {
 	[SerializeField] private float modifiedRot;
+	[SerializeField] private bool isPointer;
 	[Header("Colors")]
 	[SerializeField] private Color m_MainColor = Color.white;
 	[SerializeField] private Color m_FillColor = Color.green;
@@ -47,9 +48,17 @@ public class CircularProgressBar : MonoBehaviour {
 			m_ProgressToFill.Add (segmentFillImage);
 
 			float zRot = m_StartAngle + i * ConvertCircleFragmentToAngle(m_SizeOfSegment) + i * m_SizeOfNotch;
-			segmentImage.transform.rotation = Quaternion.Euler(-90, modifiedRot, -zRot);
-			segmentImage.transform.localPosition = new Vector3(segmentImage.transform.localPosition.x, segmentImage.transform.localPosition.y + 300f, segmentImage.transform.localPosition.z);
-			segmentImage.transform.localPosition = initialPos;
+            if (!isPointer){
+				segmentImage.transform.rotation = Quaternion.Euler(-90, modifiedRot, -zRot);
+				segmentImage.transform.localPosition = new Vector3(segmentImage.transform.localPosition.x, segmentImage.transform.localPosition.y + 300f, segmentImage.transform.localPosition.z);
+				segmentImage.transform.localPosition = initialPos;
+            }
+            else
+            {
+				segmentImage.transform.localRotation = Quaternion.Euler(0, 0, 0);
+				segmentImage.transform.localPosition = initialPos;
+			}
+			
 		}
 
 	}

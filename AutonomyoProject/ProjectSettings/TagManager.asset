@@ -17,6 +17,7 @@ TagManager:
   - Mirror
   - TransparentMesh
   - Helpers
+  - ToggleMirror
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - blue
   - lights
   - cam
-  - 
+  - pointer
   - 
   - 
   - 

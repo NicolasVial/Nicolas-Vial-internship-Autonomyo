@@ -15,6 +15,9 @@ using TMPro;
 
 public class MenuLogic : MonoBehaviour
 {
+    //player
+    [SerializeField] private GameObject player;
+    [SerializeField] private Transform initPlayerTransform;
 
     //Spawner
     [SerializeField] private Spawner spawner;
@@ -26,13 +29,16 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private Material danceGameSkyMat;
     [SerializeField] private Material menuSkyMat;
 
-    //curved menu variables
-    [SerializeField] private GameObject curvedMenuGO;
-    [SerializeField] private GameObject curvedMenuInitPosGO;
-    [SerializeField] private GameObject curvedMenuDanceGamePosGO;
+    //menu variables
+    [SerializeField] private GameObject menuTabGO;
+    [SerializeField] private GameObject controllerTabGO;
+    [SerializeField] private GameObject menuInitPosGO;
+    [SerializeField] private GameObject menuDanceGamePosGO;
+    [SerializeField] private GameObject controllerInitPosGO;
+    [SerializeField] private GameObject controllerDanceGamePosGO;
 
     //landscapes
-    [SerializeField] private GameObject freeMoutains;
+    [SerializeField] private GameObject WIPlandscape;
     [SerializeField] private GameObject danceGameLandscape;
     [SerializeField] private GameObject menuLandscape;
 
@@ -43,6 +49,7 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject menuTab;
     [SerializeField] private GameObject gamesTab;
     [SerializeField] private GameObject danceGameTab;
+    [SerializeField] private GameObject danceGameDifficultyTab;
     [SerializeField] private GameObject danceGameFinishedTab;
     [SerializeField] private GameObject danceGameInGameTab;
     [SerializeField] private GameObject calibrationTab;
@@ -69,13 +76,25 @@ public class MenuLogic : MonoBehaviour
 
     //dance game variables
     [SerializeField] private Button danceGameDoneStatsButton;
-    [SerializeField] private Button danceGameStartButton;
+    [SerializeField] private Button danceGameDifficultyButton;
     [SerializeField] private Button danceGameBackToMenuButton;
     [SerializeField] private Button danceGameSeeStatsButton;
     [SerializeField] private Game1Logic game1Logic;
     [SerializeField] private GameObject danceGameGO;
     [SerializeField] private GameObject mirrorAvatar;
     [SerializeField] private GameObject avatarToCopy;
+    [SerializeField] private Image scoreBarImg;
+    [SerializeField] private Image scoreBarImgOpponent;
+    [SerializeField] private ScoreBarLogic scoreBarLogic;
+    [SerializeField] private OpponentLogic opponent;
+    [SerializeField] private TextMeshProUGUI opponentScoreText;
+    [SerializeField] private TextMeshProUGUI playerScoreText;
+    [SerializeField] private Button difficulty0Button;
+    [SerializeField] private GameObject isMirrorCheckMark;
+
+    //Walking in Place
+    [SerializeField] private WalkingInPlace Wip;
+
     private bool isMirror = true;
 
     private GameObject actualLandscape; //keep in memory which landscape is active
@@ -199,18 +218,28 @@ public class MenuLogic : MonoBehaviour
         actualTab.SetActive(false);
         actualTab = danceGameTab;
         actualTab.SetActive(true);
-        danceGameStartButton.Select();
-        curvedMenuGO.transform.localPosition = curvedMenuDanceGamePosGO.transform.localPosition;
-        curvedMenuGO.transform.localEulerAngles = curvedMenuDanceGamePosGO.transform.localEulerAngles;
+        danceGameDifficultyButton.Select();
+        controllerTabGO.transform.localPosition = controllerDanceGamePosGO.transform.localPosition;
+        controllerTabGO.transform.localEulerAngles = new Vector3(0f, 65f, 0f);
+        menuTabGO.transform.localPosition = menuDanceGamePosGO.transform.localPosition;
+        menuTabGO.transform.localEulerAngles = new Vector3(50f, 0f, 0f);
         RenderSettings.skybox = danceGameSkyMat;
         game1Logic.isBlinking = true;
         soundManager.stopActualMusic();
         soundManager.playGame1Music();
+        scoreBarImg.fillAmount = 0f;
+        scoreBarImgOpponent.fillAmount = 0f;
+        scoreBarLogic.done1 = false;
+        scoreBarLogic.done2 = false;
+        scoreBarLogic.done3 = false;
+        opponent.poseNb = 0;
+        playerScoreText.SetText("Accuracy: -");
+        opponentScoreText.SetText("Accuracy: -");
     }
 
     public void PressBackToMenuButton()
     {
-        danceGameStartButton.gameObject.SetActive(true);
+        danceGameDifficultyButton.gameObject.SetActive(true);
         danceGameGO.SetActive(false);
         actualLandscape.SetActive(false);
         actualLandscape = menuLandscape;
@@ -218,11 +247,15 @@ public class MenuLogic : MonoBehaviour
         menuTab.SetActive(true);
         PressGamesButton();
         gamesButton.Select();
-        curvedMenuGO.transform.localPosition = curvedMenuInitPosGO.transform.localPosition;
-        curvedMenuGO.transform.localEulerAngles = curvedMenuInitPosGO.transform.localEulerAngles;
+        controllerTabGO.transform.localPosition = controllerInitPosGO.transform.localPosition;
+        controllerTabGO.transform.localEulerAngles = new Vector3(0f, -55f, 0f);
+        menuTabGO.transform.localPosition = menuInitPosGO.transform.localPosition;
+        menuTabGO.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
         RenderSettings.skybox = menuSkyMat;
         soundManager.stopActualMusic();
         soundManager.playHomeMusic();
+        Wip.WIP = false;
+        player.transform.localPosition = initPlayerTransform.localPosition;
     }
 
     public void PressPlayDanceGameButton()
@@ -243,12 +276,14 @@ public class MenuLogic : MonoBehaviour
             mirrorAvatar.transform.localScale = new Vector3(1f, 1f, 1f);
             isMirror = false;
             spawner.isMirror = false;
+            isMirrorCheckMark.SetActive(false);
         }
         else
         {
             mirrorAvatar.transform.localScale = new Vector3(-1f, 1f, 1f);
             isMirror = true;
             spawner.isMirror = true;
+            isMirrorCheckMark.SetActive(true);
         }    
     }
 
@@ -269,5 +304,27 @@ public class MenuLogic : MonoBehaviour
         actualTab.SetActive(true);
         danceGameDoneStatsButton.Select();
         game1Logic.isBlinking = false;
+    }
+
+    public void PressDanceGamedifficultyButton()
+    {
+        actualTab.SetActive(false);
+        actualTab = danceGameDifficultyTab;
+        actualTab.SetActive(true);
+        difficulty0Button.Select();
+    }
+
+    public void PressWIPButton()
+    {
+        menuTab.SetActive(false);
+        actualLandscape.SetActive(false);
+        actualLandscape = WIPlandscape;
+        actualLandscape.SetActive(true);
+        //danceGameGO.SetActive(true);
+        actualTab.SetActive(false);
+        actualTab = danceGameTab;
+        actualTab.SetActive(true);
+        danceGameDifficultyButton.Select();
+        Wip.WIP = true;
     }
 }

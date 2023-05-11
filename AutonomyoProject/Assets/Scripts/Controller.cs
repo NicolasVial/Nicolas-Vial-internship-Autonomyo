@@ -22,10 +22,7 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (clientSide.isStreaming)
-        {
-            int a = 0;
-        }
+
     }
 
     public void toggleArmMotors()

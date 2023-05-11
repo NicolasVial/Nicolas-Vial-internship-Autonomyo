@@ -28,29 +28,30 @@ public class ClassicProgressBar : MonoBehaviour {
 		m_Image.gameObject.SetActive(false);
 
 		// count size of segments
-		m_SizeOfSegment = m_RectTransform.sizeDelta.x / m_NumberOfSegments;		
-		for (int i = 0; i < m_NumberOfSegments; i++) {
-			GameObject currentSegment = Instantiate(m_Image.gameObject, transform.position, Quaternion.identity, transform);
-			currentSegment.SetActive(true);
+		m_SizeOfSegment = m_RectTransform.sizeDelta.x / m_NumberOfSegments;
+		GameObject currentSegment = m_Image.gameObject;
+		currentSegment.SetActive(true);
 
-			Image segmentImage = currentSegment.GetComponent<Image>();
-			segmentImage.fillAmount = m_SizeOfSegment;
+		Image segmentImage = currentSegment.GetComponent<Image>();
+		segmentImage.fillAmount = m_SizeOfSegment;
 
-			RectTransform segmentRectTransform = segmentImage.GetComponent<RectTransform>();
-			segmentRectTransform.sizeDelta = new Vector2(m_SizeOfSegment, segmentRectTransform.sizeDelta.y);
-			segmentRectTransform.position += (Vector3.right * i * m_SizeOfSegment) - (Vector3.right * m_SizeOfSegment * (m_NumberOfSegments / 2)) + (Vector3.right * i * m_SizeOfNotch);
+		RectTransform segmentRectTransform = segmentImage.GetComponent<RectTransform>();
+		segmentRectTransform.sizeDelta = new Vector2(m_SizeOfSegment, segmentRectTransform.sizeDelta.y);
+		//segmentRectTransform.position += (Vector3.right * i * m_SizeOfSegment) - (Vector3.right * m_SizeOfSegment * (m_NumberOfSegments / 2)) + (Vector3.right * i * m_SizeOfNotch);
 
-			Image segmentFillImage = segmentImage.transform.GetChild (0).GetComponent<Image> ();
-			segmentFillImage.color = m_FillColor;
-			m_ProgressToFill.Add (segmentFillImage);
-			segmentFillImage.transform.GetComponent<RectTransform> ().sizeDelta = new Vector2(m_SizeOfSegment, segmentFillImage.GetComponent<RectTransform>().sizeDelta.y);
-		}
+		Image segmentFillImage = segmentImage.transform.GetChild (0).GetComponent<Image> ();
+		segmentFillImage.color = m_FillColor;
+		m_ProgressToFill.Add (segmentFillImage);
+		//segmentFillImage.transform.GetComponent<RectTransform> ().sizeDelta = new Vector2(m_SizeOfSegment, segmentFillImage.GetComponent<RectTransform>().sizeDelta.y);
+		
 	}
 
 	public void Update() {
+		/*
 		for (int i = 0; i < m_NumberOfSegments; i++) {
 			m_ProgressToFill[i].fillAmount = m_NumberOfSegments * m_FillAmount - i;
 		}
+		*/
 	}
 
 	private float ConvertFragmentToWidth(float fragment) {

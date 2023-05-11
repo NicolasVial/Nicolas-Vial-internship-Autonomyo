@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource game1Music;
     [SerializeField] private AudioSource successSound;
     [SerializeField] private AudioSource cheeringSound;
+    [SerializeField] private AudioSource starSound;
 
     private AudioSource actualMusic;
 
@@ -49,7 +50,12 @@ public class SoundManager : MonoBehaviour
 
     public void playCheeringSound()
     {
-        successSound.Play();
+        cheeringSound.Play();
+    }
+
+    public void playStarSound()
+    {
+        starSound.Play();
     }
 
 }
