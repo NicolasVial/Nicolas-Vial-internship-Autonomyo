@@ -4,9 +4,12 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine;
 using System;
+using QuickVR;
 
 public class WalkingInPlace : MonoBehaviour
 {
+    [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject centerEye;
     [SerializeField] private LowerLimbsMovements lowerLimbs;
     [SerializeField] private GameObject theClient;
     [SerializeField] private float marginOfErrorAngles;
@@ -47,6 +50,13 @@ public class WalkingInPlace : MonoBehaviour
     private float lastForwardValueRight = -1f;
     private float lastForwardValueLeft = -1f;
 
+    private bool isStraight;
+    private bool canGoPositivX = true;
+    private bool canGoNegativX = true;
+    private bool canGoPositivZ = true;
+    private bool canGoNegativZ = true;
+    private double diffX = 0;
+    private double diffZ = 0;
 
     public bool WIP = false;
 
@@ -59,6 +69,19 @@ public class WalkingInPlace : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
+        float angle = (playerGO.transform.localEulerAngles.y) * MathF.PI / 180;
+        diffX = MathF.Sin(angle) * 0.001f;
+        diffZ = MathF.Cos(angle) * 0.001f;
+        Debug.Log("diffX = " + diffX);
+        Debug.Log("diffZ = " + diffZ);
+        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+        */
+        if (InputManager.GetButtonDown("toggleIsLinearWalk"))
+        {
+            isLinearWalk = !isLinearWalk;
+        }
+
         if (clientSide.isStreaming)
         {
             //Get the syncVars once
@@ -84,7 +107,7 @@ public class WalkingInPlace : MonoBehaviour
                 {
                     if (leftLegUp && !leftLegUpDone && !rightLegUp)
                     {
-                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.3f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
                         leftLegUpDone = true;
                         bothLegsDownDone = false;
                     }
@@ -92,7 +115,7 @@ public class WalkingInPlace : MonoBehaviour
                     {
                         if (rightLegUp && !rightLegUpDone && !leftLegUp)
                         {
-                            playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.3f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                            playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
                             rightLegUpDone = true;
                             bothLegsDownDone = false;
                         }
@@ -100,6 +123,7 @@ public class WalkingInPlace : MonoBehaviour
                         {
                             if (bothLegsDown && !bothLegsDownDone)
                             {
+                                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
                                 rightLegUpDone = false;
                                 leftLegUpDone = false;
                                 bothLegsDownDone = true;
@@ -120,18 +144,36 @@ public class WalkingInPlace : MonoBehaviour
                 }
                 else
                 {
-                    if (!lowerLimbs.leftFootOnGround && !lowerLimbs.rightFootOnGround)
+                    if (!lowerLimbs.leftFootOnGround || !lowerLimbs.rightFootOnGround)
                     {
+                        
+                        if (isStraight)
+                        {
+                            isStraight = false;
+                            float diffAngle = camera.transform.localEulerAngles.y;
+                            playerGO.transform.localEulerAngles = new Vector3(playerGO.transform.localEulerAngles.x, playerGO.transform.localEulerAngles.y + diffAngle, playerGO.transform.localEulerAngles.z);
+                        }
+
                         float diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
-                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - diff, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                        diff *= 2f;
+                        float angle = (playerGO.transform.localEulerAngles.y) * MathF.PI / 180;
+                        diffX = MathF.Sin(angle) * diff;
+                        diffZ = MathF.Cos(angle) * diff;
+                        movePlayer();                   
+                    }
+                    else
+                    {
+                        isStraight = true;
                     }
                     lastForwardValueLeft = leftFoot.transform.localPosition.y;
                     lastForwardValueRight = rightFoot.transform.localPosition.y;
                 }
             }
 
-            moveGameObjects();
+            //moveGameObjects();
         }
+
+
 
     }
 
@@ -178,6 +220,262 @@ public class WalkingInPlace : MonoBehaviour
 
     }
 
+    private void RotatePlayer()
+    {
+        float angle = (camera.transform.eulerAngles.y > 180f) ? camera.transform.eulerAngles.y - 360f : camera.transform.eulerAngles.y;
+        angle += 90f;
+        if (angle > 10f)
+        {
+            playerGO.transform.eulerAngles = new Vector3(playerGO.transform.eulerAngles.x, playerGO.transform.eulerAngles.y + 0.1f, playerGO.transform.eulerAngles.z);
+        }
+        if (angle < -10f)
+        {
+            playerGO.transform.eulerAngles = new Vector3(playerGO.transform.eulerAngles.x, playerGO.transform.eulerAngles.y - 0.1f, playerGO.transform.eulerAngles.z);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "LeftWall":
+                canGoNegativZ = false;
+                break;
+            case "RightWall":
+                canGoPositivZ = false;
+                break;
+            case "FrontWall":
+                canGoNegativX = false;
+                break;
+            case "BackWall":
+                canGoPositivX = false;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "LeftWall":
+                canGoNegativZ = true;
+                break;
+            case "RightWall":
+                canGoPositivZ = true;
+                break;
+            case "FrontWall":
+                canGoNegativX = true;
+                break;
+            case "BackWall":
+                canGoPositivX = true;
+                break;
+            default:
+                break;
+        }
+        
+    }
+
+    private void movePlayer()
+    {
+        switch ((canGoPositivX, canGoNegativX, canGoPositivZ, canGoNegativZ))
+        {
+            case (true, true, true, true):
+                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                break;
+            case (true, true, true, false):
+                if(diffZ < 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (true, true, false, true):
+                if(diffZ >= 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (true, false, true, true):
+                if(diffX < 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (false, true, true, true):
+                if(diffX >= 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (true, true, false, false):
+                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                break;
+            case (true, false, true, false):
+                if(diffX < 0)
+                {
+                    if(diffZ < 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                else
+                {
+                    if (diffZ < 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                break;
+            case (false, true, true, false):
+                if (diffX >= 0)
+                {
+                    if (diffZ < 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                else
+                {
+                    if (diffZ < 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                break;
+            case (true, false, false, true):
+                if (diffX < 0)
+                {
+                    if (diffZ >= 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                else
+                {
+                    if (diffZ >= 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                break;
+            case (false, true, false, true):
+                if (diffX >= 0)
+                {
+                    if (diffZ >= 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                else
+                {
+                    if (diffZ >= 0)
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                    }
+                    else
+                    {
+                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                    }
+                }
+                break;
+            case (false, false, true, true):
+                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                break;
+            case (true, false, false, false):
+                if(diffX < 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                break;
+            case (false, true, false, false):
+                if (diffX >= 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                break;
+            case (false, false, true, false):
+                if (diffZ < 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (false, false, false, true):
+                if (diffZ >= 0)
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                }
+                else
+                {
+                    playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
+                }
+                break;
+            case (false, false, false, false):
+                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /*
     private void moveGameObjects()
     {
         List<int> indexToRemove = new List<int>();
@@ -220,9 +518,5 @@ public class WalkingInPlace : MonoBehaviour
         startPosTab.Add(playerGO.transform.localPosition);
         endPosTab.Add(playerGO.transform.localPosition);
     }
-
-    private void moveForward()
-    {
-
-    }
+    */
 }

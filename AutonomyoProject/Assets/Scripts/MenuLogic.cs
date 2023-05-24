@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using TMPro;
+using QuickVR;
 
 /*
   Project: Autonomyo
@@ -41,6 +42,8 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject WIPlandscape;
     [SerializeField] private GameObject danceGameLandscape;
     [SerializeField] private GameObject menuLandscape;
+    [SerializeField] private GameObject BeatHandsLandscape;
+    [SerializeField] private GameObject storyGameLandscape;
 
     //Tabs of the menu
     [SerializeField] private GameObject connexionTab;
@@ -54,6 +57,12 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject danceGameInGameTab;
     [SerializeField] private GameObject calibrationTab;
     [SerializeField] private GameObject danceGameStatsTab;
+    [SerializeField] private GameObject WIPTab;
+    [SerializeField] private GameObject shifumiTab;
+    [SerializeField] private GameObject backgroundTab;
+    [SerializeField] private GameObject batteriesTab;
+    [SerializeField] private GameObject beatHandsGameTab;
+    [SerializeField] private GameObject storyGameTab;
 
     //start Buttons
     [SerializeField] private Button firstButton;
@@ -92,8 +101,29 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private Button difficulty0Button;
     [SerializeField] private GameObject isMirrorCheckMark;
 
+    //BeatHands game variables
+    [SerializeField] private Button beatHandsGameDifficultyButton;
+    [SerializeField] private GameObject beatHandsGameGO;
+    [SerializeField] private GameObject rightBracelet;
+    [SerializeField] private GameObject leftBracelet;
+    [SerializeField] private GameObject beatHandsGameDifficultyTab;
+    [SerializeField] private Button beatHandsDifficulty0Button;
+    [SerializeField] private GameObject beatHandsGameInGameTab;
+    [SerializeField] private BeatHandsSpawner beatHandsSpawner;
+    [SerializeField] private BeatHandsGameLogic beatHandsGameLogic;
+    [SerializeField] private Button beatHandsFinishNextButton;
+    [SerializeField] private GameObject beatHandsGameFinishedTab;
+
     //Walking in Place
     [SerializeField] private WalkingInPlace Wip;
+    [SerializeField] private Button WIPBackToMenuButton;
+
+    //Shifumi variables
+    [SerializeField] private Button shifumiBackToMenuButton;
+
+    //Story game variables
+    [SerializeField] private Button storyGameBackToMenuButton;
+    [SerializeField] private GameObject storyGameGO;
 
     private bool isMirror = true;
 
@@ -125,6 +155,11 @@ public class MenuLogic : MonoBehaviour
         if (game1Logic.finished)
         {
             SetGameFinishedTab();
+        }
+
+        if (beatHandsGameLogic.finished)
+        {
+            BeatHandsSetGameFinishedTab();
         }
     }
 
@@ -256,6 +291,12 @@ public class MenuLogic : MonoBehaviour
         soundManager.playHomeMusic();
         Wip.WIP = false;
         player.transform.localPosition = initPlayerTransform.localPosition;
+        player.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
+        backgroundTab.SetActive(true);
+        batteriesTab.SetActive(true);
+        rightBracelet.SetActive(false);
+        leftBracelet.SetActive(false);
+        controllerTab.SetActive(true);
     }
 
     public void PressPlayDanceGameButton()
@@ -320,11 +361,88 @@ public class MenuLogic : MonoBehaviour
         actualLandscape.SetActive(false);
         actualLandscape = WIPlandscape;
         actualLandscape.SetActive(true);
-        //danceGameGO.SetActive(true);
+        backgroundTab.SetActive(false);
+        batteriesTab.SetActive(false);
         actualTab.SetActive(false);
-        actualTab = danceGameTab;
+        actualTab = WIPTab;
         actualTab.SetActive(true);
-        danceGameDifficultyButton.Select();
+        Wip.WIP = true;
+        soundManager.stopActualMusic();
+        soundManager.playWIPMusic();
+        WIPBackToMenuButton.Select();
+    }
+
+    public void PressBeatHandsGameButton()
+    {
+        menuTab.SetActive(false);
+        actualLandscape.SetActive(false);
+        actualLandscape = BeatHandsLandscape;
+        actualLandscape.SetActive(true);
+        beatHandsGameGO.SetActive(true);
+        actualTab.SetActive(false);
+        actualTab = beatHandsGameTab;
+        actualTab.SetActive(true);
+        beatHandsGameDifficultyButton.Select();
+        RenderSettings.skybox = danceGameSkyMat;
+        soundManager.stopActualMusic();
+        soundManager.playGame1Music();
+        rightBracelet.SetActive(true);
+        leftBracelet.SetActive(true);
+    }
+
+    public void PressBeatHandsGamedifficultyButton()
+    {
+        actualTab.SetActive(false);
+        actualTab = beatHandsGameDifficultyTab;
+        actualTab.SetActive(true);
+        beatHandsDifficulty0Button.Select();
+    }
+
+    public void PressPlayBeatHandsGameButton()
+    {
+        actualTab.SetActive(false);
+        actualTab = beatHandsGameInGameTab;
+        actualTab.SetActive(true);
+        beatHandsGameLogic.ToggleIsPlaying();
+        abdZeroButton2.Select();
+    }
+
+    public void BeatHandsSetGameFinishedTab()
+    {
+        beatHandsGameLogic.finished = false;
+        actualTab.SetActive(false);
+        actualTab = beatHandsGameFinishedTab;
+        actualTab.SetActive(true);
+        soundManager.playCheeringSound();
+        beatHandsFinishNextButton.Select();
+    }
+
+    public void PressShifumiButton()
+    {
+        menuTab.SetActive(false);
+        backgroundTab.SetActive(false);
+        batteriesTab.SetActive(false);
+        actualTab.SetActive(false);
+        actualTab = shifumiTab;
+        actualTab.SetActive(true);
+        shifumiBackToMenuButton.Select();
+    }
+
+    public void PressStoryGameButton()
+    {
+        menuTab.SetActive(false);
+        actualLandscape.SetActive(false);
+        actualLandscape = storyGameLandscape;
+        actualLandscape.SetActive(true);
+        backgroundTab.SetActive(false);
+        batteriesTab.SetActive(false);
+        actualTab.SetActive(false);
+        actualTab = storyGameTab;
+        actualTab.SetActive(true);
+        soundManager.stopActualMusic();
+        soundManager.playWIPMusic();
+        storyGameBackToMenuButton.Select();
+        storyGameGO.SetActive(true); ;
         Wip.WIP = true;
     }
 }

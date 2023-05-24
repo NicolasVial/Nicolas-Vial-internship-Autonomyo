@@ -42,7 +42,7 @@ public class ClientSide : MonoBehaviour
 											  //#define LOGFILES_PREFIX "log_" ///< Prefix for the logs filename.
 
 	// Editor-assigned variables
-	public string serverAddr = "192.168.200.8";
+	public string serverAddr = "192.168.200.102";
 	public int port = 9255;
 	public int myId = 0;
 	public TCP tcp; // TCP client

@@ -18,6 +18,13 @@ TagManager:
   - TransparentMesh
   - Helpers
   - ToggleMirror
+  - blue
+  - red
+  - RightWall
+  - LeftWall
+  - FrontWall
+  - BackWall
+  - WalkingInPlace
   layers:
   - Default
   - TransparentFX

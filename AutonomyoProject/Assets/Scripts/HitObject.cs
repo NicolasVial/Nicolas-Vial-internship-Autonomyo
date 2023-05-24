@@ -26,7 +26,7 @@ public class HitObject : MonoBehaviour
             {
                 speedFactor -= speedFactorReducer;
             }
-            
+
         }
     }
 }

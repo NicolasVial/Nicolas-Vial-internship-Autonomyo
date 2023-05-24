@@ -286,7 +286,7 @@ public class Game1Logic : MonoBehaviour
 
                 if (nbOfSuccesses == maxNbOfSuccesses)
                 {
-                    avrTimeText.SetText(poseTimes.Average().ToString("0.0") + " secondes");
+                    avrTimeText.SetText(poseTimes.Average().ToString("0.0") + " seconds");
                     finalScoreText.SetText(totalScore.ToString("0.0") + "/100");
                     inGame = false;
                     finished = true;

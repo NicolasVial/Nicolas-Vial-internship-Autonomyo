@@ -10,6 +10,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource successSound;
     [SerializeField] private AudioSource cheeringSound;
     [SerializeField] private AudioSource starSound;
+    [SerializeField] private AudioSource wipMusic;
+    [SerializeField] private AudioSource natureSounds;
+    [SerializeField] private AudioSource plopSound;
 
     private AudioSource actualMusic;
 
@@ -38,9 +41,17 @@ public class SoundManager : MonoBehaviour
         actualMusic = game1Music;
     }
 
+    public void playWIPMusic()
+    {
+        wipMusic.Play();
+        natureSounds.Play();
+        actualMusic = wipMusic;
+    }
+
     public void stopActualMusic()
     {
         actualMusic.Stop();
+        natureSounds.Stop();
     }
 
     public void playSuccessSound()
@@ -56,6 +67,11 @@ public class SoundManager : MonoBehaviour
     public void playStarSound()
     {
         starSound.Play();
+    }
+
+    public void playPlopSound()
+    {
+        plopSound.Play();
     }
 
 }

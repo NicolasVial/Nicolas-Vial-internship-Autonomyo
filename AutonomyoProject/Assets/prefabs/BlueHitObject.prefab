@@ -903,6 +903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedFactor: 1
+  maxDistance: 0
+  speedFactorReducer: 0
 --- !u!54 &-1350319406982668724
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class UIPointer : MonoBehaviour
     private float timeToValidate = 1.5f;
     private Button button;
     private Toggle toggle;
+    private bool isActive = true;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,15 @@ public class UIPointer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateLength();
+        if (isActive)
+        {
+            lineRenderer.enabled = true;
+            UpdateLength();
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
     }
 
     private void UpdateLength()
@@ -142,5 +151,10 @@ public class UIPointer : MonoBehaviour
     private Vector3 DefaultEnd(float length)
     {
         return transform.position + (transform.forward * length);
+    }
+
+    public void TogglePointer()
+    {
+        isActive = !isActive;
     }
 }
