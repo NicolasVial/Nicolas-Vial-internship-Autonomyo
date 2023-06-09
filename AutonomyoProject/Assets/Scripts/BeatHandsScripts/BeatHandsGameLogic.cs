@@ -31,6 +31,7 @@ public class BeatHandsGameLogic : MonoBehaviour
     {
         if (isPlaying)
         {
+            spawner.isPlaying = true;
             timerText.SetText((60f - inGameTime).ToString("0.0"));
             scoreText.SetText(totalScore + " Points");
 
@@ -48,6 +49,7 @@ public class BeatHandsGameLogic : MonoBehaviour
         else
         {
             totalScore = 0;
+            spawner.isPlaying = false;
         }
     }
 

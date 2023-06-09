@@ -13,8 +13,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource wipMusic;
     [SerializeField] private AudioSource natureSounds;
     [SerializeField] private AudioSource plopSound;
+    [SerializeField] private AudioSource introAvatarVoice;
+    [SerializeField] private AudioSource bryanVoice1;
+    [SerializeField] private AudioSource bryanVoice2;
 
     private AudioSource actualMusic;
+    private AudioSource lastVoiceHeard;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,7 @@ public class SoundManager : MonoBehaviour
     {
         homeMusic.Play();
         actualMusic = homeMusic;
+        wipMusic.Stop();
     }
 
     public void playGame1Music()
@@ -45,12 +50,14 @@ public class SoundManager : MonoBehaviour
     {
         wipMusic.Play();
         natureSounds.Play();
-        actualMusic = wipMusic;
     }
 
     public void stopActualMusic()
     {
-        actualMusic.Stop();
+        if(actualMusic != null)
+        {
+            actualMusic.Stop();
+        }
         natureSounds.Stop();
     }
 
@@ -72,6 +79,47 @@ public class SoundManager : MonoBehaviour
     public void playPlopSound()
     {
         plopSound.Play();
+    }
+
+    public void playIntroAvatarVoice()
+    {
+        introAvatarVoice.Play();
+        lastVoiceHeard = introAvatarVoice;
+    }
+
+    public void playBryanVoice1()
+    {
+        bryanVoice1.Play();
+        lastVoiceHeard = bryanVoice1;
+    }
+
+    public void playBryanVoice2()
+    {
+        bryanVoice2.Play();
+        lastVoiceHeard = bryanVoice2;
+    }
+
+    public void toggleWIPMusic()
+    {
+        if (wipMusic.isPlaying)
+        {
+            wipMusic.Pause();
+            natureSounds.Play();
+            actualMusic = null;
+        }
+        else
+        {
+            wipMusic.UnPause();
+            natureSounds.Stop();
+        }
+    }
+
+    public void repeatVoice()
+    {
+        if(lastVoiceHeard != null && !lastVoiceHeard.isPlaying)
+        {
+            lastVoiceHeard.Play();
+        }
     }
 
 }

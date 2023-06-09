@@ -25,6 +25,17 @@ TagManager:
   - FrontWall
   - BackWall
   - WalkingInPlace
+  - danceGameCollider1
+  - balanceGameCollider1
+  - danceGameCollider2
+  - beatHandsGameCollider1
+  - sphereRightWall
+  - sphereLeftWall
+  - sphereFrontWall
+  - sphereBackWall
+  - beatHandsGameCollider2
+  - balanceGameCollider2
+  - endCollider
   layers:
   - Default
   - TransparentFX

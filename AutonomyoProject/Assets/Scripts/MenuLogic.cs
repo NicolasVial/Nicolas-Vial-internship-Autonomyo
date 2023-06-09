@@ -63,6 +63,11 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject batteriesTab;
     [SerializeField] private GameObject beatHandsGameTab;
     [SerializeField] private GameObject storyGameTab;
+    [SerializeField] private GameObject storyGameDanceGameTab;
+    [SerializeField] private GameObject storyGameBeatHandsGameTab;
+    [SerializeField] private GameObject storyGameBalanceGameTab;
+    [SerializeField] private GameObject storyGameBalanceGame2Tab;
+    [SerializeField] private GameObject storyGameShifumiGame1Tab;
 
     //start Buttons
     [SerializeField] private Button firstButton;
@@ -100,6 +105,8 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerScoreText;
     [SerializeField] private Button difficulty0Button;
     [SerializeField] private GameObject isMirrorCheckMark;
+    [SerializeField] private GameObject danceGameInitPos;
+    [SerializeField] private GameObject danceGameStoryGamePos;
 
     //BeatHands game variables
     [SerializeField] private Button beatHandsGameDifficultyButton;
@@ -113,6 +120,12 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private BeatHandsGameLogic beatHandsGameLogic;
     [SerializeField] private Button beatHandsFinishNextButton;
     [SerializeField] private GameObject beatHandsGameFinishedTab;
+    [SerializeField] private GameObject beatHandsGameInitPos;
+    [SerializeField] private GameObject beatHandsGameStoryGamePos;
+
+    //Balance game variables
+    [SerializeField] private Button storyGameStartBalanceGameButton;
+    [SerializeField] private Button storyGameStartBalanceGameButton2;
 
     //Walking in Place
     [SerializeField] private WalkingInPlace Wip;
@@ -120,12 +133,17 @@ public class MenuLogic : MonoBehaviour
 
     //Shifumi variables
     [SerializeField] private Button shifumiBackToMenuButton;
+    [SerializeField] private Button storyGameStartShifumiGameButton;
 
     //Story game variables
     [SerializeField] private Button storyGameBackToMenuButton;
     [SerializeField] private GameObject storyGameGO;
+    [SerializeField] private Button storyGameStartDanceGameButton;
+    [SerializeField] private StoryGameLogic storyGameLogic;
+    [SerializeField] private Button storyGameStartBeatHandsGameButton;
 
     private bool isMirror = true;
+    private bool inStoryGame = false;
 
     private GameObject actualLandscape; //keep in memory which landscape is active
     private GameObject actualTab; //keep in memory which tab is active
@@ -160,6 +178,11 @@ public class MenuLogic : MonoBehaviour
         if (beatHandsGameLogic.finished)
         {
             BeatHandsSetGameFinishedTab();
+        }
+
+        if(FindObjectsOfType<Game1Logic>(false).Length != 0)
+        {
+            game1Logic = FindObjectsOfType<Game1Logic>(false)[0];
         }
     }
 
@@ -245,31 +268,72 @@ public class MenuLogic : MonoBehaviour
 
     public void PressDanceGameButton()
     {
-        menuTab.SetActive(false);
-        actualLandscape.SetActive(false);
-        actualLandscape = danceGameLandscape;
-        actualLandscape.SetActive(true);
-        danceGameGO.SetActive(true);
-        actualTab.SetActive(false);
-        actualTab = danceGameTab;
-        actualTab.SetActive(true);
-        danceGameDifficultyButton.Select();
-        controllerTabGO.transform.localPosition = controllerDanceGamePosGO.transform.localPosition;
-        controllerTabGO.transform.localEulerAngles = new Vector3(0f, 65f, 0f);
-        menuTabGO.transform.localPosition = menuDanceGamePosGO.transform.localPosition;
-        menuTabGO.transform.localEulerAngles = new Vector3(50f, 0f, 0f);
-        RenderSettings.skybox = danceGameSkyMat;
-        game1Logic.isBlinking = true;
-        soundManager.stopActualMusic();
-        soundManager.playGame1Music();
-        scoreBarImg.fillAmount = 0f;
-        scoreBarImgOpponent.fillAmount = 0f;
-        scoreBarLogic.done1 = false;
-        scoreBarLogic.done2 = false;
-        scoreBarLogic.done3 = false;
-        opponent.poseNb = 0;
-        playerScoreText.SetText("Accuracy: -");
-        opponentScoreText.SetText("Accuracy: -");
+        if (!inStoryGame)
+        {
+            menuTab.SetActive(false);
+            actualLandscape.SetActive(false);
+            actualLandscape = danceGameLandscape;
+            actualLandscape.SetActive(true);
+            danceGameGO.SetActive(true);
+            actualTab.SetActive(false);
+            actualTab = danceGameTab;
+            actualTab.SetActive(true);
+            danceGameDifficultyButton.Select();
+            controllerTabGO.transform.localPosition = controllerDanceGamePosGO.transform.localPosition;
+            controllerTabGO.transform.localEulerAngles = new Vector3(0f, 65f, 0f);
+            menuTabGO.transform.localPosition = menuDanceGamePosGO.transform.localPosition;
+            menuTabGO.transform.localEulerAngles = new Vector3(50f, 0f, 0f);
+            RenderSettings.skybox = danceGameSkyMat;
+            game1Logic.isBlinking = true;
+            soundManager.stopActualMusic();
+            soundManager.playGame1Music();
+            scoreBarImg.fillAmount = 0f;
+            scoreBarImgOpponent.fillAmount = 0f;
+            scoreBarLogic.done1 = false;
+            scoreBarLogic.done2 = false;
+            scoreBarLogic.done3 = false;
+            opponent.poseNb = 0;
+            playerScoreText.SetText("Accuracy: -");
+            opponentScoreText.SetText("Accuracy: -");
+        }
+        else
+        {
+            //This is called when dance game is finished in the story game
+            switch (storyGameLogic.actualGameNb)
+            {
+                case 1:
+                    storyGameLogic.finishedDanceGame1 = true;
+                    break;
+                case 2:
+                    storyGameLogic.finishedDanceGame2 = true;
+                    break;
+                case 3:
+                    storyGameLogic.finishedBeatHandsGame1 = true;
+                    break;
+                case 4:
+                    storyGameLogic.finishedBalanceGame1 = true;
+                    break;
+                case 5:
+                    storyGameLogic.finishedBeatHandsGame2 = true;
+                    break;
+                case 6:
+                    storyGameLogic.finishedBalanceGame2 = true;
+                    break;
+                default:
+                    break;
+            }
+            actualTab.SetActive(false);
+            actualTab = storyGameTab;
+            actualTab.SetActive(true);
+            controllerTab.SetActive(false);
+            controllerTabGO.transform.localPosition = controllerInitPosGO.transform.localPosition;
+            controllerTabGO.transform.localEulerAngles = new Vector3(0f, -55f, 0f);
+            menuTabGO.transform.localPosition = menuInitPosGO.transform.localPosition;
+            menuTabGO.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+            backgroundTab.SetActive(false);
+            batteriesTab.SetActive(false);
+        }
+        
     }
 
     public void PressBackToMenuButton()
@@ -297,6 +361,14 @@ public class MenuLogic : MonoBehaviour
         rightBracelet.SetActive(false);
         leftBracelet.SetActive(false);
         controllerTab.SetActive(true);
+        if (inStoryGame)
+        {
+            inStoryGame = false;
+            storyGameLogic.resetGame();
+            storyGameGO.SetActive(false);
+            danceGameGO.transform.position = danceGameInitPos.transform.position;
+            beatHandsGameGO.transform.position = beatHandsGameInitPos.transform.position;
+        }
     }
 
     public void PressPlayDanceGameButton()
@@ -374,20 +446,56 @@ public class MenuLogic : MonoBehaviour
 
     public void PressBeatHandsGameButton()
     {
-        menuTab.SetActive(false);
-        actualLandscape.SetActive(false);
-        actualLandscape = BeatHandsLandscape;
-        actualLandscape.SetActive(true);
-        beatHandsGameGO.SetActive(true);
-        actualTab.SetActive(false);
-        actualTab = beatHandsGameTab;
-        actualTab.SetActive(true);
-        beatHandsGameDifficultyButton.Select();
-        RenderSettings.skybox = danceGameSkyMat;
-        soundManager.stopActualMusic();
-        soundManager.playGame1Music();
-        rightBracelet.SetActive(true);
-        leftBracelet.SetActive(true);
+        if (!inStoryGame)
+        {
+            menuTab.SetActive(false);
+            actualLandscape.SetActive(false);
+            actualLandscape = BeatHandsLandscape;
+            actualLandscape.SetActive(true);
+            beatHandsGameGO.SetActive(true);
+            actualTab.SetActive(false);
+            actualTab = beatHandsGameTab;
+            actualTab.SetActive(true);
+            beatHandsGameDifficultyButton.Select();
+            RenderSettings.skybox = danceGameSkyMat;
+            soundManager.stopActualMusic();
+            soundManager.playGame1Music();
+            rightBracelet.SetActive(true);
+            leftBracelet.SetActive(true);
+        }
+        else
+        {
+            //This is called when beathands game is finished in the story game
+            switch (storyGameLogic.actualGameNb)
+            {
+                case 1:
+                    storyGameLogic.finishedDanceGame1 = true;
+                    break;
+                case 2:
+                    storyGameLogic.finishedDanceGame2 = true;
+                    break;
+                case 3:
+                    storyGameLogic.finishedBeatHandsGame1 = true;
+                    break;
+                case 4:
+                    storyGameLogic.finishedBalanceGame1 = true;
+                    break;
+                case 5:
+                    storyGameLogic.finishedBeatHandsGame2 = true;
+                    break;
+                case 6:
+                    storyGameLogic.finishedBalanceGame2 = true;
+                    break;
+                default:
+                    break;
+            }
+            actualTab.SetActive(false);
+            actualTab = storyGameTab;
+            actualTab.SetActive(true);
+            controllerTab.SetActive(false);
+            backgroundTab.SetActive(false);
+            batteriesTab.SetActive(false);
+        }
     }
 
     public void PressBeatHandsGamedifficultyButton()
@@ -428,6 +536,13 @@ public class MenuLogic : MonoBehaviour
         shifumiBackToMenuButton.Select();
     }
 
+    public void ToggleControllerTab()
+    {
+        controllerTab.SetActive(!controllerTab.activeSelf);
+    }
+
+    #region Story Game functions
+
     public void PressStoryGameButton()
     {
         menuTab.SetActive(false);
@@ -442,7 +557,175 @@ public class MenuLogic : MonoBehaviour
         soundManager.stopActualMusic();
         soundManager.playWIPMusic();
         storyGameBackToMenuButton.Select();
-        storyGameGO.SetActive(true); ;
-        Wip.WIP = true;
+        storyGameGO.SetActive(true);
+        controllerTab.SetActive(false);
+        inStoryGame = true;
+        danceGameGO.transform.position = danceGameStoryGamePos.transform.position;
+        beatHandsGameGO.transform.position = beatHandsGameStoryGamePos.transform.position;
     }
+
+    public void StoryGameGoToDanceGame()
+    {
+        danceGameGO.SetActive(true);
+        actualTab.SetActive(false);
+        backgroundTab.SetActive(true);
+        batteriesTab.SetActive(true);
+        controllerTab.SetActive(false);
+        actualTab = storyGameDanceGameTab;
+        actualTab.SetActive(true);
+        storyGameStartDanceGameButton.Select();
+        controllerTabGO.SetActive(true);
+        controllerTabGO.transform.localPosition = controllerDanceGamePosGO.transform.localPosition;
+        controllerTabGO.transform.localEulerAngles = new Vector3(0f, 65f, 0f);
+        menuTabGO.transform.localPosition = menuDanceGamePosGO.transform.localPosition;
+        menuTabGO.transform.localEulerAngles = new Vector3(50f, 0f, 0f);
+        RenderSettings.skybox = danceGameSkyMat;
+        game1Logic.isBlinking = true;
+        soundManager.stopActualMusic();
+        soundManager.playGame1Music();
+        scoreBarImg.fillAmount = 0f;
+        scoreBarImgOpponent.fillAmount = 0f;
+        scoreBarLogic.done1 = false;
+        scoreBarLogic.done2 = false;
+        scoreBarLogic.done3 = false;
+        opponent.poseNb = 0;
+        playerScoreText.SetText("Accuracy: -");
+        opponentScoreText.SetText("Accuracy: -");
+    }
+
+    public void StoryGameGoToBeatHandsGame()
+    {
+        beatHandsGameGO.SetActive(true);
+        actualTab.SetActive(false);
+        backgroundTab.SetActive(true);
+        batteriesTab.SetActive(true);
+        controllerTab.SetActive(false);
+        actualTab = storyGameBeatHandsGameTab;
+        actualTab.SetActive(true);
+        storyGameStartBeatHandsGameButton.Select();
+        controllerTabGO.SetActive(true);
+        RenderSettings.skybox = danceGameSkyMat;
+        soundManager.stopActualMusic();
+        soundManager.playGame1Music();
+        rightBracelet.SetActive(true);
+        leftBracelet.SetActive(true);
+    }
+
+    public void StoryGameGoToBalanceGame()
+    {
+        actualTab.SetActive(false);
+        controllerTab.SetActive(false);
+        actualTab = storyGameBalanceGameTab;
+        actualTab.SetActive(true);
+        storyGameStartBalanceGameButton.gameObject.SetActive(true);
+        storyGameStartBalanceGameButton.Select();
+    }
+
+    public void StoryGameBalanceGamePressPlay(GameObjectController sphere)
+    {
+        sphere.startGame();
+        storyGameStartBalanceGameButton.gameObject.SetActive(false);
+    }
+
+    public void StoryGameBalanceGamePressPlay2(GameObjectController sphere)
+    {
+        sphere.startGame();
+        storyGameStartBalanceGameButton2.gameObject.SetActive(false);
+    }
+
+    public void StoryGameBalanceGamePressFinish()
+    {
+        switch (storyGameLogic.actualGameNb)
+        {
+            case 1:
+                storyGameLogic.finishedDanceGame1 = true;
+                break;
+            case 2:
+                storyGameLogic.finishedDanceGame2 = true;
+                break;
+            case 3:
+                storyGameLogic.finishedBeatHandsGame1 = true;
+                break;
+            case 4:
+                storyGameLogic.finishedBalanceGame1 = true;
+                storyGameStartBalanceGameButton.gameObject.SetActive(true);
+                break;
+            case 5:
+                storyGameLogic.finishedBeatHandsGame2 = true;
+                break;
+            case 6:
+                storyGameLogic.finishedBalanceGame2 = true;
+                storyGameStartBalanceGameButton2.gameObject.SetActive(true);
+                break;
+            default:
+                break;
+        }
+        actualTab.SetActive(false);
+        actualTab = storyGameTab;
+        actualTab.SetActive(true);
+        controllerTab.SetActive(false);
+        backgroundTab.SetActive(false);
+        batteriesTab.SetActive(false);
+    }
+
+    public void StoryGameGoToBalanceGame2()
+    {
+        actualTab.SetActive(false);
+        controllerTab.SetActive(false);
+        actualTab = storyGameBalanceGame2Tab;
+        actualTab.SetActive(true);
+        storyGameStartBalanceGameButton2.gameObject.SetActive(true);
+        storyGameStartBalanceGameButton2.Select();
+    }
+
+    public void StoryGameGoToShifumiGame()
+    {
+        actualTab.SetActive(false);
+        controllerTab.SetActive(false);
+        actualTab = storyGameShifumiGame1Tab;
+        actualTab.SetActive(true);
+        storyGameStartShifumiGameButton.gameObject.SetActive(true);
+        storyGameStartShifumiGameButton.Select();
+    }
+
+    public void StoryGameShifumiGamePressFinish()
+    {
+        switch (storyGameLogic.actualGameNb)
+        {
+            case 1:
+                storyGameLogic.finishedDanceGame1 = true;
+                break;
+            case 2:
+                storyGameLogic.finishedDanceGame2 = true;
+                break;
+            case 3:
+                storyGameLogic.finishedBeatHandsGame1 = true;
+                break;
+            case 4:
+                storyGameLogic.finishedBalanceGame1 = true;
+                storyGameStartBalanceGameButton.gameObject.SetActive(true);
+                break;
+            case 5:
+                storyGameLogic.finishedBeatHandsGame2 = true;
+                break;
+            case 6:
+                storyGameLogic.finishedBalanceGame2 = true;
+                storyGameStartBalanceGameButton2.gameObject.SetActive(true);
+                break;
+            case 7:
+                storyGameLogic.finishedShifumiGame1 = true;
+                storyGameStartShifumiGameButton.gameObject.SetActive(true);
+                break;
+            default:
+                break;
+        }
+        actualTab.SetActive(false);
+        actualTab = storyGameTab;
+        actualTab.SetActive(true);
+        controllerTab.SetActive(false);
+        backgroundTab.SetActive(false);
+        batteriesTab.SetActive(false);
+    }
+
+    #endregion
 }

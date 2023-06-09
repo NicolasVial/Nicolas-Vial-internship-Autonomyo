@@ -29,18 +29,11 @@ public class BeatHandsSpawner : MonoBehaviour
         {
             SpawnNewTarget();
         }
-        else
-        {
-            if (FindObjectsOfType(typeof(BeatHandsHitObject)).Length >= 1 && !isPlaying)
-            {
-                Destroy(FindObjectsOfType(typeof(BeatHandsHitObject))[0]);
-            }
-        }
     }
 
     private void SpawnNewTarget()
     {
-        Transform spawnPoint = possiblePositions[Random.Range(0, possiblePositions.Count)];
+        Transform spawnPoint = possiblePositions[Random.Range(0, possiblePositions.Count-1)];
 
         if(spawnPoint.gameObject.tag == "blue")
         {

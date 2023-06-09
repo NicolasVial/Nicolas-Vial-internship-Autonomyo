@@ -151,7 +151,10 @@ public class WalkingInPlace : MonoBehaviour
                         {
                             isStraight = false;
                             float diffAngle = camera.transform.localEulerAngles.y;
-                            playerGO.transform.localEulerAngles = new Vector3(playerGO.transform.localEulerAngles.x, playerGO.transform.localEulerAngles.y + diffAngle, playerGO.transform.localEulerAngles.z);
+                            if(diffAngle > 5f)
+                            {
+                                playerGO.transform.localEulerAngles = new Vector3(playerGO.transform.localEulerAngles.x, playerGO.transform.localEulerAngles.y + diffAngle, playerGO.transform.localEulerAngles.z);
+                            }
                         }
 
                         float diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
@@ -473,6 +476,11 @@ public class WalkingInPlace : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void toggleWIP()
+    {
+        this.WIP = !this.WIP;
     }
 
     /*

@@ -82,6 +82,7 @@ public class LowerLimbsMovements : MonoBehaviour
     private Vector3 lastLeftPos = new Vector3(0f, 0f, 0f);
     private Vector3 lastRightPos = new Vector3(0f, 0f, 0f);
     private bool isMirror = true;
+    public float dirAngle = 0f;
 
     // robot segments length
     private float l0;
@@ -245,6 +246,9 @@ public class LowerLimbsMovements : MonoBehaviour
 
                 balanceSphere.transform.position = new Vector3(centerOfMassX, balanceSphere.transform.position.y, centerOfMassZ);
                 balanceSphere.transform.localPosition = new Vector3(-balanceSphere.transform.localPosition.x * 2f, balanceSphere.transform.localPosition.y * 2.45f, balanceSphere.transform.localPosition.z);
+                Vector2 posVector = new Vector2(balanceSphere.transform.localPosition.x, balanceSphere.transform.localPosition.y);
+                Vector2 straightVector = new Vector2(0f, 1f);
+                dirAngle = Vector2.SignedAngle(posVector, straightVector);
 
                 //Compute the lower limbs relative positions using the angles given by the exoskeleton
                 // segment in the back
