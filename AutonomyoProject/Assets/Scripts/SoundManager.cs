@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-
+    [SerializeField] private MenuLogic menu;
     [SerializeField] private AudioSource homeMusic;
     [SerializeField] private AudioSource game1Music;
     [SerializeField] private AudioSource successSound;
@@ -13,9 +13,22 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource wipMusic;
     [SerializeField] private AudioSource natureSounds;
     [SerializeField] private AudioSource plopSound;
-    [SerializeField] private AudioSource introAvatarVoice;
-    [SerializeField] private AudioSource bryanVoice1;
-    [SerializeField] private AudioSource bryanVoice2;
+    [SerializeField] private AudioSource storyV1ENG1;
+    [SerializeField] private AudioSource storyV1FR1;
+    [SerializeField] private AudioSource storyV2ENG1;
+    [SerializeField] private AudioSource storyV2ENG2;
+    [SerializeField] private AudioSource storyV2FR1;
+    [SerializeField] private AudioSource storyV2FR2;
+    [SerializeField] private AudioSource storyV3FR1;
+    [SerializeField] private AudioSource storyV3FR2;
+    [SerializeField] private AudioSource storyV4FR1;
+    [SerializeField] private AudioSource storyV4FR2;
+    [SerializeField] private AudioSource storyV5FR1;
+    [SerializeField] private AudioSource storyV5FR2;
+    [SerializeField] private AudioSource storyV6FR1;
+    [SerializeField] private AudioSource storyV6FR2;
+    [SerializeField] private AudioSource storyV7FR1;
+    [SerializeField] private AudioSource storyV7FR2;
 
     private AudioSource actualMusic;
     private AudioSource lastVoiceHeard;
@@ -83,20 +96,180 @@ public class SoundManager : MonoBehaviour
 
     public void playIntroAvatarVoice()
     {
-        introAvatarVoice.Play();
-        lastVoiceHeard = introAvatarVoice;
+        storyV1ENG1.Play();
+        lastVoiceHeard = storyV1ENG1;
     }
 
-    public void playBryanVoice1()
+    public void playStoryV1_1()
     {
-        bryanVoice1.Play();
-        lastVoiceHeard = bryanVoice1;
+        if(menu.language == 0)
+        {
+            storyV1ENG1.Play();
+            lastVoiceHeard = storyV1ENG1;
+        }
+        else
+        {
+            storyV1FR1.Play();
+            lastVoiceHeard = storyV1FR1;
+        }
     }
 
-    public void playBryanVoice2()
+    public void playStoryV2_1()
     {
-        bryanVoice2.Play();
-        lastVoiceHeard = bryanVoice2;
+        if (menu.language == 0)
+        {
+            storyV2ENG1.Play();
+            lastVoiceHeard = storyV2ENG1;
+        }
+        else
+        {
+            storyV2FR1.Play();
+            lastVoiceHeard = storyV2FR1;
+        }
+    }
+
+    public void playStoryV2_2()
+    {
+        if (menu.language == 0)
+        {
+            storyV2ENG2.Play();
+            lastVoiceHeard = storyV2ENG2;
+        }
+        else
+        {
+            storyV2FR2.Play();
+            lastVoiceHeard = storyV2FR2;
+        }
+    }
+
+    public void playStoryV3_1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV3FR1.Play();
+            lastVoiceHeard = storyV3FR1;
+        }
+    }
+
+    public void playStoryV3_2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV3FR2.Play();
+            lastVoiceHeard = storyV3FR2;
+        }
+    }
+
+    public void playStoryV4_1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV4FR1.Play();
+            lastVoiceHeard = storyV4FR1;
+        }
+    }
+
+    public void playStoryV4_2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV4FR2.Play();
+            lastVoiceHeard = storyV4FR2;
+        }
+    }
+
+    public void playStoryV5_1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV5FR1.Play();
+            lastVoiceHeard = storyV5FR1;
+        }
+    }
+
+    public void playStoryV5_2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV5FR2.Play();
+            lastVoiceHeard = storyV5FR2;
+        }
+    }
+
+    public void playStoryV6_1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV6FR1.Play();
+            lastVoiceHeard = storyV6FR1;
+        }
+    }
+
+    public void playStoryV6_2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV6FR2.Play();
+            lastVoiceHeard = storyV6FR2;
+        }
+    }
+
+    public void playStoryV7_1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV7FR1.Play();
+            lastVoiceHeard = storyV7FR1;
+        }
+    }
+
+    public void playStoryV7_2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            storyV7FR2.Play();
+            lastVoiceHeard = storyV7FR2;
+        }
     }
 
     public void toggleWIPMusic()
@@ -116,8 +289,9 @@ public class SoundManager : MonoBehaviour
 
     public void repeatVoice()
     {
-        if(lastVoiceHeard != null && !lastVoiceHeard.isPlaying)
+        if(lastVoiceHeard != null)
         {
+            lastVoiceHeard.Stop();
             lastVoiceHeard.Play();
         }
     }

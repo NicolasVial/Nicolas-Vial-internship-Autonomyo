@@ -12,6 +12,7 @@ public class GameObjectController : MonoBehaviour
     [SerializeField] private float _maxUpDownSpeed = 1;
     [SerializeField] private GameObject balanceSphere;
     [SerializeField] private float sphereSpeed;
+    [SerializeField] private DoorPuzzleLogic puzzleLogic;
 
     private bool canGoPositivZ = true;
     private bool canGoNegativZ = true;
@@ -29,11 +30,6 @@ public class GameObjectController : MonoBehaviour
 
     void Update()
     {
-        if (InputManager.GetButtonDown("ToggleMoveObject"))
-        {
-            _move = !_move;
-        }
-
         if (_move)
         {
             float dirAngle = lowerLimbs.dirAngle;
@@ -47,6 +43,7 @@ public class GameObjectController : MonoBehaviour
     public void startGame()
     {
         _move = true;
+        puzzleLogic.startGame();
     }
 
     private void OnTriggerEnter(Collider other)

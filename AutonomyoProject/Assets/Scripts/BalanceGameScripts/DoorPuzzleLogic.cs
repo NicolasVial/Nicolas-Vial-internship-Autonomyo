@@ -38,6 +38,9 @@ public class DoorPuzzleLogic : MonoBehaviour
     [SerializeField]
     private int nbOfLevels;
 
+    [SerializeField]
+    private Transform initSpherePos;
+
     private bool done = false;
     private float startTime;
     private float distanceBetweenRot;
@@ -45,8 +48,10 @@ public class DoorPuzzleLogic : MonoBehaviour
     private bool doneFinish = false;
     private int levelNb = 1;
     private List<DoorObjectiv> currentObjectivs;
+    private float startGameTime = 0f;
 
     public bool test = false;
+    public string resultText = "";
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +62,7 @@ public class DoorPuzzleLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (test)
         {
             if (!done)
@@ -74,6 +80,7 @@ public class DoorPuzzleLogic : MonoBehaviour
                 door.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(startAngle), Quaternion.Euler(endAngle), relativeTimeRot);
             }
         }
+        */
         bool checkAllObjDone = true;
 
         foreach(DoorObjectiv dobj in currentObjectivs)
@@ -87,6 +94,8 @@ public class DoorPuzzleLogic : MonoBehaviour
         {
             if (!done)
             {
+                float finalScore = Time.time - startGameTime;
+                resultText = finalScore.ToString("0.0") + " Sec";
                 currentObjectivs[0].resetObjCount();
                 done = true;
                 startTime = Time.time;
@@ -132,11 +141,48 @@ public class DoorPuzzleLogic : MonoBehaviour
                 case 2:
                     menu.StoryGameBalanceGamePressFinish();
                     break;
+                case 3:
+                    menu.Invoke("PressBackToMenuButton", 4f);
+                    Invoke("resetGame", 4f);
+                    break;
                 default:
                     break;
             }
             doneFinish = true;
         }
 
+    }
+
+    private void resetGame()
+    {
+        levelNb = 1;
+        foreach (DoorObjectiv dobj in objectivs1)
+        {
+            dobj.resetObj();
+        }
+        foreach (DoorObjectiv dobj in objectivs2)
+        {
+            dobj.resetObj();
+        }
+        foreach (DoorObjectiv dobj in objectivs3)
+        {
+            dobj.resetObj();
+        }
+
+        objectivs1GO.SetActive(true);
+        objectivs2GO.SetActive(false);
+        objectivs3GO.SetActive(false);
+        sphere._move = false;
+        sphere.gameObject.transform.position = initSpherePos.position;
+        door.transform.localEulerAngles = startAngle;
+        currentObjectivs = objectivs1;
+        done = false;
+        finished = false;
+        doneFinish = false;
+    }
+
+    public void startGame()
+    {
+        startGameTime = Time.time;
     }
 }

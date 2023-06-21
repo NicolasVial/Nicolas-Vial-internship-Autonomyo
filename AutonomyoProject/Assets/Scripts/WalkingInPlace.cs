@@ -18,13 +18,14 @@ public class WalkingInPlace : MonoBehaviour
     [SerializeField] private float[] targetAnglesLeft;
     [SerializeField] private float[] targetAnglesDown;
     [SerializeField] private GameObject playerGO;
+    [SerializeField] private GameObject teleportGO;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private GameObject leftFoot;
     [SerializeField] private GameObject rightFoot;
-    [SerializeField] private bool isLinearWalk = true;
 
     [SerializeField] private float desiredDuration = 2f;
     [SerializeField] private AnimationCurve curve;
+    [SerializeField] private bool alwaysStraight = false;
 
 
     private ClientSide clientSide;
@@ -57,8 +58,11 @@ public class WalkingInPlace : MonoBehaviour
     private bool canGoNegativZ = true;
     private double diffX = 0;
     private double diffZ = 0;
+    private bool TPButtonPressed = false;
+    private bool setupDone = false;
 
     public bool WIP = false;
+    public int walkingMode = 1; //mode 1 == realistic with periodic rotations, mode 2 == realistic with linear rotations, mode 3 == teleportation (no cybersickness)
 
     // Start is called before the first frame update
     void Start()
@@ -69,19 +73,6 @@ public class WalkingInPlace : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        float angle = (playerGO.transform.localEulerAngles.y) * MathF.PI / 180;
-        diffX = MathF.Sin(angle) * 0.001f;
-        diffZ = MathF.Cos(angle) * 0.001f;
-        Debug.Log("diffX = " + diffX);
-        Debug.Log("diffZ = " + diffZ);
-        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x + Convert.ToSingle(diffX), playerGO.transform.localPosition.y, playerGO.transform.localPosition.z + Convert.ToSingle(diffZ));
-        */
-        if (InputManager.GetButtonDown("toggleIsLinearWalk"))
-        {
-            isLinearWalk = !isLinearWalk;
-        }
-
         if (clientSide.isStreaming)
         {
             //Get the syncVars once
@@ -98,79 +89,91 @@ public class WalkingInPlace : MonoBehaviour
 
             if (WIP)
             {
-                leftLegUp = checkPosewithAngles(targetAnglesLeft);
-                rightLegUp = checkPosewithAngles(targetAnglesRight);
-                bothLegsDown = checkPosewithAngles(targetAnglesDown);
-
-
-                if (!isLinearWalk)
+                if (!setupDone)
                 {
-                    if (leftLegUp && !leftLegUpDone && !rightLegUp)
-                    {
-                        playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
-                        leftLegUpDone = true;
-                        bothLegsDownDone = false;
-                    }
-                    else
-                    {
-                        if (rightLegUp && !rightLegUpDone && !leftLegUp)
+                    lastForwardValueLeft = leftFoot.transform.localPosition.y;
+                    lastForwardValueRight = rightFoot.transform.localPosition.y;
+                    setupDone = true;
+                }
+                if (walkingMode == 1 || walkingMode == 2)
+                {
+                    teleportGO.SetActive(false);
+                }
+                if (walkingMode == 3)
+                {
+                    teleportGO.SetActive(true);
+                }
+
+                float diffAngle = 0f;
+                float diff = 0f;
+                float angle = 0f;
+                switch (walkingMode)
+                {
+                    case 1:
+                        //realistic mode with periodic rotations
+                        if (!lowerLimbs.leftFootOnGround || !lowerLimbs.rightFootOnGround)
                         {
-                            playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
-                            rightLegUpDone = true;
-                            bothLegsDownDone = false;
+
+                            if (isStraight)
+                            {
+                                isStraight = false;
+                                diffAngle = camera.transform.localEulerAngles.y;
+                                if (diffAngle > 5f)
+                                {
+                                    playerGO.transform.localEulerAngles = new Vector3(playerGO.transform.localEulerAngles.x, playerGO.transform.localEulerAngles.y + diffAngle, playerGO.transform.localEulerAngles.z);
+                                }
+                            }
+
+                            diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
+                            diff *= 2.5f;
+                            angle = (playerGO.transform.localEulerAngles.y) * MathF.PI / 180;
+                            diffX = MathF.Sin(angle) * diff;
+                            diffZ = MathF.Cos(angle) * diff;
+                            movePlayer(playerGO);
                         }
                         else
                         {
-                            if (bothLegsDown && !bothLegsDownDone)
-                            {
-                                playerGO.transform.localPosition = new Vector3(playerGO.transform.localPosition.x - 0.6f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
-                                rightLegUpDone = false;
-                                leftLegUpDone = false;
-                                bothLegsDownDone = true;
-                                movedForward = false;
-                            }
-                            else
-                            {
-
-                                //if(!bothLegsDown && bothLegsDownDone && !movedForward)
-                                //{
-                                //    moveABitForward();
-                                //    movedForward = true;
-                                //}
-
-                            }
+                            isStraight = true;
                         }
-                    }
-                }
-                else
-                {
-                    if (!lowerLimbs.leftFootOnGround || !lowerLimbs.rightFootOnGround)
-                    {
-                        
-                        if (isStraight)
-                        {
-                            isStraight = false;
-                            float diffAngle = camera.transform.localEulerAngles.y;
-                            if(diffAngle > 5f)
-                            {
-                                playerGO.transform.localEulerAngles = new Vector3(playerGO.transform.localEulerAngles.x, playerGO.transform.localEulerAngles.y + diffAngle, playerGO.transform.localEulerAngles.z);
-                            }
-                        }
-
-                        float diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
-                        diff *= 2f;
-                        float angle = (playerGO.transform.localEulerAngles.y) * MathF.PI / 180;
+                        lastForwardValueLeft = leftFoot.transform.localPosition.y;
+                        lastForwardValueRight = rightFoot.transform.localPosition.y;
+                        break;
+                    case 2:
+                        //realistic mode with linear rotations
+                        diffAngle = camera.transform.localEulerAngles.y;
+                        diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
+                        diff *= 2.5f;
+                        angle = (playerGO.transform.localEulerAngles.y + diffAngle) * MathF.PI / 180;
                         diffX = MathF.Sin(angle) * diff;
                         diffZ = MathF.Cos(angle) * diff;
-                        movePlayer();                   
-                    }
-                    else
-                    {
-                        isStraight = true;
-                    }
-                    lastForwardValueLeft = leftFoot.transform.localPosition.y;
-                    lastForwardValueRight = rightFoot.transform.localPosition.y;
+                        movePlayer(playerGO);
+                        lastForwardValueLeft = leftFoot.transform.localPosition.y;
+                        lastForwardValueRight = rightFoot.transform.localPosition.y;
+                        break;
+                    case 3:
+                        //teleportation mode
+                        if (TPButtonPressed){
+                            TPButtonPressed = false;
+                            teleport();
+                        }
+                        diffAngle = camera.transform.localEulerAngles.y;
+                        diff = Math.Abs(leftFoot.transform.localPosition.y - lastForwardValueLeft) + Math.Abs(rightFoot.transform.localPosition.y - lastForwardValueRight);
+                        diff *= 2.5f;
+                        angle = (playerGO.transform.localEulerAngles.y + diffAngle) * MathF.PI / 180;
+                        diffX = MathF.Sin(angle) * diff;
+                        diffZ = MathF.Cos(angle) * diff;
+                        movePlayer(teleportGO);
+                        lastForwardValueLeft = leftFoot.transform.localPosition.y;
+                        lastForwardValueRight = rightFoot.transform.localPosition.y;
+                        break;
+                    default:
+                        break;
                 }
+            }
+            else
+            {
+                teleportGO.SetActive(false);
+                setupDone = false;
             }
 
             //moveGameObjects();
@@ -281,7 +284,7 @@ public class WalkingInPlace : MonoBehaviour
         
     }
 
-    private void movePlayer()
+    private void movePlayer(GameObject playerGO)
     {
         switch ((canGoPositivX, canGoNegativX, canGoPositivZ, canGoNegativZ))
         {
@@ -483,48 +486,19 @@ public class WalkingInPlace : MonoBehaviour
         this.WIP = !this.WIP;
     }
 
-    /*
-    private void moveGameObjects()
+    public void pressTPButton()
     {
-        List<int> indexToRemove = new List<int>();
-
-        float percentageComplete = 0f;
-        if (!doneTab[0])
-        {
-            doneTab[0] = true;
-            startTimeTab[0] = Time.time;
-            startPosTab[0] = playerGO.transform.localPosition;
-            endPosTab[0] = new Vector3(playerGO.transform.localPosition.x - 0.3f, playerGO.transform.localPosition.y, playerGO.transform.localPosition.z);
-        }
-        else
-        {
-            float elapsedTime = (Time.time - startTimeTab[0]);
-            percentageComplete = elapsedTime / desiredDuration;
-            playerGO.transform.localPosition = Vector3.Lerp(startPosTab[0], endPosTab[0], curve.Evaluate(percentageComplete));
-        }
-
-        if (percentageComplete >= 1f)
-        {
-            indexToRemove.Add(0);
-        }
-        
-
-        if(indexToRemove.Count != 0)
-        {
-            doneTab.RemoveAt(0);
-            startTimeTab.RemoveAt(0);
-            startPosTab.RemoveAt(0);
-            endPosTab.RemoveAt(0);
-        }
-
+        TPButtonPressed = true;
     }
 
-    private void moveABitForward()
+    public void teleport()
     {
-        doneTab.Add(false);
-        startTimeTab.Add(0f);
-        startPosTab.Add(playerGO.transform.localPosition);
-        endPosTab.Add(playerGO.transform.localPosition);
+        playerGO.transform.position = teleportGO.transform.position;
+        teleportGO.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
-    */
+
+    public void changeWalkingMode(int newMode)
+    {
+        walkingMode = newMode;
+    }
 }

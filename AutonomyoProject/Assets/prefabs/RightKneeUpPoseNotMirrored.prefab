@@ -358,7 +358,7 @@ MonoBehaviour:
   r_targetAbdAngle: 0
   l_targetHipAngle: 0
   r_targetHipAngle: 90
-  l_targetKneeAngle: 0
+  l_targetKneeAngle: 5
   r_targetKneeAngle: 90
   poseName: rightKneeUp
 --- !u!1 &372416885967470790

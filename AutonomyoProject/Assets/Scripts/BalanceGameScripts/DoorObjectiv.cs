@@ -12,13 +12,13 @@ public class DoorObjectiv : MonoBehaviour
     [SerializeField]
     private int objNb;
 
-    private static int objCount;
+    private static int objCount = 0;
     public bool succeed = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        objCount = 0;
+
     }
 
     // Update is called once per frame
@@ -34,11 +34,21 @@ public class DoorObjectiv : MonoBehaviour
             succeed = true;
             text.color = new Color(0f, 1f, 0f, 1f);
             objCount += 1;
+            Debug.Log("objcount+=1 = " + objCount);
         }
     }
 
     public void resetObjCount()
     {
+        Debug.Log("resetobjcount");
         objCount = 0;
+    }
+
+    public void resetObj()
+    {
+        Debug.Log("resetobj");
+        objCount = 0;
+        succeed = false;
+        text.color = Color.white;
     }
 }

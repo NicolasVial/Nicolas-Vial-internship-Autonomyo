@@ -12,6 +12,7 @@ public class WindowGraph : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxYText;
     [SerializeField] private TextMeshProUGUI avgText;
     [SerializeField] private RectTransform graphContainer;
+    [SerializeField] private MenuLogic menu;
 
     private List<GameObject> toDestroy = new List<GameObject>();
 
@@ -40,7 +41,14 @@ public class WindowGraph : MonoBehaviour
         toDestroy.Clear();
         float yMax = valueList.Max() + 1.5f;
         maxYText.SetText(valueList.Max().ToString("0.0") + " sec");
-        avgText.SetText("Average Time = " + valueList.Average().ToString("0.0"));
+        if(menu.language == 0)
+        {
+            avgText.SetText("Average Time = " + valueList.Average().ToString("0.0"));
+        }
+        else
+        {
+            avgText.SetText("Temps moyen = " + valueList.Average().ToString("0.0"));
+        }
         float xDist = 0.14f;
         float yDist = 0.1f;
         float graphHeight = graphContainer.sizeDelta.y;

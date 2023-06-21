@@ -1100,7 +1100,7 @@ MonoBehaviour:
   l_targetHipAngle: 90
   r_targetHipAngle: 0
   l_targetKneeAngle: 90
-  r_targetKneeAngle: 0
+  r_targetKneeAngle: 5
   poseName: leftKneeUp
 --- !u!1 &5203960319311955655
 GameObject:

@@ -63,9 +63,11 @@ public class HandPositions : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private GameObject victoryGO;
     [SerializeField] private GameObject defeatGO;
+    [SerializeField] private GameObject handPositionWarningGO;
 
     public bool isAlone = true;
     public bool startTimer = false;
+    public string resultText = "";
 
     private bool botRock = false;
     private bool botPaper = false;
@@ -95,75 +97,134 @@ public class HandPositions : MonoBehaviour
     {
         if (isAlone)
         {
-            bool checkScissorsR = CheckScissorsRight();
-            bool checkRockR = CheckRockRight();
-            bool checkPaperR = CheckPaperRight();
-            bool checkScissorsL = CheckScissorsLeft();
-            bool checkRockL = CheckRockLeft();
-            bool checkPaperL = CheckPaperLeft();
-            if (checkScissorsR)
+            if (startTimer)
             {
-                tScissors.SetText("Scissors!!");
-                r_ScissorsGO.SetActive(true);
-            }
-            else
-            {
-                tScissors.SetText("-");
-                r_ScissorsGO.SetActive(false);
-            }
-            if (checkScissorsL)
-            {
-                tScissors.SetText("Scissors!!");
-                l_ScissorsGO.SetActive(true);
-            }
-            else
-            {
-                tScissors.SetText("-");
-                l_ScissorsGO.SetActive(false);
-            }
-            if (checkRockR)
-            {
-                tRock.SetText("Rock!!");
-                r_RockGO.SetActive(true);
-            }
-            else
-            {
-                tRock.SetText("-");
-                r_RockGO.SetActive(false);
-            }
-            if (checkRockL)
-            {
-                tRock.SetText("Rock!!");
-                l_RockGO.SetActive(true);
-            }
-            else
-            {
-                tRock.SetText("-");
-                l_RockGO.SetActive(false);
-            }
-            if (checkPaperR)
-            {
-                tPaper.SetText("Paper!!");
-                r_PaperGO.SetActive(true);
-            }
-            else
-            {
-                tPaper.SetText("-");
-                r_PaperGO.SetActive(false);
+                timer += Time.deltaTime;
+                int seconds = (int)(timer % 60);
+                timerText.SetText((3 - seconds).ToString());
+                if (seconds >= 3)
+                {
+                    timerText.SetText("");
+                    startTimer = false;
+                    timer = 0f;
+                    waitBeforeCheck = true;
+                    botChoice = Random.Range(1, 4);
+                    switch (botChoice)
+                    {
+                        case 1:
+                            botPlaysRock();
+                            avatarMovements.rock();
+                            break;
+                        case 2:
+                            botPlaysPaper();
+                            avatarMovements.paper();
+                            break;
+                        case 3:
+                            botPlaysScissors();
+                            avatarMovements.scissors();
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
-            if (checkPaperL)
+            if (waitBeforeCheck)
             {
-                tPaper.SetText("Paper!!");
-                l_PaperGO.SetActive(true);
+                waitTimer += Time.deltaTime;
+                if (waitTimer >= 0.75f)
+                {
+                    waitBeforeCheck = false;
+                    waitTimer = 0f;
+                    checkResult = true;
+                }
+            }
+
+            if (isRightHand)
+            {
+                bool checkScissorsR = CheckScissorsRight();
+                bool checkRockR = CheckRockRight();
+                bool checkPaperR = CheckPaperRight();
+                if (checkResult)
+                {
+                    if(!checkScissorsR && !checkRockR && !checkPaperR)
+                    {
+                        handPositionWarningGO.SetActive(true);
+                    }
+                    else
+                    {
+                        handPositionWarningGO.SetActive(false);
+                    }
+                    result = CheckResult(checkRockR, checkPaperR, checkScissorsR, botRock, botPaper, botScissors, true);
+                    checkResult = false;
+                    waitAfterCheck = true;
+                    UpdateScores(result);
+                    showBotImage();
+                    if (checkScissorsR)
+                    {
+                        r_ScissorsGO.SetActive(true);
+                    }
+                    if (checkRockR)
+                    {
+                        r_RockGO.SetActive(true);
+                    }
+                    if (checkPaperR)
+                    {
+                        r_PaperGO.SetActive(true);
+                    }
+                    Invoke("StartTimer", 3f);
+                }
             }
             else
             {
-                tPaper.SetText("-");
-                l_PaperGO.SetActive(false);
+                bool checkScissorsL = CheckScissorsLeft();
+                bool checkRockL = CheckRockLeft();
+                bool checkPaperL = CheckPaperLeft();
+                if (checkResult)
+                {
+                    if (!checkScissorsL && !checkRockL && !checkPaperL)
+                    {
+                        handPositionWarningGO.SetActive(true);
+                    }
+                    else
+                    {
+                        handPositionWarningGO.SetActive(false);
+                    }
+                    result = CheckResult(botRock, botPaper, botScissors, checkRockL, checkPaperL, checkScissorsL, false);
+                    checkResult = false;
+                    waitAfterCheck = true;
+                    UpdateScores(result);
+                    showBotImage();
+                    if (checkScissorsL)
+                    {
+                        r_ScissorsGO.SetActive(true);
+                    }
+                    if (checkRockL)
+                    {
+                        r_RockGO.SetActive(true);
+                    }
+                    if (checkPaperL)
+                    {
+                        r_PaperGO.SetActive(true);
+                    }
+                    Invoke("StartTimer", 3f);
+                }
             }
 
-            CheckResult(checkRockR, checkPaperR, checkScissorsR, checkRockL, checkPaperL, checkScissorsL, true);
+            if (waitAfterCheck)
+            {
+                waitAfterTimer += Time.deltaTime;
+                if (waitAfterTimer >= 3f)
+                {
+                    waitAfterCheck = false;
+                    waitAfterTimer = 0f;
+                    removeImages();
+                    DesactiveAllResultImages();
+                    avatarMovements.goToStraight();
+                    l_MinusGO.SetActive(true);
+                    r_MinusGO.SetActive(true);
+                }
+            }
         }
         else
         {
@@ -217,6 +278,14 @@ public class HandPositions : MonoBehaviour
                 bool checkPaperR = CheckPaperRight();
                 if (checkResult)
                 {
+                    if (!checkScissorsR && !checkRockR && !checkPaperR)
+                    {
+                        handPositionWarningGO.SetActive(true);
+                    }
+                    else
+                    {
+                        handPositionWarningGO.SetActive(false);
+                    }
                     result = CheckResult(checkRockR, checkPaperR, checkScissorsR, botRock, botPaper, botScissors, true);
                     checkResult = false;
                     waitAfterCheck = true;
@@ -236,6 +305,8 @@ public class HandPositions : MonoBehaviour
                     }
                     if (opponentScore >= 3 || yourScore >= 3)
                     {
+                        resultText = yourScore.ToString() + "-" + opponentScore.ToString();
+                        avatarMovements.goToStraight();
                         if (opponentScore >= 3)
                         {
                             defeatGO.SetActive(true);
@@ -259,6 +330,14 @@ public class HandPositions : MonoBehaviour
                 bool checkPaperL = CheckPaperLeft();
                 if (checkResult)
                 {
+                    if (!checkScissorsL && !checkRockL && !checkPaperL)
+                    {
+                        handPositionWarningGO.SetActive(true);
+                    }
+                    else
+                    {
+                        handPositionWarningGO.SetActive(false);
+                    }
                     result = CheckResult(botRock, botPaper, botScissors, checkRockL, checkPaperL, checkScissorsL, false);
                     checkResult = false;
                     waitAfterCheck = true;
@@ -278,6 +357,8 @@ public class HandPositions : MonoBehaviour
                     }
                     if (opponentScore >= 3 || yourScore >= 3)
                     {
+                        resultText = yourScore.ToString() + "-" + opponentScore.ToString();
+                        avatarMovements.goToStraight();
                         if (opponentScore >= 3)
                         {
                             defeatGO.SetActive(true);
@@ -571,7 +652,7 @@ public class HandPositions : MonoBehaviour
         }
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
         opponentScore = 0;
         yourScore = 0;
@@ -583,6 +664,11 @@ public class HandPositions : MonoBehaviour
         botScissors = false;
         victoryGO.SetActive(false);
         defeatGO.SetActive(false);
+        waitBeforeCheck = false;
+        checkResult = false;
+        startTimer = false;
+        startButton.gameObject.SetActive(true);
+        startButton.gameObject.SetActive(true);
     }
 
     public void pressUseRightHand()

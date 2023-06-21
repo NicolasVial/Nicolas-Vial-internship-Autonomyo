@@ -36,10 +36,14 @@ public class Game1Logic : MonoBehaviour
     [SerializeField] private GameObject s_r_footGO;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI avrTimeText;
+    [SerializeField] private TextMeshProUGUI scoreTextFR;
+    [SerializeField] private TextMeshProUGUI avrTimeTextFR;
     [SerializeField] private int maxNbOfSuccesses = 10;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private Spawner spawner;
     [SerializeField] private WindowGraph graph;
+    [SerializeField] private WindowGraph graphFR;
+    [SerializeField] private MenuLogic menu;
 
     private float validationCounter = 0f;
     private Vector3[] targetPositions = null;
@@ -73,6 +77,7 @@ public class Game1Logic : MonoBehaviour
     private bool firstFrame = true;
     private float poseScore = 0f;
     [SerializeField] private TextMeshProUGUI finalScoreText;
+    [SerializeField] private TextMeshProUGUI finalScoreTextFR;
     [SerializeField] private TextMeshProUGUI playerScoreText;
 
     //public variables
@@ -81,6 +86,7 @@ public class Game1Logic : MonoBehaviour
     public bool isBlinking = false;
     public float totalScore = 0f;
     public int difficulty = 0;
+    public string resultText = ""; 
 
 
     // Start is called before the first frame update
@@ -272,7 +278,14 @@ public class Game1Logic : MonoBehaviour
                         }
                         totalScore += poseScore / 10f;
                         nbOfSuccesses += 1;
-                        playerScoreText.SetText("Accuracy: " + (totalScore * 10f / nbOfSuccesses).ToString("0.0") + "%");
+                        if(menu.language == 0)
+                        {
+                            playerScoreText.SetText("Accuracy: " + (totalScore * 10f / nbOfSuccesses).ToString("0.0") + "%");
+                        }
+                        else
+                        {
+                            playerScoreText.SetText("Précision: " + (totalScore * 10f / nbOfSuccesses).ToString("0.0") + "%");
+                        }
                         scoreBarImg.fillAmount += poseScore / 1000f;
                         soundManager.playSuccessSound();
                     }
@@ -282,20 +295,39 @@ public class Game1Logic : MonoBehaviour
                 }
 
                 //update the score in real time
-                scoreText.SetText(nbOfSuccesses + "/" + maxNbOfSuccesses);
+                if(menu.language == 0)
+                {
+                    scoreText.SetText(nbOfSuccesses + "/" + maxNbOfSuccesses);
+                }
+                else
+                {
+                    scoreTextFR.SetText(nbOfSuccesses + "/" + maxNbOfSuccesses);
+                }
 
                 if (nbOfSuccesses == maxNbOfSuccesses)
                 {
-                    avrTimeText.SetText(poseTimes.Average().ToString("0.0") + " seconds");
-                    finalScoreText.SetText(totalScore.ToString("0.0") + "/100");
+                    if(menu.language == 0)
+                    {
+                        avrTimeText.SetText(poseTimes.Average().ToString("0.0") + " seconds");
+                        resultText = totalScore.ToString("0.0") + "% Accuracy";
+                        finalScoreText.SetText(totalScore.ToString("0.0") + "/100");
+                        graph.showGraph(poseTimes);
+                    }
+                    else
+                    {
+                        avrTimeTextFR.SetText(poseTimes.Average().ToString("0.0") + " secondes");
+                        resultText = totalScore.ToString("0.0") + "% Précision";
+                        finalScoreTextFR.SetText(totalScore.ToString("0.0") + "/100");
+                        graphFR.showGraph(poseTimes);
+                    }
+                    
                     inGame = false;
-                    finished = true;
                     nbOfSuccesses = 0;
-                    graph.showGraph(poseTimes);
                     poseTimes.Clear();
                     totalTime = 0f;
                     startTime = 0f;
                     totalScore = 0f;
+                    finished = true;
                 }
             } 
         }

@@ -126,57 +126,58 @@ public class StoryGameLogic : MonoBehaviour
         {
             doneDanceGame1 = true;
             screenFade.FadeOut();
-            Invoke("danceGame1Finished", 6f);
+            Invoke("danceGame1Finished", 5f);
         }
 
         if (finishedDanceGame2 && !doneDanceGame2)
         {
             doneDanceGame2 = true;
             screenFade.FadeOut();
-            Invoke("danceGame2Finished", 6f);
+            Invoke("danceGame2Finished", 5f);
         }
 
         if (finishedBeatHandsGame1 && !doneBeatHandsGame1)
         {
             doneBeatHandsGame1 = true;
             screenFade.FadeOut();
-            Invoke("BeatHandsGame1Finished", 6f);
+            Invoke("BeatHandsGame1Finished", 5f);
         }
 
         if (finishedBalanceGame1 && !doneBalanceGame1)
         {
             doneBalanceGame1 = true;
             screenFade.FadeOut();
-            Invoke("BalanceGame1Finished", 6f);
+            Invoke("BalanceGame1Finished", 5f);
         }
 
         if (finishedBeatHandsGame2 && !doneBeatHandsGame2)
         {
             doneBeatHandsGame2 = true;
             screenFade.FadeOut();
-            Invoke("BeatHandsGame2Finished", 6f);
+            Invoke("BeatHandsGame2Finished", 5f);
         }
 
         if (finishedBalanceGame2 && !doneBalanceGame2)
         {
             doneBalanceGame2 = true;
-            Invoke("BalanceGame2Finished", 6f);
+            Invoke("BalanceGame2Finished", 5f);
         }
 
         if (finishedShifumiGame1 && !doneShifumiGame1)
         {
             doneShifumiGame1 = true;
-            game3AvatarJaw.Invoke("toggleIsTalking", 2f);
-            game3AvatarJaw.Invoke("toggleIsTalking", 8f);
-            screenFade.Invoke("FadeOut", 8f);
-            Invoke("ShifumiGame1Finished", 14f);
+            game6AvatarJaw.Invoke("toggleIsTalking", 2f);
+            soundManager.Invoke("playStoryV7_2", 2f);
+            game6AvatarJaw.Invoke("toggleIsTalking", 5f);
+            screenFade.Invoke("FadeOut", 5f);
+            Invoke("ShifumiGame1Finished", 9f);
         }
     }
 
     private void runIntro()
     {
         introAvatarJaw.Invoke("toggleIsTalking", 3f);
-        soundManager.Invoke("playIntroAvatarVoice", 3f);
+        soundManager.Invoke("playStoryV1_1", 3f);
         //Animation of Avatar to say hello to player
         for (int i = 0; i < 8; ++i)
         {
@@ -219,58 +220,62 @@ public class StoryGameLogic : MonoBehaviour
             introAvatarMovements.Invoke("goToStraight", 25f + (3f * i / 2f) + 0.75f);
         }
 
-        WIP.Invoke("toggleWIP", 24f);
-        introAvatarJaw.Invoke("toggleIsTalking", 37.5f);
+        WIP.Invoke("toggleWIP", 24.5f);
+        introAvatarJaw.Invoke("toggleIsTalking", 40f);
     }
 
     public void RunDanceGame1()
     {
         actualGameNb = 1;
         game1AvatarJaw.Invoke("toggleIsTalking", 0f);
-        soundManager.playBryanVoice1();
-        screenFade.Invoke("FadeOut", 10f);
-        Invoke("goToDanceGame", 16f);
+        soundManager.playStoryV2_1();
+        screenFade.Invoke("FadeOut", 13f);
+        Invoke("goToDanceGame", 19f);
         danceGameDifficulty = 1;
-        game1AvatarJaw.Invoke("toggleIsTalking", 10f);
+        game1AvatarJaw.Invoke("toggleIsTalking", 14f);
     }
 
     public void RunDanceGame2()
     {
         actualGameNb = 2;
         game3AvatarJaw.Invoke("toggleIsTalking", 0f);
-        screenFade.Invoke("FadeOut", 6f);
-        Invoke("goToDanceGame", 12f);
+        soundManager.playStoryV5_1();
+        screenFade.Invoke("FadeOut", 12f);
+        Invoke("goToDanceGame", 18f);
         danceGameDifficulty = 2;
-        game3AvatarJaw.Invoke("toggleIsTalking", 6f);
+        game3AvatarJaw.Invoke("toggleIsTalking", 13f);
     }
 
     public void RunBeatHandsGame1()
     {
         actualGameNb = 3;
         game2AvatarJaw.Invoke("toggleIsTalking", 0f);
+        soundManager.playStoryV3_1();
         screenFade.Invoke("FadeOut", 6f);
         Invoke("goToBeatHandsGame", 12f);
         beatHandsGameDifficulty = 2;
-        game2AvatarJaw.Invoke("toggleIsTalking", 6f);
+        game2AvatarJaw.Invoke("toggleIsTalking", 7f);
     }
 
     public void RunBeatHandsGame2()
     {
         actualGameNb = 5;
         game5AvatarJaw.Invoke("toggleIsTalking", 0f);
-        screenFade.Invoke("FadeOut", 6f);
-        Invoke("goToBeatHandsGame", 12f);
-        beatHandsGameDifficulty = 2;
-        game5AvatarJaw.Invoke("toggleIsTalking", 6f);
+        soundManager.playStoryV6_1();
+        screenFade.Invoke("FadeOut", 12f);
+        Invoke("goToBeatHandsGame", 18f);
+        beatHandsGameDifficulty = 3;
+        game5AvatarJaw.Invoke("toggleIsTalking", 13f);
     }
 
     public void RunBalanceGame1()
     {
         actualGameNb = 4;
         game4AvatarJaw.Invoke("toggleIsTalking", 0f);
-        screenFade.Invoke("FadeOut", 6f);
-        Invoke("goToBalanceGame1", 12f);
-        game4AvatarJaw.Invoke("toggleIsTalking", 6f);
+        soundManager.playStoryV4_1();
+        screenFade.Invoke("FadeOut", 7f);
+        Invoke("goToBalanceGame1", 13f);
+        game4AvatarJaw.Invoke("toggleIsTalking", 8f);
     }
 
     public void RunBalanceGame2()
@@ -282,16 +287,17 @@ public class StoryGameLogic : MonoBehaviour
     {
         actualGameNb = 7;
         game6AvatarJaw.Invoke("toggleIsTalking", 0f);
-        screenFade.Invoke("FadeOut", 6f);
-        Invoke("goToShifumiGame1", 12f);
-        game6AvatarJaw.Invoke("toggleIsTalking", 6f);
+        soundManager.playStoryV7_1();
+        screenFade.Invoke("FadeOut", 10f);
+        Invoke("goToShifumiGame1", 16f);
+        game6AvatarJaw.Invoke("toggleIsTalking", 11f);
     }
 
     public void RunEnd()
     {
-        menu.Invoke("PressBackToMenuButton", 12f);
-        screenFade.Invoke("FadeOut", 6f);
-        screenFade.Invoke("FadeIn", 12f);
+        menu.Invoke("PressBackToMenuButton", 24f);
+        screenFade.Invoke("FadeOut", 18f);
+        screenFade.Invoke("FadeIn", 24f);
     }
 
 
@@ -349,8 +355,8 @@ public class StoryGameLogic : MonoBehaviour
         soundManager.stopActualMusic();
         soundManager.toggleWIPMusic();
         WIP.WIP = true;
-        game1AvatarJaw.Invoke("toggleIsTalking", 6f);
-        soundManager.Invoke("playBryanVoice2", 6f);
+        game1AvatarJaw.Invoke("toggleIsTalking", 5f);
+        soundManager.Invoke("playStoryV2_2", 5f);
         game1AvatarJaw.Invoke("toggleIsTalking", 17f);
     }
 
@@ -362,8 +368,9 @@ public class StoryGameLogic : MonoBehaviour
         soundManager.stopActualMusic();
         soundManager.toggleWIPMusic();
         WIP.WIP = true;
-        game3AvatarJaw.Invoke("toggleIsTalking", 6f);
-        game3AvatarJaw.Invoke("toggleIsTalking", 12f);
+        game3AvatarJaw.Invoke("toggleIsTalking", 5f);
+        soundManager.Invoke("playStoryV5_2", 5f);
+        game3AvatarJaw.Invoke("toggleIsTalking", 19f);
     }
 
     private void BeatHandsGame1Finished()
@@ -374,7 +381,8 @@ public class StoryGameLogic : MonoBehaviour
         soundManager.stopActualMusic();
         soundManager.toggleWIPMusic();
         WIP.WIP = true;
-        game2AvatarJaw.Invoke("toggleIsTalking", 6f);
+        game2AvatarJaw.Invoke("toggleIsTalking", 5f);
+        soundManager.Invoke("playStoryV3_2", 5f);
         game2AvatarJaw.Invoke("toggleIsTalking", 12f);
     }
 
@@ -386,8 +394,9 @@ public class StoryGameLogic : MonoBehaviour
         soundManager.stopActualMusic();
         soundManager.toggleWIPMusic();
         WIP.WIP = true;
-        game5AvatarJaw.Invoke("toggleIsTalking", 6f);
-        game5AvatarJaw.Invoke("toggleIsTalking", 12f);
+        game5AvatarJaw.Invoke("toggleIsTalking", 5f);
+        soundManager.Invoke("playStoryV6_2", 5f);
+        game5AvatarJaw.Invoke("toggleIsTalking", 10f);
     }
 
     private void BalanceGame1Finished()
@@ -397,8 +406,9 @@ public class StoryGameLogic : MonoBehaviour
         screenFade.FadeIn();
         game4AvatarGO.SetActive(true);
         WIP.WIP = true;
-        game4AvatarJaw.Invoke("toggleIsTalking", 6f);
-        game4AvatarJaw.Invoke("toggleIsTalking", 12f);
+        game4AvatarJaw.Invoke("toggleIsTalking", 5f);
+        soundManager.Invoke("playStoryV4_2", 5f);
+        game4AvatarJaw.Invoke("toggleIsTalking", 14f);
     }
 
     private void BalanceGame2Finished()
@@ -414,7 +424,7 @@ public class StoryGameLogic : MonoBehaviour
         playerGO.transform.localEulerAngles = new Vector3(0f, -90f, 0f);
         screenFade.FadeIn();
         game6AvatarGO.SetActive(false);
-        Invoke("RunBalanceGame2", 4f);
+        Invoke("RunBalanceGame2", 1f);
     }
 
     public void resetGame()

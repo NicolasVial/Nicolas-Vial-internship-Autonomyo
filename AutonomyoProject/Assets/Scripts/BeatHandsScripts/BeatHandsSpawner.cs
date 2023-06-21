@@ -9,6 +9,7 @@ public class BeatHandsSpawner : MonoBehaviour
     [SerializeField] private Transform[] easySpawnPoints;
     [SerializeField] private Transform[] normalSpawnPoints;
     [SerializeField] private Transform[] hardSpawnPoints;
+    [SerializeField] private Transform[] superHardSpawnPoints;
     [SerializeField] private Transform lookAtPoint;
 
     private List<Transform> possiblePositions = new List<Transform>();
@@ -65,6 +66,12 @@ public class BeatHandsSpawner : MonoBehaviour
                 possiblePositions.AddRange(easySpawnPoints);
                 possiblePositions.AddRange(normalSpawnPoints);
                 possiblePositions.AddRange(hardSpawnPoints);
+                break;
+            case 3:
+                possiblePositions.AddRange(easySpawnPoints);
+                possiblePositions.AddRange(normalSpawnPoints);
+                possiblePositions.AddRange(hardSpawnPoints);
+                possiblePositions.AddRange(superHardSpawnPoints);
                 break;
             default:
                 break;

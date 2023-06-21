@@ -47,6 +47,7 @@ public class ClientSide : MonoBehaviour
 	public int myId = 0;
 	public TCP tcp; // TCP client
 	public TextMeshProUGUI connectText;
+	public TextMeshProUGUI connectTextFR;
 	[SerializeField] GameObject connectionTab;
 	[SerializeField] Button connectButton;
 	[SerializeField] GameObject menu;
@@ -218,22 +219,45 @@ public class ClientSide : MonoBehaviour
 
 	public void setToConnecting()
 	{
-		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.black;
-		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connecting...";
+		if(menuLogic.language == 0)
+        {
+			instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.white;
+			instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connecting...";
+		}
+        else
+        {
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().color = Color.white;
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().text = "Connexion en cours...";
+		}
 	}
 
 	public void setToConnected()
 	{
-		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.green;
-		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connected";
+		if(menuLogic.language == 0)
+        {
+			instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.green;
+			instance.connectText.GetComponent<TextMeshProUGUI>().text = "Connected";
+		}
+        else
+        {
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().color = Color.green;
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().text = "Connecté";
+		}
 	}
 
 	public void setToDisconnected()
 	{
-		instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.red;
-		instance.connectText.GetComponent<TextMeshProUGUI>().text = "Disconnected";
-		// TODO: actually disconnect the socket or network stream.
-		// Send a disconnexion message to the server ?
+		if(menuLogic.language == 0)
+        {
+			instance.connectText.GetComponent<TextMeshProUGUI>().color = Color.red;
+			instance.connectText.GetComponent<TextMeshProUGUI>().text = "Disconnected";
+		}
+        else
+        {
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().color = Color.red;
+			instance.connectTextFR.GetComponent<TextMeshProUGUI>().text = "Déconnecté";
+		}
+		
 		isConnected = false;
 		isConnecting = false; // If it was forced by the button
 		tryAgain = false;

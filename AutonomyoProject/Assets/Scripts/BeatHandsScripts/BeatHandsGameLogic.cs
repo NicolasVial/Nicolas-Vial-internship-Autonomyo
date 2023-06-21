@@ -11,6 +11,10 @@ public class BeatHandsGameLogic : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI finalScoreText;
+    [SerializeField] private TextMeshProUGUI timerTextFR;
+    [SerializeField] private TextMeshProUGUI scoreTextFR;
+    [SerializeField] private TextMeshProUGUI finalScoreTextFR;
+    [SerializeField] private MenuLogic menu;
 
     private float inGameTime = 0f;
     private bool isPlaying = false;
@@ -19,6 +23,7 @@ public class BeatHandsGameLogic : MonoBehaviour
     public int totalScore = 0;
     public int difficulty = 0;
     public bool finished = false;
+    public string resultText = "";
 
     // Start is called before the first frame update
     void Start()
@@ -32,13 +37,30 @@ public class BeatHandsGameLogic : MonoBehaviour
         if (isPlaying)
         {
             spawner.isPlaying = true;
-            timerText.SetText((60f - inGameTime).ToString("0.0"));
-            scoreText.SetText(totalScore + " Points");
+            if(menu.language == 0)
+            {
+                timerText.SetText((60f - inGameTime).ToString("0.0"));
+                scoreText.SetText(totalScore + " Points");
+            }
+            else
+            {
+                timerTextFR.SetText((60f - inGameTime).ToString("0.0"));
+                scoreTextFR.SetText(totalScore + " Points");
+            }
 
             if(inGameTime > 60f)
             {
                 ToggleIsPlaying();
-                finalScoreText.SetText("You finished the game with a score of " + totalScore + " in 60 seconds!");
+                if(menu.language == 0)
+                {
+                    finalScoreText.SetText("You finished the game with a score of " + totalScore + " in 60 seconds!");
+                    resultText = totalScore.ToString() + " Hit";
+                }
+                else
+                {
+                    finalScoreTextFR.SetText("Tu as fini la partie avec un score de " + totalScore + " en 60 secondes!");
+                    resultText = totalScore.ToString() + " Touché";
+                }
                 totalScore = 0;
                 inGameTime = 0f;
                 finished = true;

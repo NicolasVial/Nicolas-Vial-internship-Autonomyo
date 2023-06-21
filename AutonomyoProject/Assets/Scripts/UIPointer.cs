@@ -10,6 +10,7 @@ public class UIPointer : MonoBehaviour
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private LayerMask layersToHit;
     [SerializeField] private GameObject circleBarToSpawn;
+    [SerializeField] private GameObject teleportButtonGO;
 
     private float defaultLength = 1000.0f;
     private GameObject GOHit;
@@ -64,49 +65,49 @@ public class UIPointer : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         if(Physics.Raycast(ray, out hit, defaultLength, layersToHit))
         {   
-            if (hit.transform.gameObject.GetComponent<Button>() != null || hit.transform.gameObject.GetComponent<Toggle>() != null)
+            if (hit.transform.gameObject.GetComponent<Button>() != null || hit.transform.gameObject.GetComponent<Toggle>() != null || hit.transform.gameObject.name == "WalkingInPlace")
             {
                 lineRenderer.GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0, 0.8f));
-                if (GOHit == null)
+                if(hit.transform.gameObject.name == "WalkingInPlace")
                 {
-                    GOHit = hit.transform.gameObject;
-                    Vector3 pos = hit.point;
-                    circleBar = Instantiate(circleBarToSpawn, gameObject.transform);
-                    circleBar.transform.localPosition = new Vector3(circleBar.transform.localPosition.x, circleBar.transform.localPosition.y, circleBar.transform.localPosition.z + 2f);
-                    circleBar.transform.eulerAngles = new Vector3(circleBar.transform.eulerAngles.x, 0f, circleBar.transform.eulerAngles.z);
-                    GameObject child = circleBar.transform.GetChild(0).gameObject;
-                    child.transform.localPosition = new Vector3(0f, 0f, 0f);
-                    circleBar.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-                    progressBar = GetComponentInChildren<CircularProgressBar>();
-                    if(hit.transform.gameObject.GetComponent<Button>() != null)
+                    if (GOHit == null)
                     {
-                        button = GOHit.GetComponent<Button>();
-                        button.Select();
+                        GOHit = teleportButtonGO;
+                        Vector3 pos = hit.point;
+                        circleBar = Instantiate(circleBarToSpawn, gameObject.transform);
+                        circleBar.transform.localPosition = new Vector3(circleBar.transform.localPosition.x, circleBar.transform.localPosition.y, circleBar.transform.localPosition.z + 2f);
+                        circleBar.transform.eulerAngles = new Vector3(circleBar.transform.eulerAngles.x, 0f, circleBar.transform.eulerAngles.z);
+                        GameObject child = circleBar.transform.GetChild(0).gameObject;
+                        child.transform.localPosition = new Vector3(0f, 0f, 0f);
+                        circleBar.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+                        progressBar = GetComponentInChildren<CircularProgressBar>();
+                        if (GOHit.GetComponent<Button>() != null)
+                        {
+                            button = GOHit.GetComponent<Button>();
+                            button.Select();
+                        }
+                        else
+                        {
+                            toggle = GOHit.GetComponent<Toggle>();
+                            toggle.Select();
+                        }
                     }
                     else
                     {
-                        toggle = GOHit.GetComponent<Toggle>();
-                        toggle.Select();
-                    }
-                }
-                else
-                {
-                    if(GOHit == hit.transform.gameObject)
-                    {
-                        if(validationCounter / timeToValidate < 1f)
+                        if (validationCounter / timeToValidate < 1f)
                         {
                             validationCounter += Time.deltaTime;
                             progressBar.m_FillAmount = validationCounter / timeToValidate;
                         }
                         else
                         {
-                            if (hit.transform.gameObject.GetComponent<Button>() != null)
+                            if (GOHit.GetComponent<Button>() != null)
                             {
                                 button.onClick.Invoke();
                             }
                             else
                             {
-                                if(toggle.gameObject.tag == "ToggleMirror")
+                                if (toggle.gameObject.tag == "ToggleMirror")
                                 {
                                     menu.ToggleMirrorAvatarButton();
                                 }
@@ -121,10 +122,71 @@ public class UIPointer : MonoBehaviour
                             Destroy(circleBar);
                             button = null;
                             toggle = null;
-                        }
-
+                        }       
                     }
                 }
+                else
+                {
+                    if (GOHit == null)
+                    {
+                        GOHit = hit.transform.gameObject;
+                        Vector3 pos = hit.point;
+                        circleBar = Instantiate(circleBarToSpawn, gameObject.transform);
+                        circleBar.transform.localPosition = new Vector3(circleBar.transform.localPosition.x, circleBar.transform.localPosition.y, circleBar.transform.localPosition.z + 2f);
+                        circleBar.transform.eulerAngles = new Vector3(circleBar.transform.eulerAngles.x, 0f, circleBar.transform.eulerAngles.z);
+                        GameObject child = circleBar.transform.GetChild(0).gameObject;
+                        child.transform.localPosition = new Vector3(0f, 0f, 0f);
+                        circleBar.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+                        progressBar = GetComponentInChildren<CircularProgressBar>();
+                        if (hit.transform.gameObject.GetComponent<Button>() != null)
+                        {
+                            button = GOHit.GetComponent<Button>();
+                            button.Select();
+                        }
+                        else
+                        {
+                            toggle = GOHit.GetComponent<Toggle>();
+                            toggle.Select();
+                        }
+                    }
+                    else
+                    {
+                        if (GOHit == hit.transform.gameObject)
+                        {
+                            if (validationCounter / timeToValidate < 1f)
+                            {
+                                validationCounter += Time.deltaTime;
+                                progressBar.m_FillAmount = validationCounter / timeToValidate;
+                            }
+                            else
+                            {
+                                if (hit.transform.gameObject.GetComponent<Button>() != null)
+                                {
+                                    button.onClick.Invoke();
+                                }
+                                else
+                                {
+                                    if (toggle.gameObject.tag == "ToggleMirror")
+                                    {
+                                        menu.ToggleMirrorAvatarButton();
+                                    }
+                                    else
+                                    {
+                                        controller.toggleArmMotors();
+                                    }
+                                }
+                                validationCounter = 0f;
+                                progressBar.m_FillAmount = validationCounter / timeToValidate;
+                                GOHit = null;
+                                Destroy(circleBar);
+                                button = null;
+                                toggle = null;
+                            }
+
+                        }
+                    }
+                }
+                
             }
             else
             {

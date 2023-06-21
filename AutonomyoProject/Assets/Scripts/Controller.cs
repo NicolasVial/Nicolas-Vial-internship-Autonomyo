@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     [SerializeField] GameObject theClient;
     [SerializeField] GameObject checkMark1;
     [SerializeField] GameObject checkMark2;
+    [SerializeField] GameObject checkMark1FR;
 
     private ClientSide clientSide;
     private bool areMotorsArmed = false;
@@ -35,6 +36,7 @@ public class Controller : MonoBehaviour
                 areMotorsArmed = false;
                 checkMark1.SetActive(false);
                 checkMark2.SetActive(false);
+                checkMark1FR.SetActive(false);
             }
             else
             {
@@ -42,6 +44,7 @@ public class Controller : MonoBehaviour
                 areMotorsArmed = true;
                 checkMark1.SetActive(true);
                 checkMark2.SetActive(true);
+                checkMark1FR.SetActive(true);
             }
         }
     }
@@ -51,6 +54,14 @@ public class Controller : MonoBehaviour
         if (clientSide.isStreaming)
         {
             clientSide.SetBoolSyncVar("controller/set_abduction_zero", true);
+        }
+    }
+
+    public void setJointZero()
+    {
+        if (clientSide.isStreaming)
+        {
+            clientSide.SetBoolSyncVar("controller/set_encoders_zero", true);
         }
     }
 

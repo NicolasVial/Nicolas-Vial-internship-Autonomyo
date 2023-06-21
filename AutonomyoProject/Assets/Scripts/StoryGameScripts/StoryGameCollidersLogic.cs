@@ -13,16 +13,22 @@ public class StoryGameCollidersLogic : MonoBehaviour
     [SerializeField] private StoryGameLogic gameLogic;
     [SerializeField] private OVRScreenFade screenFade;
     [SerializeField] private WalkingInPlace walkingInPlace;
+    [SerializeField] private GameObject victoryGO;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "WalkingInPlace")
         {
             walkingInPlace.WIP = false;
+            if(walkingInPlace.walkingMode == 3)
+            {
+                walkingInPlace.teleport();
+            }
 
             switch (this.gameObject.tag)
             {
                 case "danceGameCollider1":
+                    victoryGO.SetActive(false);
                     gameLogic.Invoke("RunDanceGame1", 1f);
                     beatHandsGameHitBox1.SetActive(true);
                     break;
@@ -46,6 +52,7 @@ public class StoryGameCollidersLogic : MonoBehaviour
                     gameLogic.Invoke("RunShifumiGame1", 1f);
                     break;
                 case "endCollider":
+                    victoryGO.SetActive(true);
                     gameLogic.Invoke("RunEnd", 1f);
                     break;
                 default:
