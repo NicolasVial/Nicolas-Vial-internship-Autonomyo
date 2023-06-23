@@ -51,6 +51,7 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject connexionTabFR;
     [SerializeField] private GameObject controllerTab;
     [SerializeField] private GameObject welcomeTab;
+    [SerializeField] private GameObject welcomeTabFR;
     [SerializeField] private GameObject menuTab;
     [SerializeField] private GameObject gamesTab;
     [SerializeField] private GameObject gamesTabFR;
@@ -189,6 +190,8 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private Button storyGameStartShifumiGameButtonFR;
     [SerializeField] private HandPositions shifumiLogic;
     [SerializeField] private HandPositions storyShifumiLogic;
+    [SerializeField] private HandPositions shifumiLogicFR;
+    [SerializeField] private HandPositions storyShifumiLogicFR;
 
     //Story game variables
     [SerializeField] private Button storyGameBackToMenuButton;
@@ -217,10 +220,12 @@ public class MenuLogic : MonoBehaviour
         actualLandscape.SetActive(true);
 
         //actualTab = welcomeTab;
-        actualTab = languageTab;
+        actualTab = welcomeTabFR;
+        //actualTab = languageTab;
         //actualTab = gamesTab;
         actualTab.SetActive(true);
         firstButton.Select();
+        soundManager.Invoke("playIntroMenuFR1", 5f);
     }
 
     // Update is called once per frame
@@ -268,6 +273,7 @@ public class MenuLogic : MonoBehaviour
         {
             changeActualTab(connexionTabFR);
             connectionButtonFR.Select();
+            soundManager.playIntroMenuFR2();
         }
     }
 
@@ -321,6 +327,7 @@ public class MenuLogic : MonoBehaviour
         {
             changeActualTab(calibrationTabFR);
             zeroLeftCellsButtonFR.Select();
+            soundManager.playIntroMenuFR3();
         }
     }
 
@@ -528,6 +535,8 @@ public class MenuLogic : MonoBehaviour
         controllerTab.SetActive(true);
         shifumiLogic.ResetGame();
         storyShifumiLogic.ResetGame();
+        shifumiLogicFR.ResetGame();
+        storyShifumiLogicFR.ResetGame();
         if (inStoryGame)
         {
             inStoryGame = false;
@@ -1051,6 +1060,7 @@ public class MenuLogic : MonoBehaviour
             switch (storyGameLogic.actualGameNb)
             {
                 case 7:
+                    resultsTexts.changeShifumiScoreText(storyShifumiLogicFR.resultText);
                     storyGameLogic.finishedShifumiGame1 = true;
                     storyGameStartShifumiGameButtonFR.gameObject.SetActive(true);
                     break;

@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 22.06.2023
+  Summary: The following script manages all the musics and sounds in the game. 
+           Other classes simply need to call a function from this class to obtain the wanted sound/music.
+*/
+
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] private MenuLogic menu;
@@ -29,6 +37,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource storyV6FR2;
     [SerializeField] private AudioSource storyV7FR1;
     [SerializeField] private AudioSource storyV7FR2;
+    [SerializeField] private AudioSource introMenuFR1;
+    [SerializeField] private AudioSource introMenuFR2;
+    [SerializeField] private AudioSource introMenuFR3;
 
     private AudioSource actualMusic;
     private AudioSource lastVoiceHeard;
@@ -269,6 +280,47 @@ public class SoundManager : MonoBehaviour
         {
             storyV7FR2.Play();
             lastVoiceHeard = storyV7FR2;
+        }
+    }
+
+    public void playIntroMenuFR1()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            introMenuFR1.Play();
+            lastVoiceHeard = introMenuFR1;
+        }
+    }
+
+    public void playIntroMenuFR2()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            introMenuFR1.Stop();
+            introMenuFR2.Play();
+            lastVoiceHeard = introMenuFR2;
+        }
+    }
+
+    public void playIntroMenuFR3()
+    {
+        if (menu.language == 0)
+        {
+
+        }
+        else
+        {
+            introMenuFR2.Stop();
+            introMenuFR3.Play();
+            lastVoiceHeard = introMenuFR3;
         }
     }
 

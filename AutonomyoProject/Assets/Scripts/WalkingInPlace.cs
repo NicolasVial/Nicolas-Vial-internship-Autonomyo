@@ -172,6 +172,7 @@ public class WalkingInPlace : MonoBehaviour
             }
             else
             {
+                teleportGO.transform.localPosition = new Vector3(0f, 0f, 0f);
                 teleportGO.SetActive(false);
                 setupDone = false;
             }
