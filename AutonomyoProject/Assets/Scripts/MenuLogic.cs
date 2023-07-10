@@ -19,6 +19,7 @@ public class MenuLogic : MonoBehaviour
     //player
     [SerializeField] private GameObject player;
     [SerializeField] private Transform initPlayerTransform;
+    [SerializeField] private UIPointer pointer;
 
     //Spawner
     [SerializeField] private Spawner spawner;
@@ -97,6 +98,7 @@ public class MenuLogic : MonoBehaviour
 
     //start Buttons
     [SerializeField] private Button firstButton;
+    [SerializeField] private Button firstButtonFR;
     [SerializeField] private Button connectionButton;
     [SerializeField] private Button connectionButtonFR;
     [SerializeField] private Button EngButton;
@@ -224,7 +226,8 @@ public class MenuLogic : MonoBehaviour
         //actualTab = languageTab;
         //actualTab = gamesTab;
         actualTab.SetActive(true);
-        firstButton.Select();
+        firstButtonFR.Select();
+        pointer.TogglePointer();
         soundManager.Invoke("playIntroMenu1", 5f);
     }
 
@@ -397,6 +400,7 @@ public class MenuLogic : MonoBehaviour
             doneCalibrationButtonFR.gameObject.SetActive(true);
             doneCalibrationButtonFR.Select();
         }
+        pointer.TogglePointer();
     }
 
     public void PressDoneCalibration()
@@ -851,6 +855,7 @@ public class MenuLogic : MonoBehaviour
         inStoryGame = true;
         danceGameGO.transform.position = danceGameStoryGamePos.transform.position;
         beatHandsGameGO.transform.position = beatHandsGameStoryGamePos.transform.position;
+        Wip.walkingMode = 1;
     }
 
     public void StoryGameGoToDanceGame()
@@ -970,6 +975,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButton.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
+                    Wip.walkingMode = 2;
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
@@ -989,6 +995,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButtonFR.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
+                    Wip.walkingMode = 2;
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
