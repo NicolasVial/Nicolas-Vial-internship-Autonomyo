@@ -225,7 +225,7 @@ public class MenuLogic : MonoBehaviour
         //actualTab = gamesTab;
         actualTab.SetActive(true);
         firstButton.Select();
-        soundManager.Invoke("playIntroMenuFR1", 5f);
+        soundManager.Invoke("playIntroMenu1", 5f);
     }
 
     // Update is called once per frame
@@ -264,7 +264,8 @@ public class MenuLogic : MonoBehaviour
     public void PressLanguageButton(int language)
     {
         this.language = language;
-        if(language == 0)
+        soundManager.playIntroMenu2();
+        if (language == 0)
         {
             changeActualTab(connexionTab);
             connectionButton.Select();
@@ -273,7 +274,6 @@ public class MenuLogic : MonoBehaviour
         {
             changeActualTab(connexionTabFR);
             connectionButtonFR.Select();
-            soundManager.playIntroMenuFR2();
         }
     }
 
@@ -318,6 +318,7 @@ public class MenuLogic : MonoBehaviour
 
     public void ConnectedToTheExo()
     {
+        soundManager.playIntroMenu3();
         if (language == 0)
         {
             changeActualTab(calibrationTab);
@@ -327,7 +328,6 @@ public class MenuLogic : MonoBehaviour
         {
             changeActualTab(calibrationTabFR);
             zeroLeftCellsButtonFR.Select();
-            soundManager.playIntroMenuFR3();
         }
     }
 

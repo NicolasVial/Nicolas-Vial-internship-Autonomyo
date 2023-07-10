@@ -25,6 +25,16 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource storyV1FR1;
     [SerializeField] private AudioSource storyV2ENG1;
     [SerializeField] private AudioSource storyV2ENG2;
+    [SerializeField] private AudioSource storyV3ENG1;
+    [SerializeField] private AudioSource storyV3ENG2;
+    [SerializeField] private AudioSource storyV4ENG1;
+    [SerializeField] private AudioSource storyV4ENG2;
+    [SerializeField] private AudioSource storyV5ENG1;
+    [SerializeField] private AudioSource storyV5ENG2;
+    [SerializeField] private AudioSource storyV6ENG1;
+    [SerializeField] private AudioSource storyV6ENG2;
+    [SerializeField] private AudioSource storyV7ENG1;
+    [SerializeField] private AudioSource storyV7ENG2;
     [SerializeField] private AudioSource storyV2FR1;
     [SerializeField] private AudioSource storyV2FR2;
     [SerializeField] private AudioSource storyV3FR1;
@@ -40,6 +50,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource introMenuFR1;
     [SerializeField] private AudioSource introMenuFR2;
     [SerializeField] private AudioSource introMenuFR3;
+    [SerializeField] private AudioSource introMenuEng1;
+    [SerializeField] private AudioSource introMenuEng2;
+    [SerializeField] private AudioSource introMenuEng3;
 
     private AudioSource actualMusic;
     private AudioSource lastVoiceHeard;
@@ -157,7 +170,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV3ENG1.Play();
+            lastVoiceHeard = storyV3ENG1;
         }
         else
         {
@@ -170,7 +184,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV3ENG2.Play();
+            lastVoiceHeard = storyV3ENG2;
         }
         else
         {
@@ -183,7 +198,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV4ENG1.Play();
+            lastVoiceHeard = storyV4ENG1;
         }
         else
         {
@@ -196,7 +212,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV4ENG2.Play();
+            lastVoiceHeard = storyV4ENG2;
         }
         else
         {
@@ -209,7 +226,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV5ENG1.Play();
+            lastVoiceHeard = storyV5ENG1;
         }
         else
         {
@@ -222,7 +240,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV5ENG2.Play();
+            lastVoiceHeard = storyV5ENG2;
         }
         else
         {
@@ -235,7 +254,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV6ENG1.Play();
+            lastVoiceHeard = storyV6ENG1;
         }
         else
         {
@@ -248,7 +268,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV6ENG2.Play();
+            lastVoiceHeard = storyV6ENG2;
         }
         else
         {
@@ -261,7 +282,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV7ENG1.Play();
+            lastVoiceHeard = storyV7ENG1;
         }
         else
         {
@@ -274,7 +296,8 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
-
+            storyV7ENG2.Play();
+            lastVoiceHeard = storyV7ENG2;
         }
         else
         {
@@ -283,11 +306,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void playIntroMenuFR1()
+    public void playIntroMenu1()
     {
         if (menu.language == 0)
         {
-
+            introMenuEng1.Play();
+            lastVoiceHeard = introMenuEng1;
         }
         else
         {
@@ -296,11 +320,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void playIntroMenuFR2()
+    public void playIntroMenu2()
     {
         if (menu.language == 0)
         {
-
+            introMenuEng2.Play();
+            lastVoiceHeard = introMenuEng2;
         }
         else
         {
@@ -310,11 +335,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void playIntroMenuFR3()
+    public void playIntroMenu3()
     {
         if (menu.language == 0)
         {
-
+            introMenuEng2.Play();
+            lastVoiceHeard = introMenuEng2;
         }
         else
         {

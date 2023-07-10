@@ -44,6 +44,16 @@ public class Game1Logic : MonoBehaviour
     [SerializeField] private WindowGraph graph;
     [SerializeField] private WindowGraph graphFR;
     [SerializeField] private MenuLogic menu;
+    [SerializeField] private Material correctAngleMat;
+    [SerializeField] private Material wrongAngleMat;
+    [SerializeField] private GameObject l_hipCorrectness;
+    [SerializeField] private GameObject l_kneeCorrectness;
+    [SerializeField] private GameObject r_hipCorrectness;
+    [SerializeField] private GameObject r_kneeCorrectness;
+    [SerializeField] private GameObject l_arrowExter;
+    [SerializeField] private GameObject l_arrowInter;
+    [SerializeField] private GameObject r_arrowExter;
+    [SerializeField] private GameObject r_arrowInter;
 
     private float validationCounter = 0f;
     private Vector3[] targetPositions = null;
@@ -351,14 +361,9 @@ public class Game1Logic : MonoBehaviour
         float check_l_kneeAngle = checkSpecificAngle(l_targetKneeAngle, leftKneeAngle.FloatVar, marginOfErrorAngles);
         float check_r_kneeAngle = checkSpecificAngle(r_targetKneeAngle, rightKneeAngle.FloatVar, marginOfErrorAngles);
 
-        if (check_l_abdAngle != -1f && check_r_abdAngle != -1f && check_l_hipAngle != -1f && check_r_hipAngle != -1f && check_l_kneeAngle != -1f && check_r_kneeAngle != -1f)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        bool angleCorrectness = checkAngleCorrectness(check_l_abdAngle, check_r_abdAngle, check_l_hipAngle, check_r_hipAngle, check_l_kneeAngle, check_r_kneeAngle);
+
+        return angleCorrectness;
     }
 
     private float checkSpecificAngle(float targetAngle, float actualAngle, float marginOfError)
@@ -383,6 +388,56 @@ public class Game1Logic : MonoBehaviour
             return -1f;
         }
 
+    }
+
+    private bool checkAngleCorrectness(float check_l_abdAngle, float check_r_abdAngle, float check_l_hipAngle, float check_r_hipAngle, float check_l_kneeAngle, float check_r_kneeAngle)
+    {
+        if(check_l_hipAngle == -1f)
+        {
+            l_hipCorrectness.GetComponent<MeshRenderer>().material = wrongAngleMat;
+        }
+        else
+        {
+            l_hipCorrectness.GetComponent<MeshRenderer>().material = correctAngleMat;
+        }
+
+        if (check_r_hipAngle == -1f)
+        {
+            r_hipCorrectness.GetComponent<MeshRenderer>().material = wrongAngleMat;
+        }
+        else
+        {
+            r_hipCorrectness.GetComponent<MeshRenderer>().material = correctAngleMat;
+        }
+
+        if (check_l_kneeAngle == -1f)
+        {
+            l_kneeCorrectness.GetComponent<MeshRenderer>().material = wrongAngleMat;
+        }
+        else
+        {
+            l_kneeCorrectness.GetComponent<MeshRenderer>().material = correctAngleMat;
+        }
+
+        if (check_r_kneeAngle == -1f)
+        {
+            r_kneeCorrectness.GetComponent<MeshRenderer>().material = wrongAngleMat;
+        }
+        else
+        {
+            r_kneeCorrectness.GetComponent<MeshRenderer>().material = correctAngleMat;
+        }
+
+        //Could add abduction helpers if needed
+
+        if (check_l_abdAngle != -1f && check_r_abdAngle != -1f && check_l_hipAngle != -1f && check_r_hipAngle != -1f && check_l_kneeAngle != -1f && check_r_kneeAngle != -1f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private void blink()
@@ -423,16 +478,16 @@ public class Game1Logic : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                marginOfErrorAngles = 15f;
-                marginOfErrorAnglesAbd = 13f;
+                marginOfErrorAngles = 20f;
+                marginOfErrorAnglesAbd = 15f;
                 break;
             case 1:
-                marginOfErrorAngles = 13f;
-                marginOfErrorAnglesAbd = 10f;
+                marginOfErrorAngles = 17f;
+                marginOfErrorAnglesAbd = 13f;
                 break;
             case 2:
-                marginOfErrorAngles = 11f;
-                marginOfErrorAnglesAbd = 10f;
+                marginOfErrorAngles = 15f;
+                marginOfErrorAnglesAbd = 11f;
                 break;
             default:
                 break;

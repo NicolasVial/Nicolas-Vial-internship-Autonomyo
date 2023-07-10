@@ -64,11 +64,11 @@ public class UIPointer : MonoBehaviour
         RaycastHit hit;
         Ray ray = new Ray(transform.position, transform.forward);
         if(Physics.Raycast(ray, out hit, defaultLength, layersToHit))
-        {   
-            if (hit.transform.gameObject.GetComponent<Button>() != null || hit.transform.gameObject.GetComponent<Toggle>() != null || hit.transform.gameObject.name == "WalkingInPlace")
+        {
+            if (hit.transform.gameObject.GetComponent<Button>() != null || hit.transform.gameObject.GetComponent<Toggle>() != null || hit.transform.gameObject.name == "WalkingInPlace" || hit.transform.gameObject.name == "WIPTeleportationGO")
             {
                 lineRenderer.GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 1, 0, 0.8f));
-                if(hit.transform.gameObject.name == "WalkingInPlace")
+                if(hit.transform.gameObject.name == "WalkingInPlace" || hit.transform.gameObject.name == "WIPTeleportationGO")
                 {
                     if (GOHit == null)
                     {
