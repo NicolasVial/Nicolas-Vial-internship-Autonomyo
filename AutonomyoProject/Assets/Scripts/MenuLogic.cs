@@ -399,6 +399,8 @@ public class MenuLogic : MonoBehaviour
             howToCalibrateAvatarTextGOFR.SetActive(true);
             doneCalibrationButtonFR.gameObject.SetActive(true);
             doneCalibrationButtonFR.Select();
+            soundManager.playIntroMenu4();
+
         }
         pointer.TogglePointer();
     }

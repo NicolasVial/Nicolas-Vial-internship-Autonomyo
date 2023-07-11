@@ -50,6 +50,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource introMenuFR1;
     [SerializeField] private AudioSource introMenuFR2;
     [SerializeField] private AudioSource introMenuFR3;
+    [SerializeField] private AudioSource introMenuFR4;
     [SerializeField] private AudioSource introMenuEng1;
     [SerializeField] private AudioSource introMenuEng2;
     [SerializeField] private AudioSource introMenuEng3;
@@ -324,6 +325,7 @@ public class SoundManager : MonoBehaviour
     {
         if (menu.language == 0)
         {
+            introMenuEng1.Stop();
             introMenuEng2.Play();
             lastVoiceHeard = introMenuEng2;
         }
@@ -347,6 +349,20 @@ public class SoundManager : MonoBehaviour
             introMenuFR2.Stop();
             introMenuFR3.Play();
             lastVoiceHeard = introMenuFR3;
+        }
+    }
+
+    public void playIntroMenu4()
+    {
+        if (menu.language == 0)
+        {
+           
+        }
+        else
+        {
+            introMenuFR3.Stop();
+            introMenuFR4.Play();
+            lastVoiceHeard = introMenuFR4;
         }
     }
 
