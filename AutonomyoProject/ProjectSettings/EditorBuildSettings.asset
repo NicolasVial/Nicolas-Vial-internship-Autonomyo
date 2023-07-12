@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TestSceneGroupBFR.unity
+    guid: 5f1d75b81fa621c4ca15c85b245e5f56
+  - enabled: 0
     path: Assets/Scenes/TestSceneGroupAFR.unity
     guid: f81db46117e816943b922df7ebd953f9
   - enabled: 0

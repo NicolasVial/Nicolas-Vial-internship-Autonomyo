@@ -229,6 +229,7 @@ public class MenuLogic : MonoBehaviour
         firstButtonFR.Select();
         pointer.TogglePointer();
         soundManager.Invoke("playIntroMenu1", 5f);
+        pointer.Invoke("TogglePointer", 5f);
     }
 
     // Update is called once per frame
@@ -857,7 +858,8 @@ public class MenuLogic : MonoBehaviour
         inStoryGame = true;
         danceGameGO.transform.position = danceGameStoryGamePos.transform.position;
         beatHandsGameGO.transform.position = beatHandsGameStoryGamePos.transform.position;
-        Wip.walkingMode = 1;
+        Wip.changeWalkingMode(1);
+        pointer.TogglePointer();
     }
 
     public void StoryGameGoToDanceGame()
@@ -977,7 +979,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButton.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
-                    Wip.walkingMode = 2;
+                    Wip.changeWalkingMode(2);
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
@@ -997,7 +999,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButtonFR.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
-                    Wip.walkingMode = 2;
+                    Wip.changeWalkingMode(2);
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
