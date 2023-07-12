@@ -857,7 +857,7 @@ public class MenuLogic : MonoBehaviour
         inStoryGame = true;
         danceGameGO.transform.position = danceGameStoryGamePos.transform.position;
         beatHandsGameGO.transform.position = beatHandsGameStoryGamePos.transform.position;
-        Wip.walkingMode = 1;
+        Wip.changeWalkingMode(2);
     }
 
     public void StoryGameGoToDanceGame()
@@ -977,7 +977,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButton.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
-                    Wip.walkingMode = 2;
+                    Wip.changeWalkingMode(1);
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
@@ -997,7 +997,7 @@ public class MenuLogic : MonoBehaviour
                     storyGameLogic.finishedBalanceGame1 = true;
                     storyGameStartBalanceGameButtonFR.gameObject.SetActive(true);
                     resultsTexts.changeBalanceScore1Text(balance1Logic.resultText);
-                    Wip.walkingMode = 2;
+                    Wip.changeWalkingMode(1);
                     break;
                 case 6:
                     storyGameLogic.finishedBalanceGame2 = true;
