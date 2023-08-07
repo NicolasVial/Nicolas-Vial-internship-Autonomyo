@@ -10,7 +10,7 @@ using QuickVR;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
+  Date: 14.07.2023
   Summary: The following script contains the logic of the menu. All the buttons logic and all the transitions are handled here.
 */
 
@@ -227,7 +227,7 @@ public class MenuLogic : MonoBehaviour
         //actualTab = gamesTab;
         actualTab.SetActive(true);
         firstButtonFR.Select();
-        pointer.TogglePointer();
+        //pointer.TogglePointer();
         soundManager.Invoke("playIntroMenu1", 5f);
     }
 
@@ -402,7 +402,7 @@ public class MenuLogic : MonoBehaviour
             soundManager.playIntroMenu4();
 
         }
-        pointer.TogglePointer();
+        //pointer.TogglePointer();
     }
 
     public void PressDoneCalibration()

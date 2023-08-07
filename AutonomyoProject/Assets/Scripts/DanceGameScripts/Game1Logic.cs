@@ -483,11 +483,11 @@ public class Game1Logic : MonoBehaviour
                 break;
             case 1:
                 marginOfErrorAngles = 17f;
-                marginOfErrorAnglesAbd = 13f;
+                marginOfErrorAnglesAbd = 15f;
                 break;
             case 2:
                 marginOfErrorAngles = 15f;
-                marginOfErrorAnglesAbd = 11f;
+                marginOfErrorAnglesAbd = 15f;
                 break;
             default:
                 break;
