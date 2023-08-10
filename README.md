@@ -1,5 +1,7 @@
 # Nicolas-Vial-internship-Autonomyo
-Ce repository contient la totalité du code nécessaire au bon fonctionnement de système créé lors de mon projet de Master à l'EPFL au sain de la start-up Autonoymo.
+This repository contains all the code necessary for the proper functioning of the system developed during my Master's project at EPFL within the startup Autonomyo.
 
-# 1. Marche à suivre pour lancer l'application
-a) 
+All scripts written during the project are available in the "scripts" folder of the project's "assets" folder.
+
+# 1. How to launch the application
+a) TODO
