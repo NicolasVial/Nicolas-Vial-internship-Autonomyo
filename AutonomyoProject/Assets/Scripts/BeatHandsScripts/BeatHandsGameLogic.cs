@@ -4,6 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class is the logic of the BeatHands game.
+/// </summary>
+
 public class BeatHandsGameLogic : MonoBehaviour
 {
     [SerializeField] private UIPointer pointer;
@@ -25,15 +35,12 @@ public class BeatHandsGameLogic : MonoBehaviour
     public bool finished = false;
     public string resultText = "";
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
+        // If the game is playing, the score is updated and the timer goes from 60 seconds down to zero, where the game stops.
         if (isPlaying)
         {
             spawner.isPlaying = true;
@@ -75,12 +82,20 @@ public class BeatHandsGameLogic : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// This method sets the difficulty of the spawner.
+    /// </summary>
+    /// <param name="difficulty">The other collider that hit the collider attached to this object.</param>
     public void SetDifficulty(int difficulty)
     {
         this.difficulty = difficulty;
         spawner.SetDifficulty(difficulty);
     }
 
+    /// <summary>
+    /// This method starts or stops the game depending on the current state. 
+    /// </summary>
     public void ToggleIsPlaying()
     {
         isPlaying = !isPlaying;

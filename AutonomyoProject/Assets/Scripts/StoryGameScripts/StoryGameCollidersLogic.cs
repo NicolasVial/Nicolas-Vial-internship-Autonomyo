@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class handles the story game colliders used to activate the corresping dialogue as well as the corresping game whenever the player reaches them..
+/// </summary>
+
 public class StoryGameCollidersLogic : MonoBehaviour
 {
     [SerializeField] private GameObject danceGameHitBox1;
@@ -15,6 +25,11 @@ public class StoryGameCollidersLogic : MonoBehaviour
     [SerializeField] private WalkingInPlace walkingInPlace;
     [SerializeField] private GameObject victoryGO;
 
+    /// <summary>
+    /// This method is triggered whenever another collider enters the collider attached to this object.
+    /// It checks if the other collider is the player and if it is the case, depending on the collider, the correct dialogue as well as the corresping game are activated.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "WalkingInPlace")

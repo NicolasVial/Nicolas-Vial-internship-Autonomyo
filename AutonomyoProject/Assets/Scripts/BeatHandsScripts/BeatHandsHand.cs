@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class represent a player's hand in the BeatHands game.
+/// </summary>
+
 public class BeatHandsHand : MonoBehaviour
 {
 
@@ -9,21 +19,13 @@ public class BeatHandsHand : MonoBehaviour
     [SerializeField] private string color;
     [SerializeField] private BeatHandsGameLogic gameLogic;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// This method is triggered whenever another collider enters the collider attached to this object.
+    /// It checks if the other collider is a target and if it is the case, the score augments and the target is destroyed.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
         if (other.gameObject.GetComponent<BeatHandsHitObject>() != null && other.tag == this.tag)
         {
             soundManager.playSuccessSound();

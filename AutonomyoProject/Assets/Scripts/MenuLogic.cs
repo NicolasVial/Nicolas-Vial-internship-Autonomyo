@@ -10,9 +10,12 @@ using QuickVR;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
-  Summary: The following script contains the logic of the menu. All the buttons logic and all the transitions are handled here.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// This class contains the logic of the menu. All the buttons logic and all the transitions are handled here.
+/// </summary>
 
 public class MenuLogic : MonoBehaviour
 {
@@ -206,29 +209,30 @@ public class MenuLogic : MonoBehaviour
 
     private bool isMirror = true;
     private bool inStoryGame = false;
-    public int language = 0; //0 == english, 1 == français
+    public int language = 0; //0 == english, 1 == french
 
     private GameObject actualLandscape; //keep in memory which landscape is active
     private GameObject actualTab; //keep in memory which tab is active
 
     public bool isConnected = false;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame updatena dis used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         actualLandscape = menuLandscape;
         actualLandscape.SetActive(true);
 
-        //actualTab = welcomeTab;
         actualTab = welcomeTabFR;
-        //actualTab = languageTab;
-        //actualTab = gamesTab;
         actualTab.SetActive(true);
         firstButton.Select();
-        soundManager.Invoke("playIntroMenu1", 5f);
+        soundManager.Invoke("playIntroMenu1", 8f);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (isConnected)
@@ -253,6 +257,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is executed when the "Continue" button of the first menu tab is pressed.
+    /// It then goes to the language selection tab.
+    /// </summary>
     public void PressWelcomeContinueButton()
     {
         actualTab.SetActive(false);
@@ -261,6 +269,11 @@ public class MenuLogic : MonoBehaviour
         EngButton.Select();
     }
 
+    /// <summary>
+    /// This method is executed when a language is selected in the language tab of the menu.
+    /// It then goes to the connection tab.
+    /// </summary>
+    /// <param name="language">The language selected by the player.</param>
     public void PressLanguageButton(int language)
     {
         this.language = language;
@@ -279,6 +292,10 @@ public class MenuLogic : MonoBehaviour
 
     #region Little Menu Functions
 
+    /// <summary>
+    /// This method is executed when the games button of the bottom menu is pressed.
+    /// It then goes to the games tab.
+    /// </summary>
     public void PressGamesButton()
     {
         if (language == 0)
@@ -292,8 +309,11 @@ public class MenuLogic : MonoBehaviour
             gamesButton.Select();
         }
     }
-    
 
+    /// <summary>
+    /// When a button with this function attached is pressed, it goes to the connection tab of the menu.
+    /// It has the same purpose as the "PressLanguageButton(int language)" method but it used when the language selection is skipped.
+    /// </summary>
     public void PressConnexionTabButton()
     {
         if (language == 0)
@@ -309,6 +329,10 @@ public class MenuLogic : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// This method goes to the controller tab of the menu.
+    /// This method is not used anymore since the controller is now on a side screen.
+    /// </summary>
     public void PressControllerTabButton()
     {
         changeActualTab(controllerTab);
@@ -316,6 +340,9 @@ public class MenuLogic : MonoBehaviour
 
     #region Calibration functions
 
+    /// <summary>
+    /// This method is called when the connection with the exo is done. It then goes to the calibration tab.
+    /// </summary>
     public void ConnectedToTheExo()
     {
         soundManager.playIntroMenu3();
@@ -331,6 +358,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the Zero left cells calibration button of the calibration tab is pressed.
+    /// It calibrates the left cells of the exo and then shows the right cells calibration tab.
+    /// </summary>
     public void PressLeftCellsZero()
     {
         if (language == 0)
@@ -351,6 +382,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the Zero right cells calibration button of the calibration tab is pressed.
+    /// It calibrates the right cells of the exo and then goes to the next calibration tab.
+    /// </summary>
     public void PressRightCellsZero()
     {
         if(language == 0)
@@ -375,6 +410,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the other parts of the exo (motor armed/zero abduction/zero joints) are calibrated.
+    /// It then goes to the avatar calibration tab.
+    /// </summary>
     public void PressDoneAbdZero()
     {
         if(language == 0)
@@ -399,6 +438,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the avatar is calibrated.
+    /// It then goes to the games tab.
+    /// </summary>
     public void PressDoneCalibration()
     {
         if(language == 0)
@@ -427,6 +470,11 @@ public class MenuLogic : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// This method is called when dance game button of the games tab is pressed.
+    /// It then setup and goes to the dance game.
+    /// This method is also used to reset the game and go back to the beginning of the game.
+    /// </summary>
     public void PressDanceGameButton()
     {
         if (!inStoryGame)
@@ -450,7 +498,7 @@ public class MenuLogic : MonoBehaviour
             scoreBarLogic.done2 = false;
             scoreBarLogic.done3 = false;
             opponent.poseNb = 0;
-
+            
             if(language == 0)
             {
                 changeActualTab(danceGameTab);
@@ -468,7 +516,6 @@ public class MenuLogic : MonoBehaviour
         }
         else
         {
-
             //This is called when dance game is finished in the story game
             switch (storyGameLogic.actualGameNb)
             {
@@ -508,6 +555,10 @@ public class MenuLogic : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// This method is called the Menu button is pressed
+    /// It resets everything and go back to the games tab.
+    /// </summary>
     public void PressBackToMenuButton()
     {
         danceGameGO.SetActive(false);
@@ -553,10 +604,13 @@ public class MenuLogic : MonoBehaviour
         else
         {
             danceGameDifficultyButtonFR.gameObject.SetActive(true);  
-        }
-        
+        }    
     }
 
+    /// <summary>
+    /// This method is called when the play button of the dance game is pressed.
+    /// It starts the dance game.
+    /// </summary>
     public void PressPlayDanceGameButton()
     {
         if (language == 0)
@@ -572,7 +626,11 @@ public class MenuLogic : MonoBehaviour
         game1Logic.isBlinking = false;
     }
 
-    //Change if the "mirror avatar" copies the movements like a mirror or not.
+    /// <summary>
+    /// This method is called when the mirror avatar toggle button is pressed.
+    /// If the button is On, the avatar to copy is going to do the movements to copy in a mirrored way.
+    /// If the button is Off, the avatar to copy is going to do the movements to copy in an anatomical way.
+    /// </summary>
     public void ToggleMirrorAvatarButton()
     {
         if (isMirror)
@@ -605,6 +663,10 @@ public class MenuLogic : MonoBehaviour
         }    
     }
 
+    /// <summary>
+    /// This method is called when the dance game is finished.
+    /// It then shows the results tab.
+    /// </summary>
     public void SetGameFinishedTab()
     {
         game1Logic.finished = false;
@@ -621,6 +683,10 @@ public class MenuLogic : MonoBehaviour
         soundManager.playCheeringSound();
     }
 
+    /// <summary>
+    /// This method is called when See Statistics button is pressed.
+    /// It then shows the statistics tab.
+    /// </summary>
     public void PressDanceGameSeeStatsButton()
     {
         if (language == 0)
@@ -636,6 +702,10 @@ public class MenuLogic : MonoBehaviour
         game1Logic.isBlinking = false;
     }
 
+    /// <summary>
+    /// This method is called when the difficulty button is pressed.
+    /// It then goes to the difficulty tab where the player can select the difficulty for the dance game.
+    /// </summary>
     public void PressDanceGamedifficultyButton()
     {
         if (language == 0)
@@ -650,6 +720,12 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// This method is called when the WIP button of the games tab is pressed.
+    /// It then goes to the Walking in place landscape. 
+    /// This place is not a game but a place to try and test freely the different walking modes.
+    /// </summary>
     public void PressWIPButton()
     {
         menuTab.SetActive(false);
@@ -665,6 +741,11 @@ public class MenuLogic : MonoBehaviour
         WIPBackToMenuButton.Select();
     }
 
+    /// <summary>
+    /// This method is called when the BeatHands button of the games tab is pressed.
+    /// It then goes to the BeatHands game. 
+    /// This method is also used to reset the game and go back to the beginning of the game.
+    /// </summary>
     public void PressBeatHandsGameButton()
     {
         if (!inStoryGame)
@@ -720,6 +801,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the difficulty button is pressed.
+    /// It then goes to the difficulty tab where the player can select the difficulty for the BeatHands game.
+    /// </summary>
     public void PressBeatHandsGamedifficultyButton()
     {
         if (language == 0)
@@ -734,6 +819,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the play button of the BeatHands game is pressed.
+    /// It starts the BeatHands game.
+    /// </summary>
     public void PressPlayBeatHandsGameButton()
     {
         if (language == 0)
@@ -748,6 +837,10 @@ public class MenuLogic : MonoBehaviour
         abdZeroButton2.Select();
     }
 
+    /// <summary>
+    /// This method is called when the beatHands game is finished.
+    /// It then shows the results tab.
+    /// </summary>
     public void BeatHandsSetGameFinishedTab()
     {
         beatHandsGameLogic.finished = false;
@@ -764,6 +857,10 @@ public class MenuLogic : MonoBehaviour
         soundManager.playCheeringSound();
     }
 
+    /// <summary>
+    /// This method is called when the shifumi game button of the games tab is pressed.
+    /// It then goes to the shifumi game. 
+    /// </summary>
     public void PressShifumiButton()
     {
         menuTab.SetActive(false);
@@ -782,6 +879,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the balance game button of the games tab is pressed.
+    /// It then goes to the balance game. 
+    /// </summary>
     public void PressBalanceGameButton()
     {
         actualLandscape.SetActive(false);
@@ -806,11 +907,19 @@ public class MenuLogic : MonoBehaviour
         balanceGameGO.SetActive(true);
     }
 
+    /// <summary>
+    /// This method makes the controller tab visible or invisible based on the current state.
+    /// </summary>
     public void ToggleControllerTab()
     {
         controllerTab.SetActive(!controllerTab.activeSelf);
     }
 
+    /// <summary>
+    /// This method is called when the play button of the Balance game is pressed.
+    /// It starts the Balance game.
+    /// <param name="sphere">The sphere used in the balance game.</param>
+    /// </summary>
     public void BalanceGamePressPlay(GameObjectController sphere)
     {
         sphere.startGame();
@@ -826,6 +935,10 @@ public class MenuLogic : MonoBehaviour
 
     #region Story Game functions
 
+    /// <summary>
+    /// This method is called when the story game button of the games tab is pressed.
+    /// It then goes to the story game and starts the game. 
+    /// </summary>
     public void PressStoryGameButton()
     {
         menuTab.SetActive(false);
@@ -853,6 +966,10 @@ public class MenuLogic : MonoBehaviour
         beatHandsGameGO.transform.position = beatHandsGameStoryGamePos.transform.position;
     }
 
+    /// <summary>
+    /// This method is called when the dance game is automatically launched in the story game.
+    /// It then goes to the dance game.. 
+    /// </summary>
     public void StoryGameGoToDanceGame()
     {
         danceGameGO.SetActive(true);
@@ -890,6 +1007,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the BeatHands game is automatically launched in the story game.
+    /// It then goes to the BeatHands game. 
+    /// </summary>
     public void StoryGameGoToBeatHandsGame()
     {
         beatHandsGameGO.SetActive(true);
@@ -914,6 +1035,10 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the first Balance game is automatically launched in the story game.
+    /// It then goes to the first Balance game. 
+    /// </summary>
     public void StoryGameGoToBalanceGame()
     {
         controllerTab.SetActive(false);
@@ -933,6 +1058,11 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the play button of the first Balance game is pressed inside the story game.
+    /// It starts the first Balance game.
+    /// <param name="sphere">The sphere used in the first balance game.</param>
+    /// </summary>
     public void StoryGameBalanceGamePressPlay(GameObjectController sphere)
     {
         sphere.startGame();
@@ -946,6 +1076,11 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the play button of the second Balance game is pressed inside the story game.
+    /// It starts the second Balance game.
+    /// <param name="sphere">The sphere used in the second balance game.</param>
+    /// </summary>
     public void StoryGameBalanceGamePressPlay2(GameObjectController sphere)
     {
         sphere.startGame();
@@ -959,6 +1094,9 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the Balance game is finished in the story game.
+    /// </summary>
     public void StoryGameBalanceGamePressFinish()
     {
         if (language == 0)
@@ -1004,6 +1142,10 @@ public class MenuLogic : MonoBehaviour
         batteriesTab.SetActive(false);
     }
 
+    /// <summary>
+    /// This method is called when the second Balance game is automatically launched in the story game.
+    /// It then goes to the second Balance game. 
+    /// </summary>
     public void StoryGameGoToBalanceGame2()
     {
         controllerTab.SetActive(false);
@@ -1021,6 +1163,9 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the shifumi game is automatically launched in the story game.
+    /// </summary>
     public void StoryGameGoToShifumiGame()
     {
         controllerTab.SetActive(false);
@@ -1038,6 +1183,9 @@ public class MenuLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the shifumi game is finished in the story game.
+    /// </summary>
     public void StoryGameShifumiGamePressFinish()
     {
         if (language == 0)
@@ -1075,6 +1223,10 @@ public class MenuLogic : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// This method is used to change the tab of the menu.
+    /// <param name="newTab">The new tab to be showed in the menu.</param>
+    /// </summary>
     private void changeActualTab(GameObject newTab)
     {
         actualTab.SetActive(false);

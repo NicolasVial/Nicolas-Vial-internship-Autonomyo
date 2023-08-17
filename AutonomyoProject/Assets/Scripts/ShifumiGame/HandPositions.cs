@@ -4,6 +4,16 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class handles the player's hands positions (to know if the player is doing rock, paper or scissors) as well as the shifumi game logic.
+/// </summary>
+
 public class HandPositions : MonoBehaviour
 {
     [SerializeField] private SoundManager soundManager;
@@ -85,16 +95,21 @@ public class HandPositions : MonoBehaviour
     private int yourScore = 0;
     private int opponentScore = 0;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame updatena dis used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         pressUseRightHand();
         removeImages();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
+        // Checks if the game is versus a bot or alone. (This is not used anymore, was used for tests)
         if (isAlone)
         {
             if (startTimer)
@@ -228,6 +243,8 @@ public class HandPositions : MonoBehaviour
         }
         else
         {
+            // Starts the timer (going from 3 seconds to 0)) and whenever the timer is at 0, checks the hands positions and checks who wins.
+            // Then it restarts automatically until someone reaches 3 points.
             if (startTimer)
             {
                 timer += Time.deltaTime;
@@ -393,6 +410,7 @@ public class HandPositions : MonoBehaviour
         
 
         /*
+         * Used to test and check hand positions.
         t1.SetText(r_thumbGO.transform.localEulerAngles.x.ToString());
         t2.SetText(r_indexGO.transform.localEulerAngles.x.ToString());
         t3.SetText(r_middleGO.transform.localEulerAngles.x.ToString());
@@ -408,6 +426,10 @@ public class HandPositions : MonoBehaviour
         */
     }
 
+    /// <summary>
+    /// Checks if the right hand of the player is doing scissors.
+    /// </summary>
+    /// <returns>true if the player's right hand is doing scissors and false otherwise.</returns>
     private bool CheckScissorsRight()
     {
         float x1 = r_thumbGO.transform.localEulerAngles.x;
@@ -429,6 +451,10 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if the left hand of the player is doing scissors.
+    /// </summary>
+    /// <returns>true if the player's left hand is doing scissors and false otherwise.</returns>
     private bool CheckScissorsLeft()
     {
         float x12 = l_thumbGO.transform.localEulerAngles.x;
@@ -450,6 +476,10 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if the right hand of the player is doing rock.
+    /// </summary>
+    /// <returns>true if the player's right hand is doing rock and false otherwise.</returns>
     private bool CheckRockRight()
     {
         float x1 = r_thumbGO.transform.localEulerAngles.x;
@@ -472,6 +502,10 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if the left hand of the player is doing rock.
+    /// </summary>
+    /// <returns>true if the player's left hand is doing rock and false otherwise.</returns>
     private bool CheckRockLeft()
     {
         float x12 = l_thumbGO.transform.localEulerAngles.x;
@@ -494,7 +528,10 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
-
+    /// <summary>
+    /// Checks if the right hand of the player is doing paper
+    /// </summary>
+    /// <returns>true if the player's right hand is doing paper and false otherwise.</returns>
     private bool CheckPaperRight()
     {
         float x1 = r_thumbGO.transform.localEulerAngles.x;
@@ -517,6 +554,10 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if the left hand of the player is doing paper
+    /// </summary>
+    /// <returns>true if the player's left hand is doing paper and false otherwise.</returns>
     private bool CheckPaperLeft()
     {
         float x12 = l_thumbGO.transform.localEulerAngles.x;
@@ -539,6 +580,13 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if an angle is close enough to a target by a given margin.
+    /// </summary>
+    /// <param name="angle">The angle to check.</param>
+    /// <param name="target">The target angle.</param>
+    /// <param name="marginOfAngle">The margin of error.</param>
+    /// <returns>true if the angle is close enough to the target, false otherwise.</returns>
     private bool CheckAngle(float angle, float target, float marginOfAngle)
     {
         bool check = false;
@@ -554,6 +602,17 @@ public class HandPositions : MonoBehaviour
         return check;
     }
 
+    /// <summary>
+    /// Checks if the player won the shifumi round.
+    /// </summary>
+    /// <param name="rockR">true if rock with right hand was the position done, false otherwise.</param>
+    /// <param name="paperR">true if paper with right hand was the position done, false otherwise.</param>
+    /// <param name="scissorsR">true if scissors with right hand was the position done, false otherwise.</param>
+    /// <param name="rockL">true if rock with left hand was the position done, false otherwise.</param>
+    /// <param name="paperL">true if paper with left hand was the position done, false otherwise.</param>
+    /// <param name="scissorsL">true if scissors with left hand was the position done, false otherwise.</param>
+    /// <param name="isRightHand">true the hand used by the player is the right hand, false if it's the left hand.</param>
+    /// <returns>-1 if the player lost, 1 if the player won.</returns>
     private int CheckResult(bool rockR, bool paperR, bool scissorsR, bool rockL, bool paperL, bool scissorsL, bool isRightHand)
     {
         if ((rockL && scissorsR) || (scissorsL && paperR) || (paperL && rockR))
@@ -597,6 +656,9 @@ public class HandPositions : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Desactivate all the result images displayed on the screen.
+    /// </summary>
     private void DesactiveAllResultImages()
     {
         l_CrossGO.SetActive(false);
@@ -607,6 +669,9 @@ public class HandPositions : MonoBehaviour
         r_MinusGO.SetActive(false);
     }
 
+    /// <summary>
+    /// This method is called when the bot plays rock.
+    /// </summary>
     public void botPlaysRock()
     {
         botRock = true;
@@ -614,6 +679,9 @@ public class HandPositions : MonoBehaviour
         botScissors = false;
     }
 
+    /// <summary>
+    /// This method is called when the bot plays paper.
+    /// </summary>
     public void botPlaysPaper()
     {
         botRock = false;
@@ -621,6 +689,9 @@ public class HandPositions : MonoBehaviour
         botScissors = false;
     }
 
+    /// <summary>
+    /// This method is called when the bot plays scissors.
+    /// </summary>
     public void botPlaysScissors()
     {
         botRock = false;
@@ -628,11 +699,18 @@ public class HandPositions : MonoBehaviour
         botScissors = true;
     }
 
+    /// <summary>
+    /// Whenever this method is called, the hands positions and the result of the round are going to be checked.
+    /// </summary>
     private void pressCheckResult()
     {
         checkResult = true;
     }
 
+    /// <summary>
+    /// This method updates the score of the shifumi game.
+    /// </summary>
+    /// <param name="result">The result of the round (-1 == Lose / 0 == Even / 1 == Win).</param>
     private void UpdateScores(int result)
     {
         switch (result)
@@ -652,6 +730,9 @@ public class HandPositions : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method resets the shifumi game parameters.
+    /// </summary>
     public void ResetGame()
     {
         opponentScore = 0;
@@ -671,6 +752,9 @@ public class HandPositions : MonoBehaviour
         startButton.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// When the button to which this method is attached is pressed, the right hand becomes the hand checked when playing the shifumi game.
+    /// </summary>
     public void pressUseRightHand()
     {
         ColorBlock rightColors = useRightHandButton.colors;
@@ -686,6 +770,9 @@ public class HandPositions : MonoBehaviour
         isRightHand = true;
     }
 
+    /// <summary>
+    /// When the button to which this method is attached is pressed, the left hand becomes the hand checked when playing the shifumi game.
+    /// </summary>
     public void pressUseLeftHand()
     {
         ColorBlock rightColors = useRightHandButton.colors;
@@ -701,6 +788,9 @@ public class HandPositions : MonoBehaviour
         isRightHand = false;
     }
 
+    /// <summary>
+    /// Desactivate all the position images displayed on the screen.
+    /// </summary>
     private void removeImages()
     {
         r_ScissorsGO.SetActive(false);
@@ -711,6 +801,9 @@ public class HandPositions : MonoBehaviour
         l_PaperGO.SetActive(false);
     }
 
+    /// <summary>
+    /// Displays the image that corresponds to the hand position of the bot.
+    /// </summary>
     private void showBotImage()
     {
         switch (botChoice)
@@ -729,6 +822,9 @@ public class HandPositions : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method resets the game and restarts the shifumi game.
+    /// </summary>
     public void restart()
     {
         ResetGame();
@@ -736,6 +832,9 @@ public class HandPositions : MonoBehaviour
         startButton.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// This method starts the timer (going from 3 to 0) for the shifumi game.
+    /// </summary>
     private void StartTimer()
     {
         startTimer = true;

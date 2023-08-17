@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class represents the target spawner for the BeatHands game.
+/// </summary>
+
 public class BeatHandsSpawner : MonoBehaviour
 {
     [SerializeField] private SoundManager soundManager;
@@ -16,13 +26,17 @@ public class BeatHandsSpawner : MonoBehaviour
 
     public bool isPlaying = false;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame updatena dis used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         possiblePositions.AddRange(easySpawnPoints);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         //Always add a new target when the old one is destroyed
@@ -32,6 +46,9 @@ public class BeatHandsSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method spawns a new target.
+    /// </summary>
     private void SpawnNewTarget()
     {
         Transform spawnPoint = possiblePositions[Random.Range(0, possiblePositions.Count-1)];
@@ -50,6 +67,12 @@ public class BeatHandsSpawner : MonoBehaviour
         }
         soundManager.playPlopSound();
     }
+
+    /// <summary>
+    /// This method is used to set the difficulty.
+    /// An harder difficulty means more different spawn points and spawn points being further away from the player.
+    /// </summary>
+    /// <param name="difficulty">The difficulty to set to the game.</param>
     public void SetDifficulty(int difficulty)
     {
         possiblePositions.Clear();

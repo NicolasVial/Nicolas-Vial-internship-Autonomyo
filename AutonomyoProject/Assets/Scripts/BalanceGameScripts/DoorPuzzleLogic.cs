@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class is the logic of the balance game.
+/// </summary>
+
 public class DoorPuzzleLogic : MonoBehaviour
 {
     [SerializeField]
@@ -53,36 +63,22 @@ public class DoorPuzzleLogic : MonoBehaviour
     public bool test = false;
     public string resultText = "";
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame updatena dis used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         currentObjectivs = objectivs1;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
-        /*
-        if (test)
-        {
-            if (!done)
-            {
-                done = true;
-                startTime = Time.time;
-                distanceBetweenRot = Vector3.Distance(startAngle, endAngle);
-                sphere._move = false;
-                finished = true;
-            }
-            else
-            {
-                float distanceTimeRot = (Time.time - startTime) * rotationSpeed;
-                float relativeTimeRot = distanceTimeRot / distanceBetweenRot;
-                door.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(startAngle), Quaternion.Euler(endAngle), relativeTimeRot);
-            }
-        }
-        */
         bool checkAllObjDone = true;
 
+        // Checks if all current objectives have been hit.
         foreach(DoorObjectiv dobj in currentObjectivs)
         {
             if (!dobj.succeed){
@@ -90,6 +86,7 @@ public class DoorPuzzleLogic : MonoBehaviour
             }
         }
 
+        // If all the objectives have been hit, the game is finished and the door opens.
         if (checkAllObjDone && levelNb == nbOfLevels)
         {
             if (!done)
@@ -111,6 +108,7 @@ public class DoorPuzzleLogic : MonoBehaviour
             }
         }
 
+        // If all the current objectives have been hit, the next objectives are activated and become the current objectives.
         if(checkAllObjDone && levelNb < nbOfLevels)
         {
             switch (levelNb)
@@ -131,6 +129,7 @@ public class DoorPuzzleLogic : MonoBehaviour
             levelNb += 1;
         }
 
+        // Execute the correct menu method whenever the game is finished.
         if (finished && !doneFinish)
         {
             switch (puzzleNb)
@@ -153,6 +152,9 @@ public class DoorPuzzleLogic : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to reset the game.
+    /// </summary>
     private void resetGame()
     {
         levelNb = 1;
@@ -181,6 +183,9 @@ public class DoorPuzzleLogic : MonoBehaviour
         doneFinish = false;
     }
 
+    /// <summary>
+    /// This method is called to start the game.
+    /// </summary>
     public void startGame()
     {
         startGameTime = Time.time;

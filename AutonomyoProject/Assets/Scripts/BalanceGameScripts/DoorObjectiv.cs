@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This class represents an objectiv for the door balance game. An objectiv is a checkpoint to reach with the green sphere. All the objectivs need to be reached in the correct order to open the door.
+/// </summary>
+
 public class DoorObjectiv : MonoBehaviour
 {
 
@@ -15,18 +25,11 @@ public class DoorObjectiv : MonoBehaviour
     private static int objCount = 0;
     public bool succeed = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// This method is triggered whenever another collider enters the collider attached to this object.
+    /// It checks if the objective is the next objective to validate and if it is the case, it validates the objective.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "DoorSphere" && objNb-1 == objCount)
@@ -34,19 +37,22 @@ public class DoorObjectiv : MonoBehaviour
             succeed = true;
             text.color = new Color(0f, 1f, 0f, 1f);
             objCount += 1;
-            Debug.Log("objcount+=1 = " + objCount);
         }
     }
 
+    /// <summary>
+    /// This method sets the object count to 0.
+    /// </summary>
     public void resetObjCount()
     {
-        Debug.Log("resetobjcount");
         objCount = 0;
     }
 
+    /// <summary>
+    /// This method resets the objective.
+    /// </summary>
     public void resetObj()
     {
-        Debug.Log("resetobj");
         objCount = 0;
         succeed = false;
         text.color = Color.white;
