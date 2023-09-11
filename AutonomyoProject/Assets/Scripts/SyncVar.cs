@@ -8,6 +8,11 @@ using MbToPcMessageType = PublicDefinitions.MbToPcMessageType;
 using VarType = PublicDefinitions.VarType;
 using VarAccess = PublicDefinitions.VarAccess;
 
+/// <summary>
+/// The following script has been done by Eugénie and is used as is in this project. 
+/// This script represents the SyncVar which are used to communicate different values between the exoskeleton Autonomyo and the App.
+/// </summary>
+
 // Use a static class ?
 public class SyncVar //: MonoBehaviour // Rajouter data, value, etc et les fonctions correspondantes // syncvar.h
 {

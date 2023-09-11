@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script contains the logic of the opponent of the dance game. 
+/// All the movements of this avatar are done here. A movement is triggered by a boolean designating a specific movement.
+/// </summary>
+
 public class OpponentLogic : MonoBehaviour
 {
     //Spawner
@@ -73,7 +84,9 @@ public class OpponentLogic : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         gameObjects[0] = headGO;
@@ -94,7 +107,9 @@ public class OpponentLogic : MonoBehaviour
         gameObjects[15] = r_footGO;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         //opponent is ready if he is not in movement
@@ -214,7 +229,9 @@ public class OpponentLogic : MonoBehaviour
         moveGameObjects();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// This method moves the different part of the opponent avatar when called.
+    /// </summary>
     private void moveGameObjects()
     {
         List<int> indexToRemove = new List<int>();
@@ -254,6 +271,11 @@ public class OpponentLogic : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to setup the movement (the positions and angles of the different parts of the opponent avatar) done in the "MoveGameObjects" method.
+    /// </summary>
+    /// <param name="pos">The new positions of the different parts of the opponent avatar.</param>
+    /// <param name="angles">The new angles of the different parts of the opponent avatar.</param>
     private void goToPose(Vector3[] pos, Vector3[] angles)
     {
         for (int i = 0; i < gameObjects.Length; i++)
@@ -268,6 +290,10 @@ public class OpponentLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method sets the difficulty of the game (the harder is the difficulty the higher the opponent score will be).
+    /// </summary>
+    /// <param name="difficulty">The difficulty set for the game.</param>
     public void SetDifficulty(int difficulty)
     {
         switch (difficulty)

@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script is used to mirror an avatar.
+/// </summary>
+
 public class MirrorAvatar : MonoBehaviour
 {
     [SerializeField]
@@ -9,7 +19,9 @@ public class MirrorAvatar : MonoBehaviour
 
     private Vector3 pos, fw, up;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         pos = parent.transform.InverseTransformPoint(transform.position);
@@ -17,7 +29,9 @@ public class MirrorAvatar : MonoBehaviour
         up = parent.transform.InverseTransformDirection(transform.up);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         var newpos = parent.transform.TransformPoint(pos);

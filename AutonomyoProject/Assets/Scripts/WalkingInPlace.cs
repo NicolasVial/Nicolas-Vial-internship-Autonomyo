@@ -6,6 +6,17 @@ using UnityEngine;
 using System;
 using QuickVR;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script contains the logic of the Walking in place (static walking).
+/// </summary>
+
 public class WalkingInPlace : MonoBehaviour
 {
     [SerializeField] private GameObject camera;
@@ -64,13 +75,17 @@ public class WalkingInPlace : MonoBehaviour
     public bool WIP = false;
     public int walkingMode = 1; //mode 1 == realistic with periodic rotations, mode 2 == realistic with linear rotations, mode 3 == teleportation (no cybersickness)
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         clientSide = theClient.GetComponent<ClientSide>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (clientSide.isStreaming)
@@ -176,57 +191,12 @@ public class WalkingInPlace : MonoBehaviour
                 teleportGO.SetActive(false);
                 setupDone = false;
             }
-
-            //moveGameObjects();
-        }
-
-
-
-    }
-
-    private bool checkPosewithAngles(float[] targetAngles)
-    {
-        //target positions of left/right knee and foot
-        float l_targetAbdAngle = targetAngles[0];
-        float r_targetAbdAngle = targetAngles[1];
-        float l_targetHipAngle = targetAngles[2];
-        float r_targetHipAngle = targetAngles[3];
-        float l_targetKneeAngle = targetAngles[4];
-        float r_targetKneeAngle = targetAngles[5];
-
-        //check all the angles
-        float check_l_abdAngle = checkSpecificAngle(l_targetAbdAngle, leftAbdAngle.FloatVar, marginOfErrorAnglesAbd);
-        float check_r_abdAngle = checkSpecificAngle(r_targetAbdAngle, rightAbdAngle.FloatVar, marginOfErrorAnglesAbd);
-        float check_l_hipAngle = checkSpecificAngle(l_targetHipAngle, leftHipAngle.FloatVar, marginOfErrorAngles);
-        float check_r_hipAngle = checkSpecificAngle(r_targetHipAngle, rightHipAngle.FloatVar, marginOfErrorAngles);
-        float check_l_kneeAngle = checkSpecificAngle(l_targetKneeAngle, leftKneeAngle.FloatVar, marginOfErrorAngles);
-        float check_r_kneeAngle = checkSpecificAngle(r_targetKneeAngle, rightKneeAngle.FloatVar, marginOfErrorAngles);
-
-        if (check_l_abdAngle != -1f && check_r_abdAngle != -1f && check_l_hipAngle != -1f && check_r_hipAngle != -1f && check_l_kneeAngle != -1f && check_r_kneeAngle != -1f)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
-    private float checkSpecificAngle(float targetAngle, float actualAngle, float marginOfError)
-    {
-        float abs = Math.Abs(targetAngle - actualAngle);
-       
-        if (abs <= marginOfError)
-        {
-            return 1f;
-        }
-        else
-        {
-            return -1f;
-        }
-
-    }
-
+    /// <summary>
+    /// This method rotates the avatar in the direction where the player is looking at. 
+    /// </summary>
     private void RotatePlayer()
     {
         float angle = (camera.transform.eulerAngles.y > 180f) ? camera.transform.eulerAngles.y - 360f : camera.transform.eulerAngles.y;
@@ -241,6 +211,11 @@ public class WalkingInPlace : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is triggered whenever another collider enters the collider attached to this object.
+    /// It checks if the players hits a wall.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
@@ -263,6 +238,11 @@ public class WalkingInPlace : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is triggered whenever another collider exits the collider attached to this object.
+    /// It checks if the players hits a wall.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerExit(Collider other)
     {
         switch (other.gameObject.tag)
@@ -285,6 +265,9 @@ public class WalkingInPlace : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// This is used to avoid the player to move through the walls.
+    /// </summary>
     private void movePlayer(GameObject playerGO)
     {
         switch ((canGoPositivX, canGoNegativX, canGoPositivZ, canGoNegativZ))
@@ -482,22 +465,35 @@ public class WalkingInPlace : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method toggles the walking in place.
+    /// </summary>
     public void toggleWIP()
     {
         this.WIP = !this.WIP;
     }
 
+    /// <summary>
+    /// This method is triggered when the player wants to teleport to the desired position.
+    /// </summary>
     public void pressTPButton()
     {
         TPButtonPressed = true;
     }
 
+    /// <summary>
+    /// This method is used to teleport the player to the desired position.
+    /// </summary>
     public void teleport()
     {
         playerGO.transform.position = teleportGO.transform.position;
         teleportGO.transform.localPosition = new Vector3(0f, 0f, 0f);
     }
 
+    /// <summary>
+    /// This method is used to change the walking mode.
+    /// </summary>
+    /// <param name="newMode">The new mode.</param>
     public void changeWalkingMode(int newMode)
     {
         walkingMode = newMode;

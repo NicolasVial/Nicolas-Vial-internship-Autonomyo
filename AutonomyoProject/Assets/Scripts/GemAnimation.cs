@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script handles the animation of the final gem of the story game.
+/// </summary>
+
 public class GemAnimation : MonoBehaviour
 {
 
@@ -12,13 +23,9 @@ public class GemAnimation : MonoBehaviour
 
     private bool isGoingUp = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (isGoingUp)

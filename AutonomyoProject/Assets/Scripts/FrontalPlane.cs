@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// This script have been done by Eugénie and is reused as is in this project. This script creates the frontal plane of the exo based on the abduction, hips and knees angles of the exo.
+/// </summary>
+
 public class FrontalPlane : MonoBehaviour
 {
     // Constant variables

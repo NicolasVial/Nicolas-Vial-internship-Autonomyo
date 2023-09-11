@@ -6,10 +6,13 @@ using QuickVR;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
-  Summary: The following script contains the logic of the avatar doing the movements the player has to imitate in the Dance Game.
-           All the movements of this avatar are done here. A movement is triggered by a boolean designating a specific movement.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script contains the logic of the avatar doing the movements the player has to imitate in the Dance Game. 
+/// All the movements of this avatar are done here. A movement is triggered by a boolean designating a specific movement.
+/// </summary>
 
 
 public class AvatarToCopyLogic : MonoBehaviour
@@ -20,6 +23,7 @@ public class AvatarToCopyLogic : MonoBehaviour
     //opponent
     [SerializeField] private OpponentLogic opponent;
 
+    //body parts game objects
     [SerializeField] private GameObject headGO;
     [SerializeField] private GameObject hipGO;
     [SerializeField] private GameObject l_handGO;
@@ -76,7 +80,9 @@ public class AvatarToCopyLogic : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         gameObjects[0] = headGO;
@@ -97,7 +103,9 @@ public class AvatarToCopyLogic : MonoBehaviour
         gameObjects[15] = r_footGO;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (straight)
@@ -207,6 +215,9 @@ public class AvatarToCopyLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method moves the different part of the avatar to copy when called.
+    /// </summary>
     private void moveGameObjects()
     {
         List<int> indexToRemove = new List<int>();
@@ -246,6 +257,11 @@ public class AvatarToCopyLogic : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to setup the movement (the positions and angles of the different parts of the avatar to copy) done in the "MoveGameObjects" method.
+    /// </summary>
+    /// <param name="pos">The new positions of the different parts of the avatar to copy.</param>
+    /// <param name="angles">The new angles of the different parts of the avatar to copy.</param>
     private void goToPose(Vector3[] pos, Vector3[] angles)
     {
         for (int i = 0; i < gameObjects.Length; i++)

@@ -4,6 +4,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script is used to control the Exoskeleton Autonomyo.
+/// </summary>
+
 public class Controller : MonoBehaviour
 {
     [SerializeField] GameObject theClient;
@@ -14,18 +25,17 @@ public class Controller : MonoBehaviour
     private ClientSide clientSide;
     private bool areMotorsArmed = false;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         clientSide = theClient.GetComponent<ClientSide>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    /// <summary>
+    /// When this method is called, the motors of the exoskeleton are armed or disarmed based on the current state.
+    /// </summary>
     public void toggleArmMotors()
     {
         if (clientSide.isStreaming)
@@ -49,6 +59,9 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the abduction of the exo is set to zero. This is used to callibrate the exo for the app to work properly.
+    /// </summary>
     public void setAbductionZero()
     {
         if (clientSide.isStreaming)
@@ -57,6 +70,9 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the joints of the exo are set to zero. This is used to callibrate the exo for the app to work properly.
+    /// </summary>
     public void setJointZero()
     {
         if (clientSide.isStreaming)
@@ -65,6 +81,9 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the right cells of the exo are set to zero. This is used to callibrate the exo for the app to work properly.
+    /// </summary>
     public void setRightCellsZero()
     {
         if (clientSide.isStreaming)
@@ -73,6 +92,9 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the left cells of the exo are set to zero. This is used to callibrate the exo for the app to work properly.
+    /// </summary>
     public void setLeftCellsZero()
     {
         if (clientSide.isStreaming)

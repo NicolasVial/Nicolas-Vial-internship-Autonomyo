@@ -86,7 +86,7 @@ public class BeatHandsGameLogic : MonoBehaviour
     /// <summary>
     /// This method sets the difficulty of the spawner.
     /// </summary>
-    /// <param name="difficulty">The other collider that hit the collider attached to this object.</param>
+    /// <param name="difficulty">The difficulty set for the game.</param>
     public void SetDifficulty(int difficulty)
     {
         this.difficulty = difficulty;

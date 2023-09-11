@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script contains the logic to move an avatar to different positions.
+/// </summary>
+
 public class AvatarMovements : MonoBehaviour
 {
     [SerializeField] private GameObject headGO;
@@ -56,7 +67,9 @@ public class AvatarMovements : MonoBehaviour
 
     public float desiredDuration = 2.5f;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         gameObjects[0] = headGO;
@@ -79,7 +92,9 @@ public class AvatarMovements : MonoBehaviour
         goToStraight();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if(doneTab.Count != 0)
@@ -88,6 +103,9 @@ public class AvatarMovements : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method moves the different part of the avatar when called.
+    /// </summary>
     private void moveGameObjects()
     {
         List<int> indexToRemove = new List<int>();
@@ -128,6 +146,11 @@ public class AvatarMovements : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to setup the movement (the positions and angles of the different parts of the avatar) done in the "MoveGameObjects" method.
+    /// </summary>
+    /// <param name="pos">The new positions of the different parts of the avatar.</param>
+    /// <param name="angles">The new angles of the different parts of the avatar.</param>
     private void goToPose(Vector3[] pos, Vector3[] angles, float desiredDuration)
     {
         for (int i = 0; i < gameObjects.Length; i++)
@@ -143,60 +166,90 @@ public class AvatarMovements : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the avatar goes in the straight position.
+    /// </summary>
     public void goToStraight()
     {
         desiredDuration = 1f;
         goToPose(neutralStraightPose, neutralStraightAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar waves his hand to the right.
+    /// </summary>
     public void waveHandRight()
     {
         desiredDuration = 0.5f;
         goToPose(waveHandRightPose, waveHandRightAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar waves his hand to the left.
+    /// </summary>
     public void waveHandLeft()
     {
         desiredDuration = 0.5f;
         goToPose(waveHandLeftPose, waveHandLeftAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar lifts the right leg.
+    /// </summary>
     public void walkRight()
     {
         desiredDuration = 0.75f;
         goToPose(rightWalkingPose, rightWalkingAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar lifts the left leg.
+    /// </summary>
     public void walkLeft()
     {
         desiredDuration = 0.75f;
         goToPose(leftWalkingPose, leftWalkingAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar's hands are moved up
+    /// </summary>
     public void handsTalkingUp()
     {
         desiredDuration = Random.Range(0.5f, 1.5f);
         goToPose(handsTalkingUpPose, handsTalkingUpAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar's hands are moved down
+    /// </summary>
     public void handsTalkingDown()
     {
         desiredDuration = Random.Range(0.5f, 1f);
         goToPose(handsTalkingDownPose, handsTalkingDownAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar's does a rock with his hand.
+    /// </summary>
     public void rock()
     {
         desiredDuration = 0.75f;
         goToPose(rockPose, rockAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar's does a paper with his hand.
+    /// </summary>
     public void paper()
     {
         desiredDuration = 0.75f;
         goToPose(paperPose, paperAngles, desiredDuration);
     }
 
+    /// <summary>
+    /// When this method is called, the avatar's does scissors with his hand.
+    /// </summary>
     public void scissors()
     {
         desiredDuration = 0.75f;

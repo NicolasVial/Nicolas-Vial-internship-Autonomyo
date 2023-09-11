@@ -9,10 +9,13 @@ using System;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
-  Summary: The following script contains the logic of the Dance Game. The validation of the movements, the trigger 
-           of the movements of the avatar to copy as well as all the game gestion are done here.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script contains the logic of the Dance Game. The validation of the movements, the trigger 
+/// of the movements of the avatar to copy as well as all the game gestion are done here.
+/// </summary>
 
 public class Game1Logic : MonoBehaviour
 {
@@ -96,16 +99,20 @@ public class Game1Logic : MonoBehaviour
     public bool isBlinking = false;
     public float totalScore = 0f;
     public int difficulty = 0;
-    public string resultText = ""; 
+    public string resultText = "";
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         clientSide = theClient.GetComponent<ClientSide>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
        
@@ -125,12 +132,6 @@ public class Game1Logic : MonoBehaviour
 
             if (newPose && GameObject.FindGameObjectsWithTag("PoseObject").Length != 0)
             {
-                /*
-                if ((GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetPositions>() != null)
-                {
-                    targetPositions = (GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetPositions>().getTargetPositions();
-                }
-                */
                 if ((GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetAngles>() != null)
                 {
                     targetAngles = (GameObject.FindGameObjectsWithTag("PoseObject")[0]).GetComponent<targetAngles>().getTargetAngles();
@@ -174,6 +175,7 @@ public class Game1Logic : MonoBehaviour
                 poseFinished = false;
             }
 
+            // The blink game objects are the transparent blue shapes used to help te player to imitate correctly the position.
             if (GameObject.FindGameObjectsWithTag("TransparentMesh").Length != 0)
             {
                 blinkGO1 = GameObject.FindGameObjectsWithTag("TransparentMesh")[0];
@@ -210,13 +212,6 @@ public class Game1Logic : MonoBehaviour
                         checkAngles = true;
                         correctAngles = checkPosewithAngles();
                     }
-                    /*
-                    if (targetPositions != null)
-                    {
-                        checkPos = true;
-                        correctPos = checkPosewithPos();
-                    }
-                    */
 
                     if (checkAngles && checkPos)
                     {
@@ -224,11 +219,6 @@ public class Game1Logic : MonoBehaviour
                         {
                             validationCounter += Time.deltaTime;
                             progressBar.m_FillAmount = validationCounter / timeToValidate;
-                        }
-                        else
-                        {
-                            //What is the best? when position is not good reset or continue whenever it's good again??
-                            //validationCounter = 0f;
                         }
 
                     }
@@ -241,27 +231,7 @@ public class Game1Logic : MonoBehaviour
                                 validationCounter += Time.deltaTime;
                                 progressBar.m_FillAmount = validationCounter / timeToValidate;
                             }
-                            else
-                            {
-                                //What is the best? when position is not good reset or continue whenever it's good again??
-                                //validationCounter = 0f;
-                            }
                         }
-                        /*
-                        if (checkPos)
-                        {
-                            if (correctPos)
-                            {
-                                validationCounter += Time.deltaTime;
-                                progressBar.m_FillAmount = validationCounter / timeToValidate;
-                            }
-                            else
-                            {
-                                //What is the best? when position is not good reset or continue whenever it's good again??
-                                //validationCounter = 0f;
-                            }
-                        }
-                        */
                     }
                 }
 
@@ -343,6 +313,10 @@ public class Game1Logic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method checks if the position of the player (depending on knee hip and abduction angles) is correct.
+    /// </summary>
+    /// <returns>true if the position of the player (depending on knee hip and abduction angles) is correct, return false otherwise.</returns>
     private bool checkPosewithAngles()
     {
         //target positions of left/right knee and foot
@@ -366,6 +340,13 @@ public class Game1Logic : MonoBehaviour
         return angleCorrectness;
     }
 
+    /// <summary>
+    /// This method checks if an angle is correct given the actual angle, the target angle and the margin of error.
+    /// </summary>
+    /// <param name="targetAngle">The angle the player has to reach.</param>
+    /// <param name="actualAngle">The angle of the actual position of the player.</param>
+    /// <param name="marginOfError">The margin of error accepted between the actual angle and the target angle.</param>
+    /// <returns>1 if the angle done by the player is correct, return -1 otherwise.</returns>
     private float checkSpecificAngle(float targetAngle, float actualAngle, float marginOfError)
     {
         float abs = Math.Abs(targetAngle - actualAngle);
@@ -390,6 +371,16 @@ public class Game1Logic : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method checks if all angles (hips, knees, abductions) are correct given the results for each angle. This method also modifies the color of the helpers (green if correct, red otherwise).
+    /// </summary>
+    /// <param name="check_l_abdAngle">The correctness result of the left abduction angle.</param>
+    /// <param name="check_r_abdAngle">The correctness result of the right abduction angle.</param>
+    /// <param name="check_l_hipAngle">The correctness result of the left hip angle.</param>
+    /// <param name="check_r_hipAngle">The correctness result of the right hip angle.</param>
+    /// <param name="check_l_kneeAngle">The correctness result of the left knee angle.</param>
+    /// <param name="check_r_kneeAngle">The correctness result of the right knee angle.</param>
+    /// <returns>true if all the angles are correct, false otherwise.</returns>
     private bool checkAngleCorrectness(float check_l_abdAngle, float check_r_abdAngle, float check_l_hipAngle, float check_r_hipAngle, float check_l_kneeAngle, float check_r_kneeAngle)
     {
         if(check_l_hipAngle == -1f)
@@ -428,8 +419,6 @@ public class Game1Logic : MonoBehaviour
             r_kneeCorrectness.GetComponent<MeshRenderer>().material = correctAngleMat;
         }
 
-        //Could add abduction helpers if needed
-
         if (check_l_abdAngle != -1f && check_r_abdAngle != -1f && check_l_hipAngle != -1f && check_r_hipAngle != -1f && check_l_kneeAngle != -1f && check_r_kneeAngle != -1f)
         {
             return true;
@@ -440,6 +429,9 @@ public class Game1Logic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is used to create a blink effect for the blue helpers of the position to immitate.
+    /// </summary>
     private void blink()
     {
         Color color = blinkGO1.GetComponent<SkinnedMeshRenderer>().materials[0].color;
@@ -464,11 +456,18 @@ public class Game1Logic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is used to setup the start time of the game in order to get time data during the game.
+    /// </summary>
     private void setStartTime()
     {
         startTime = Time.time;
     }
 
+    /// <summary>
+    /// This method sets the difficulty of the game (modifying the margin of errors of the angles).
+    /// </summary>
+    /// <param name="difficulty">The difficulty set for the game..</param>
     public void SetDifficulty (int difficulty)
     {
         this.difficulty = difficulty;
@@ -493,71 +492,4 @@ public class Game1Logic : MonoBehaviour
                 break;
         }
     }
-
-    /*
-    private bool checkPosewithPos()
-    {
-        //target positions of left/right knee and foot
-        Vector3 f_l_targetKneePos = targetPositions[0];
-        Vector3 f_r_targetKneePos = targetPositions[1];
-        Vector3 f_l_targetFootPos = targetPositions[2];
-        Vector3 f_r_targetFootPos = targetPositions[3];
-        Vector3 s_l_targetKneePos = targetPositions[4];
-        Vector3 s_r_targetKneePos = targetPositions[5];
-        Vector3 s_l_targetFootPos = targetPositions[6];
-        Vector3 s_r_targetFootPos = targetPositions[7];
-
-        //actual positions of left/right knee and foot
-        Vector3 f_l_actualKneePos = new Vector3(frontalPlane.l_knee_posy, frontalPlane.l_knee_posz, 0f);
-        Vector3 f_r_actualKneePos = new Vector3(frontalPlane.r_knee_posy, frontalPlane.r_knee_posz, 0f);
-        Vector3 f_l_actualFootPos = new Vector3(frontalPlane.l_foot_posy, frontalPlane.l_foot_posz, 0f);
-        Vector3 f_r_actualFootPos = new Vector3(frontalPlane.r_foot_posy, frontalPlane.r_foot_posz, 0f);
-        Vector3 s_l_actualKneePos = new Vector3(sagittalPlane.l_knee_posx, sagittalPlane.l_knee_posz, 0f);
-        Vector3 s_r_actualKneePos = new Vector3(sagittalPlane.r_knee_posx, sagittalPlane.r_knee_posz, 0f);
-        Vector3 s_l_actualFootPos = new Vector3(sagittalPlane.l_foot_posx, sagittalPlane.l_foot_posz, 0f);
-        Vector3 s_r_actualFootPos = new Vector3(sagittalPlane.r_foot_posx, sagittalPlane.r_foot_posz, 0f);
-
-        //check all the positions
-        bool check_f_l_kneePos = checkSpecificPose(f_l_targetKneePos.x, f_l_targetKneePos.y, f_l_actualKneePos.x, f_l_actualKneePos.y, f_l_kneeGO, true);
-        bool check_f_r_kneePos = checkSpecificPose(f_r_targetKneePos.x, f_r_targetKneePos.y, f_r_actualKneePos.x, f_r_actualKneePos.y, f_r_kneeGO, false);
-        bool check_f_l_footPos = checkSpecificPose(f_l_targetFootPos.x, f_l_targetFootPos.y, f_l_actualFootPos.x, f_l_actualFootPos.y, f_l_footGO, true);
-        bool check_f_r_footPos = checkSpecificPose(f_r_targetFootPos.x, f_r_targetFootPos.y, f_r_actualFootPos.x, f_r_actualFootPos.y, f_r_footGO, false);
-        bool check_s_l_kneePos = checkSpecificPose(s_l_targetKneePos.x, s_l_targetKneePos.y, s_l_actualKneePos.x, s_l_actualKneePos.y, s_l_kneeGO, true);
-        bool check_s_r_kneePos = checkSpecificPose(s_r_targetKneePos.x, s_r_targetKneePos.y, s_r_actualKneePos.x, s_r_actualKneePos.y, s_r_kneeGO, false);
-        bool check_s_l_footPos = checkSpecificPose(s_l_targetFootPos.x, s_l_targetFootPos.y, s_l_actualFootPos.x, s_l_actualFootPos.y, s_l_footGO, true);
-        bool check_s_r_footPos = checkSpecificPose(s_r_targetFootPos.x, s_r_targetFootPos.y, s_r_actualFootPos.x, s_r_actualFootPos.y, s_r_footGO, false);
-
-        if(check_f_l_kneePos && check_f_r_kneePos && check_f_l_footPos && check_f_r_footPos && check_s_l_kneePos && check_s_r_kneePos && check_s_l_footPos && check_s_r_footPos)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    private bool checkSpecificPose(float targetX, float targetY, float actualX, float actualY, GameObject gameObj, bool left)
-    {
-        if(targetX <= actualX + marginOfErrorPos && targetX >= actualX - marginOfErrorPos && targetY <= actualY + marginOfErrorPos && targetY >= actualY - marginOfErrorPos)
-        {
-            gameObj.GetComponent<Image>().color = Color.green;
-            return true;
-        }
-        else
-        {
-            if (left)
-            {
-                gameObj.GetComponent<Image>().color = Color.black;
-            }
-            else
-            {
-                gameObj.GetComponent<Image>().color = Color.white;
-            }
-         
-            return false;
-        }
-    }
-    */
-
 }

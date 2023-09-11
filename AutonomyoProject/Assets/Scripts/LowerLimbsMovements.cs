@@ -8,10 +8,13 @@ using QuickVR;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
-  Summary: The following script moves the lower limbs (hips, knees, foot) of the player's avatar accordingly with the
-           data received by the exoskeleton.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script moves the lower limbs (hips, knees, foot) of the player's avatar accordingly with the 
+/// data received by the exoskeleton.
+/// </summary>
 
 public class LowerLimbsMovements : MonoBehaviour
 {
@@ -102,7 +105,9 @@ public class LowerLimbsMovements : MonoBehaviour
     private bool done = false;
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>   
     void Start()
     {
         clientSide = theClient.GetComponent<ClientSide>();
@@ -133,6 +138,9 @@ public class LowerLimbsMovements : MonoBehaviour
         l4 = 550.0f / REDUCTION_FACTOR;
     }
 
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (InputManager.GetButtonDown("resetInitPos"))
@@ -145,6 +153,7 @@ public class LowerLimbsMovements : MonoBehaviour
         }
         
         /*
+         * Used for debugging
         if (InputManager.GetButtonDown("reducfactordown"))
         {
             REDUCTION_FACTOR -= 10f;
@@ -388,6 +397,9 @@ public class LowerLimbsMovements : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is used to update the soles cells values.
+    /// </summary>
     private float UpdateCells(int i, char letter)
     {
         //arbitrary value used for debugging

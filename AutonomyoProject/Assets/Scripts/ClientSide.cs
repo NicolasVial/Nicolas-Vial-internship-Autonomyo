@@ -20,6 +20,16 @@ using VarType = PublicDefinitions.VarType;
 using VarAccess = PublicDefinitions.VarAccess;
 using Modes = PublicDefinitions.Modes;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// This script has mainly been done by Eugénie and has been reused and modified for this project. This script handles the connection with the exoskeleton Autonomyo.
+/// </summary>
+
 public class ClientSide : MonoBehaviour
 {
 	// Constant variables

@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script handles the laser pointer used to navigate in the interface.
+/// </summary>
+
 public class UIPointer : MonoBehaviour
 {
     [SerializeField] private MenuLogic menu;
@@ -22,13 +33,9 @@ public class UIPointer : MonoBehaviour
     private Toggle toggle;
     private bool isActive = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (isActive)
@@ -42,12 +49,19 @@ public class UIPointer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method updates the length of the laser.
+    /// </summary>
     private void UpdateLength()
     {
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, CalculateEnd());
     }
 
+    /// <summary>
+    /// This method calculates where the laser should end.
+    /// </summary>
+    /// <returns>The position wherer the laser should end.</returns>
     private Vector3 CalculateEnd()
     {
         RaycastHit hit = CreateFowardRaycast();
@@ -59,6 +73,10 @@ public class UIPointer : MonoBehaviour
         return endPosition;
     }
 
+    /// <summary>
+    /// This method finds what is the first interface object hit by the laser.
+    /// </summary>
+    /// <returns>The RaycastHit of the raycast.</returns>
     private RaycastHit CreateFowardRaycast()
     {
         RaycastHit hit;
@@ -210,11 +228,18 @@ public class UIPointer : MonoBehaviour
         return hit;
     }
 
+    /// <summary>
+    /// This method gives the position of the default end of the laser.
+    /// </summary>
+    /// <returns>The position of the default end.</returns>
     private Vector3 DefaultEnd(float length)
     {
         return transform.position + (transform.forward * length);
     }
 
+    /// <summary>
+    /// This method toggles the laser pointer.
+    /// </summary>
     public void TogglePointer()
     {
         isActive = !isActive;

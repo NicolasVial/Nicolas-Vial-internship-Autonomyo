@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The following script has been done by Eugénie and is used as is in this project. This script defines the public definitions to communicate with the exoskeleton Autonomyo.
+/// </summary>
+
 public class PublicDefinitions : MonoBehaviour
 {
     /**

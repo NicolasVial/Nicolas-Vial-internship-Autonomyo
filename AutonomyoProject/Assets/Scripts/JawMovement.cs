@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script îs used to move the jaw of an avatar when he is talking.
+/// </summary>
+
 public class JawMovement : MonoBehaviour
 {
     [SerializeField] private GameObject jaw;
@@ -19,7 +29,9 @@ public class JawMovement : MonoBehaviour
 
     public bool isTalking = false;
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (isTalking)
@@ -48,11 +60,18 @@ public class JawMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method sets the new jaw to animate.
+    /// </summary>
+    /// <param name="newJaw">The new jaw to animate.</param>
     public void setJawGO(GameObject newJaw)
     {
         this.jaw = newJaw;
     }
 
+    /// <summary>
+    /// This method handles the jaw movements.
+    /// </summary>
     private void jawMovement()
     {
         List<int> indexToRemove = new List<int>();
@@ -100,6 +119,9 @@ public class JawMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the jaw of the avatar opens.
+    /// </summary>
     private void openJaw()
     {
         doneTab.Add(false);
@@ -108,6 +130,9 @@ public class JawMovement : MonoBehaviour
         endPosTab.Add(openJawPos);
     }
 
+    /// <summary>
+    /// When this method is called, the jaw of the avatar closes.
+    /// </summary>
     private void closeJaw()
     {
         doneTab.Add(false);
@@ -116,6 +141,9 @@ public class JawMovement : MonoBehaviour
         endPosTab.Add(closeJawPos);
     }
 
+    /// <summary>
+    /// This method toggles if the jaw is animated or not.
+    /// </summary>
     public void toggleIsTalking()
     {
         isTalking = !isTalking;

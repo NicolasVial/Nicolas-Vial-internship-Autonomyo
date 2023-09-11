@@ -5,6 +5,17 @@ using System.Linq;
 using System;
 using QuickVR;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script handles the controll of a gameObject using the balance of the player (thanks to the soles of the exoskeleton).
+/// </summary>
+
 public class GameObjectController : MonoBehaviour
 {
     [SerializeField] LowerLimbsMovements lowerLimbs;
@@ -23,11 +34,9 @@ public class GameObjectController : MonoBehaviour
 
     public bool _move = false;
 
-    void Start()
-    {
-        
-    }
-
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (_move)
@@ -40,12 +49,20 @@ public class GameObjectController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When this method is called, the control of the gameObject is activated.
+    /// </summary>
     public void startGame()
     {
         _move = true;
         puzzleLogic.startGame();
     }
 
+    /// <summary>
+    /// This method is triggered whenever another collider enters the collider attached to this object.
+    /// It checks if the gameObject hits a wall.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
@@ -68,6 +85,11 @@ public class GameObjectController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is triggered whenever another collider exits the collider attached to this object.
+    /// It checks if the gameObject hits a wall.
+    /// </summary>
+    /// <param name="other">The other collider that hit the collider attached to this object.</param>
     private void OnTriggerExit(Collider other)
     {
         switch (other.gameObject.tag)
@@ -90,6 +112,9 @@ public class GameObjectController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This is used to avoid the sphere to move through the walls.
+    /// </summary>
     private void moveSphere()
     {
         switch ((canGoPositivY, canGoNegativY, canGoPositivZ, canGoNegativZ))

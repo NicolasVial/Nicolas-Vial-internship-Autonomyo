@@ -6,6 +6,17 @@ using TMPro;
 using CodeMonkey.Utils;
 using System.Linq;
 
+
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script is used to dispay a graph showing the time done for each position in the dance game by the player.
+/// </summary>
+
 public class WindowGraph : MonoBehaviour
 {
     [SerializeField] private Sprite circleSprite;
@@ -16,12 +27,10 @@ public class WindowGraph : MonoBehaviour
 
     private List<GameObject> toDestroy = new List<GameObject>();
 
-    private void Start()
-    {
-        //List<float> valueList = new List<float>() {3.4f, 5.4f, 6.3f, 2.3f, 0.5f, 1.6f, 2.3f, 2.5f, 0f, 0.5f};
-        //showGraph(valueList);
-    }
-
+    /// <summary>
+    /// This method is used to create a point on the graph at the correct position.
+    /// </summary>
+    /// <param name="anchoredPosition">The position where to create the circle on the graph.</param>
     private GameObject createCircle(Vector2 anchoredPosition)
     {
         GameObject circle = new GameObject("circle", typeof(Image));
@@ -35,6 +44,10 @@ public class WindowGraph : MonoBehaviour
         return circle;
     }
 
+    /// <summary>
+    /// This method is to display the graph given the list of the values to display.
+    /// </summary>
+    /// <param name="valueList">The list containing the values to put on the graph.</param>
     public void showGraph(List<float> valueList)
     {
         destroyLastGraph();
@@ -67,6 +80,11 @@ public class WindowGraph : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method creates a line between two points on the graph.
+    /// </summary>
+    /// <param name="dotPositionA">The position of the first point.</param>
+    /// <param name="dotPositionB">The position of the second point.</param>
     private void createDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)
     {
         GameObject conn = new GameObject("dotConnection", typeof(Image));
@@ -83,6 +101,9 @@ public class WindowGraph : MonoBehaviour
         rectTransform.localEulerAngles = new Vector3(0f, 0f, UtilsClass.GetAngleFromVectorFloat(dir));
     }
 
+    /// <summary>
+    /// This method destroys the last graph.
+    /// </summary>
     private void destroyLastGraph()
     {
         foreach(GameObject GO in toDestroy)

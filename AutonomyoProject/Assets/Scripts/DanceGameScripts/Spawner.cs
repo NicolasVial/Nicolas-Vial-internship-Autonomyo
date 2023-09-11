@@ -5,10 +5,13 @@ using UnityEngine;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 26.04.2023
-  Summary: The following script contains the logic of the spawner of the positions to imitate in the Dance Game.
-           Whenever a position is cleared by the player, a new one is spawned.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script contains the logic of the spawner of the positions to imitate in the Dance Game (the blue helpers). 
+/// Whenever a position is cleared by the player, a new one is spawned.
+/// </summary>
 
 public class Spawner : MonoBehaviour
 {
@@ -32,13 +35,17 @@ public class Spawner : MonoBehaviour
 
     public bool isMirror = true;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         //Always add a new pose when the old one is finished
@@ -48,7 +55,9 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    //Spawns a new pose to imitate
+    /// <summary>
+    /// This method is used to spawn a new pose to immitate.
+    /// </summary>
     private void SpawnNewPose()
     {
         Transform spawnPoint = points[Random.Range(0, 1)];
@@ -81,12 +90,18 @@ public class Spawner : MonoBehaviour
         Invoke(nameof(SpawnAfter), timeAfterSpawn);
     }
 
-    //Activates the pose helpers after timeAfterSpawn seconds
+    /// <summary>
+    /// This method activates the pose helpers after timeAfterSpawn seconds
+    /// </summary>
     private void SpawnAfter()
     {
         GOToActivate.SetActive(true);
     }
 
+    /// <summary>
+    /// This method sets the difficulty of the game (modifying which position can spawn).
+    /// </summary>
+    /// <param name="difficulty">The difficulty set for the game.</param>
     public void SetDifficulty(int difficulty)
     {
         possiblePositions.Clear();

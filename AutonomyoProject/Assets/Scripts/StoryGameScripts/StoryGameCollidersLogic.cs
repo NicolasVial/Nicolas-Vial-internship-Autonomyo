@@ -71,7 +71,6 @@ public class StoryGameCollidersLogic : MonoBehaviour
                     gameLogic.Invoke("RunEnd", 1f);
                     break;
                 default:
-                    // code block
                     break;
             }
             this.GetComponent<Collider>().gameObject.SetActive(false);

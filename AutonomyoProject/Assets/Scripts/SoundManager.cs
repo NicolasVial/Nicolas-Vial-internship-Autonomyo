@@ -5,10 +5,13 @@ using UnityEngine;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 22.06.2023
-  Summary: The following script manages all the musics and sounds in the game. 
-           Other classes simply need to call a function from this class to obtain the wanted sound/music.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script manages all the musics and sounds in the game. 
+/// Other classes need to call a function from this class to obtain the wanted sound/music.
+/// </summary>
 
 public class SoundManager : MonoBehaviour
 {
@@ -57,19 +60,17 @@ public class SoundManager : MonoBehaviour
     private AudioSource actualMusic;
     private AudioSource lastVoiceHeard;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         actualMusic = homeMusic;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
+    /// <summary>
+    /// This method plays the home music.
+    /// </summary>
     public void playHomeMusic()
     {
         homeMusic.Play();
@@ -77,18 +78,27 @@ public class SoundManager : MonoBehaviour
         wipMusic.Stop();
     }
 
+    /// <summary>
+    /// This method plays the dance game music.
+    /// </summary>
     public void playGame1Music()
     {
         game1Music.Play();
         actualMusic = game1Music;
     }
 
+    /// <summary>
+    /// This method plays the Story game music.
+    /// </summary>
     public void playWIPMusic()
     {
         wipMusic.Play();
         natureSounds.Play();
     }
 
+    /// <summary>
+    /// This method stops the music which is running.
+    /// </summary>
     public void stopActualMusic()
     {
         if(actualMusic != null)
@@ -98,32 +108,50 @@ public class SoundManager : MonoBehaviour
         natureSounds.Stop();
     }
 
+    /// <summary>
+    /// This method plays the success sound.
+    /// </summary>
     public void playSuccessSound()
     {
         successSound.Play();
     }
 
+    /// <summary>
+    /// This method plays the cheering sound.
+    /// </summary>
     public void playCheeringSound()
     {
         cheeringSound.Play();
     }
 
+    /// <summary>
+    /// This method plays the star sound.
+    /// </summary>
     public void playStarSound()
     {
         starSound.Play();
     }
 
+    /// <summary>
+    /// This method plays the plop sound.
+    /// </summary>
     public void playPlopSound()
     {
         plopSound.Play();
     }
 
+    /// <summary>
+    /// This method plays the intro avatar voice.
+    /// </summary>
     public void playIntroAvatarVoice()
     {
         storyV1ENG1.Play();
         lastVoiceHeard = storyV1ENG1;
     }
 
+    /// <summary>
+    /// This method plays the story 1_1 avatar voice.
+    /// </summary>
     public void playStoryV1_1()
     {
         if(menu.language == 0)
@@ -138,6 +166,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 2_1 avatar voice.
+    /// </summary>
     public void playStoryV2_1()
     {
         if (menu.language == 0)
@@ -152,6 +183,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 2_2 avatar voice.
+    /// </summary>
     public void playStoryV2_2()
     {
         if (menu.language == 0)
@@ -166,6 +200,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 3_1 avatar voice.
+    /// </summary>
     public void playStoryV3_1()
     {
         if (menu.language == 0)
@@ -180,6 +217,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 3_2 avatar voice.
+    /// </summary>
     public void playStoryV3_2()
     {
         if (menu.language == 0)
@@ -194,6 +234,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 4_1 avatar voice.
+    /// </summary>
     public void playStoryV4_1()
     {
         if (menu.language == 0)
@@ -208,6 +251,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 4_2 avatar voice.
+    /// </summary>
     public void playStoryV4_2()
     {
         if (menu.language == 0)
@@ -222,6 +268,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 5_1 avatar voice.
+    /// </summary>
     public void playStoryV5_1()
     {
         if (menu.language == 0)
@@ -236,6 +285,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 5_2 avatar voice.
+    /// </summary>
     public void playStoryV5_2()
     {
         if (menu.language == 0)
@@ -250,6 +302,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 6_1 avatar voice.
+    /// </summary>
     public void playStoryV6_1()
     {
         if (menu.language == 0)
@@ -264,6 +319,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 6_2 avatar voice.
+    /// </summary>
     public void playStoryV6_2()
     {
         if (menu.language == 0)
@@ -278,6 +336,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 7_1 avatar voice.
+    /// </summary>
     public void playStoryV7_1()
     {
         if (menu.language == 0)
@@ -292,6 +353,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the story 7_2 avatar voice.
+    /// </summary>
     public void playStoryV7_2()
     {
         if (menu.language == 0)
@@ -306,6 +370,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the intro menu voice 1.
+    /// </summary>
     public void playIntroMenu1()
     {
         if (menu.language == 0)
@@ -320,6 +387,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the intro menu voice 2.
+    /// </summary>
     public void playIntroMenu2()
     {
         if (menu.language == 0)
@@ -335,6 +405,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method plays the intro menu voice 3.
+    /// </summary>
     public void playIntroMenu3()
     {
         if (menu.language == 0)
@@ -350,6 +423,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method toggles the story music.
+    /// </summary>
     public void toggleWIPMusic()
     {
         if (wipMusic.isPlaying)
@@ -365,6 +441,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method repeats last voice.
+    /// </summary>
     public void repeatVoice()
     {
         if(lastVoiceHeard != null)

@@ -6,10 +6,13 @@ using UnityEngine.UI;
 /*
   Project: Autonomyo
   Author: Nicolas Vial
-  Date: 27.04.2023
-  Summary: The following script contains the logic of the score bar of the player in the Dance Game. It's here that
-           the stars of the score bar are activated as well as the sound design of the score bar.
+  Date: 16.08.2023
 */
+
+/// <summary>
+/// The following script contains the logic of the score bar of the player in the Dance Game. It's here that 
+/// the stars of the score bar are activated as well as the sound design of the score bar.
+/// </summary>
 
 public class ScoreBarLogic : MonoBehaviour
 {
@@ -29,13 +32,17 @@ public class ScoreBarLogic : MonoBehaviour
     public bool done3 = false;
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
+    /// </summary>
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (!done3)

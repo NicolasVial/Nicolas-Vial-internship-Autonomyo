@@ -217,7 +217,7 @@ public class MenuLogic : MonoBehaviour
     public bool isConnected = false;
 
     /// <summary>
-    /// Start method is called before the first frame updatena dis used to setup what is needed at the start of the App.
+    /// Start method is called before the first frame update and is used to setup what is needed at the start of the App.
     /// </summary>
     void Start()
     {

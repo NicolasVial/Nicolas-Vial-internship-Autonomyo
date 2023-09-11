@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Project: Autonomyo
+  Author: Nicolas Vial
+  Date: 16.08.2023
+*/
+
+/// <summary>
+/// The following script contains the logic of the story Game. The launch of the different games, musics, etc... are done here.
+/// </summary>
+
 public class StoryGameLogic : MonoBehaviour
 {
 
@@ -106,13 +116,9 @@ public class StoryGameLogic : MonoBehaviour
     private bool restart = true;
     public int actualGameNb = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
+    /// <summary>
+    /// Update method is called once per frame and is used to update what needs to be updated each frame.
+    /// </summary>
     void Update()
     {
         if (restart)
@@ -174,6 +180,9 @@ public class StoryGameLogic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method runs the intro of the game. The first NPC talks to the player and explains the goal of the game as well as how to move in the virtual world.
+    /// </summary>
     private void runIntro()
     {
         introAvatarJaw.Invoke("toggleIsTalking", 3f);
@@ -224,6 +233,9 @@ public class StoryGameLogic : MonoBehaviour
         introAvatarJaw.Invoke("toggleIsTalking", 40f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the first dance game in the story game.
+    /// </summary>
     public void RunDanceGame1()
     {
         actualGameNb = 1;
@@ -235,6 +247,9 @@ public class StoryGameLogic : MonoBehaviour
         game1AvatarJaw.Invoke("toggleIsTalking", 14f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the second dance game in the story game.
+    /// </summary>
     public void RunDanceGame2()
     {
         actualGameNb = 2;
@@ -246,6 +261,9 @@ public class StoryGameLogic : MonoBehaviour
         game3AvatarJaw.Invoke("toggleIsTalking", 13f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the first BeatHands game in the story game.
+    /// </summary>
     public void RunBeatHandsGame1()
     {
         actualGameNb = 3;
@@ -257,6 +275,9 @@ public class StoryGameLogic : MonoBehaviour
         game2AvatarJaw.Invoke("toggleIsTalking", 7f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the second Beathands game in the story game.
+    /// </summary>
     public void RunBeatHandsGame2()
     {
         actualGameNb = 5;
@@ -268,6 +289,9 @@ public class StoryGameLogic : MonoBehaviour
         game5AvatarJaw.Invoke("toggleIsTalking", 13f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the first balance game in the story game.
+    /// </summary>
     public void RunBalanceGame1()
     {
         actualGameNb = 4;
@@ -278,11 +302,18 @@ public class StoryGameLogic : MonoBehaviour
         game4AvatarJaw.Invoke("toggleIsTalking", 8f);
     }
 
+    /// <summary>
+    /// This method prepares what is needed to launch the second balance game in the story game.
+    /// </summary>
     public void RunBalanceGame2()
     {
         actualGameNb = 6;
         Invoke("goToBalanceGame2", 0f);
     }
+
+    /// <summary>
+    /// This method prepares what is needed to launch the first shifumi game in the story game.
+    /// </summary>
     public void RunShifumiGame1()
     {
         actualGameNb = 7;
@@ -293,6 +324,9 @@ public class StoryGameLogic : MonoBehaviour
         game6AvatarJaw.Invoke("toggleIsTalking", 11f);
     }
 
+    /// <summary>
+    /// This method terminates the story game and returns to the menu when called.
+    /// </summary>
     public void RunEnd()
     {
         menu.Invoke("PressBackToMenuButton", 24f);
@@ -300,7 +334,9 @@ public class StoryGameLogic : MonoBehaviour
         screenFade.Invoke("FadeIn", 24f);
     }
 
-
+    /// <summary>
+    /// This method launches the first dance game in the story game.
+    /// </summary>
     public void goToDanceGame()
     {
         playerGO.transform.position = danceGameSpawnerGO.transform.position;
@@ -312,6 +348,9 @@ public class StoryGameLogic : MonoBehaviour
         danceGameLogic.SetDifficulty(danceGameDifficulty);
     }
 
+    /// <summary>
+    /// This method launches the BeatHands game in the story game.
+    /// </summary>
     public void goToBeatHandsGame()
     {
         playerGO.transform.position = beatHandsGameSpawnerGO.transform.position;
@@ -323,6 +362,9 @@ public class StoryGameLogic : MonoBehaviour
         beathandsGameLogic.SetDifficulty(beatHandsGameDifficulty);
     }
 
+    /// <summary>
+    /// This method launches the first balance game in the story game.
+    /// </summary>
     public void goToBalanceGame1()
     {
         playerGO.transform.position = balanceGame1SpawnerGO.transform.position;
@@ -332,6 +374,9 @@ public class StoryGameLogic : MonoBehaviour
         game4AvatarGO.SetActive(false);
     }
 
+    /// <summary>
+    /// This method launches the second balance game in the story game.
+    /// </summary>
     public void goToBalanceGame2()
     {
         playerGO.transform.position = balanceGame2SpawnerGO.transform.position;
@@ -339,6 +384,9 @@ public class StoryGameLogic : MonoBehaviour
         menu.StoryGameGoToBalanceGame2();
     }
 
+    /// <summary>
+    /// This method launches the shifumi game in the story game.
+    /// </summary>
     public void goToShifumiGame1()
     {
         playerGO.transform.position = balanceGame2SpawnerGO.transform.position;
@@ -347,6 +395,9 @@ public class StoryGameLogic : MonoBehaviour
         menu.StoryGameGoToShifumiGame();
     }
 
+    /// <summary>
+    /// This method is called whenever the first dance game is finished.
+    /// </summary>
     private void danceGame1Finished()
     {
         playerGO.transform.position = danceGame1RespawnGO.transform.position;
@@ -360,6 +411,9 @@ public class StoryGameLogic : MonoBehaviour
         game1AvatarJaw.Invoke("toggleIsTalking", 16f);
     }
 
+    /// <summary>
+    /// This method is called whenever the second dance game is finished.
+    /// </summary>
     private void danceGame2Finished()
     {
         playerGO.transform.position = danceGame2RespawnGO.transform.position;
@@ -373,6 +427,9 @@ public class StoryGameLogic : MonoBehaviour
         game3AvatarJaw.Invoke("toggleIsTalking", 18f);
     }
 
+    /// <summary>
+    /// This method is called whenever the first BeatHands game is finished.
+    /// </summary>
     private void BeatHandsGame1Finished()
     {
         playerGO.transform.position = beatHandsGame1RespawnGO.transform.position;
@@ -386,6 +443,9 @@ public class StoryGameLogic : MonoBehaviour
         game2AvatarJaw.Invoke("toggleIsTalking", 11f);
     }
 
+    /// <summary>
+    /// This method is called whenever the second BeatHands game is finished.
+    /// </summary>
     private void BeatHandsGame2Finished()
     {
         playerGO.transform.position = beatHandsGame2RespawnGO.transform.position;
@@ -399,6 +459,9 @@ public class StoryGameLogic : MonoBehaviour
         game5AvatarJaw.Invoke("toggleIsTalking", 9f);
     }
 
+    /// <summary>
+    /// This method is called whenever the first balance game is finished.
+    /// </summary>
     private void BalanceGame1Finished()
     {
         playerGO.transform.position = balanceGame1RespawnGO.transform.position;
@@ -411,6 +474,9 @@ public class StoryGameLogic : MonoBehaviour
         game4AvatarJaw.Invoke("toggleIsTalking", 13f);
     }
 
+    /// <summary>
+    /// This method is called whenever the second balance game is finished.
+    /// </summary>
     private void BalanceGame2Finished()
     {
         playerGO.transform.position = balanceGame2RespawnGO.transform.position;
@@ -418,6 +484,9 @@ public class StoryGameLogic : MonoBehaviour
         WIP.WIP = true;
     }
 
+    /// <summary>
+    /// This method is called whenever the shifumi game is finished.
+    /// </summary>
     private void ShifumiGame1Finished()
     {
         playerGO.transform.position = balanceGame2RespawnGO.transform.position;
@@ -427,6 +496,9 @@ public class StoryGameLogic : MonoBehaviour
         Invoke("RunBalanceGame2", 1f);
     }
 
+    /// <summary>
+    /// This method is called to reset the story game.
+    /// </summary>
     public void resetGame()
     {
         playerGO.transform.position = initialSpawnGO.transform.position;
