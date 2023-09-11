@@ -3,6 +3,6 @@ This repository contains all the code necessary for the proper functioning of th
 
 All scripts written during the project are available in the "scripts" folder of the project's "assets" folder.
 
-The detailed guide outlining how to launch and operate the application is also in the process of being created and will be accessible before September 14, 2023.
+The documentation of the project can be found in the "projectDoc.pdf" file.
 
 The final report can be found in the Master_Thesis_Report_Nicolas_Vial.pdf file.
